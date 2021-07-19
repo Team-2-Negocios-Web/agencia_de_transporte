@@ -1,4 +1,14 @@
 from django.shortcuts import render
+from datetime import *
+from .models import *
 
 def home(request):
-    return render(request, 'transportAgency/home.html')
+
+    # Traer las rutas disponible 
+    ticket = Ticket.objects.all()
+
+    ctx = {
+        'ticket' : ticket,
+    }
+
+    return render(request, 'transportAgency/home.html', ctx)
