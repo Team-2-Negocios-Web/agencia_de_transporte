@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Travel Scheduling{% endblock  %}
+
+
+{% block container %}
+    <div class="container">
+    <h1 >Viajes programados para hoy</h1>
+        {% for t in travels  %}
+            <ul>
+                <strong><li class="text-success"> {{t.get_state_display}}</li></strong>
+                <li>{{t.routes}}</li>
+                <li>ID: {{t.pk}}</li>
+                <li>{{t.routes.precio}}</li>
+                <li>Tiempo de viaje {{t.routes.route_time}} horas</li>
+                <a href="#"><li>{{t.routes.schedule}}</li></a>
+            </ul>
+    {% endfor %}
+        
+
+    </div>
+    
+{% endblock  %}
