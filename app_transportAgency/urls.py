@@ -5,4 +5,5 @@ app_name = 'transportAgency'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('progviajes/', views.progviajes, name='progviajes')
 ]

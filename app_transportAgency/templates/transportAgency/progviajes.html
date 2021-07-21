@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Programacion de Viajes{% endblock %}
+{% block css %}
+<link href="{% static 'transportAgency/css/card.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block container %}
+<h1>Programacion de Viajes</h1>
+<div class="card">
+    <div class="card-image"></div>
+    <div class="card-text">
+        <span class="date">Tiempo aprox: 10 Horas</span>
+        <h2>De: Danli Hacia: San Pedro Sula</h2>
+        <p>Esperemos que disfrute su viaje</p>
+    </div>
+    <div class="card-stats">
+        <div class="stat">
+            <div class="value">L.850</div>
+            <div class="type">Precio</div>
+        </div>
+        <div class="stat_border">
+            <div class="value">A tiempo</div>
+            <div class="type">Disponibilidad</div>
+        </div>
+        <div class="stat">
+            <a class ="value"href="#">Comprar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
