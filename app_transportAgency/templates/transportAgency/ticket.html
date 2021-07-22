@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock  %}
+
+
+{% block container %}
+    <div class="container">
+        <div class="row">
+            <div class="shadow col-6 mt-5"  style="padding:25px;margin:auto;">
+                <form action="" method="post">
+                    {% csrf_token %}
+
+                    <!--Cliente-->
+                    <div class="mb-3">
+                        <label for="client">Cliente</label>
+                        <select name="client" id="client" class="form-select">
+                            {% for c in clients  %}
+                                <option value="{{c.pk}}">{{c}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--Fecha de la reservacion para el viaje-->
+                    <div class="mb-3">
+                        <label for="date">Dia de la reservacion</label>
+                        <input type="date" class="form-control" name="date" id="date" placeholder="">
+                    </div>
+
+
+
+                    <!--Tickets a comprar-->
+                    <div class="mb-3">
+                        <label for="quantity">Cuantos tickets desea comprar</label>
+                        <input type="number" class="form-control" name="quantity" id="quantity" placeholder="">
+                    </div>
+
+                    <!--Rutas-->
+                    <div class="mb-3">
+                        <label for="route">Rutas</label>
+                        <select name="route" id="route" class="form-select">
+                            {% for r in routes  %}
+                                <option value="{{r.pk}}">{{r}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!--Ticket disponible-->
+                    <div class="mb-3">
+                        <label for="available">Tickets Disponible</label>
+                        <input type="number" value="16" disabled class="form-control" name="available" id="available" placeholder="">
+                    </div>
+
+                    <!--Precio Total-->
+                    <div class="mb-3">
+                        <label for="total_price">Precio Total</label>
+                        <input type="number" value="00.00" disabled class="form-control" name="total_price" id="total_price" placeholder="">
+                    </div>
+
+                
+                </form>
+            </div>
+        </div>
+    </div>
+    
+{% endblock  %}
+
+
+{% block js %}
+
+    <script>
+
+    $(function(){
+
+    })
+
+    </script>
+{% endblock js %}

@@ -59,9 +59,10 @@ class Route(models.Model):
     route_time = models.IntegerField()
     precio     = models.FloatField()
     schedule   = models.ForeignKey(Schedule, on_delete=models.CASCADE, blank=True, null=True)
+    bus        = models.ForeignKey(Bus, on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
-        return f'origen: {self.origin} - destino: {self.destiny} | Horario: {self.schedule}'
+        return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule}'
 
 class TripScheduling(models.Model):
     STATE = {
@@ -73,11 +74,6 @@ class TripScheduling(models.Model):
     date_trip = models.DateField(auto_now_add=True)
     state     = models.CharField(max_length=1, choices=STATE)
     routes    = models.ForeignKey(Route,  on_delete=models.PROTECT, blank=True, null=True)
-
-
-    @property
-    def stateTrip(self):
-        today = datetime.now().time()
 
 
     def __str__(self):
@@ -94,4 +90,8 @@ class Ticket(models.Model):
     routes             = models.ForeignKey(Route,on_delete=models.CASCADE, null=True, blank=True)
     bus                = models.ForeignKey(Bus, on_delete=models.CASCADE, null=True, blank=True)
 
+    @property
+    def available_tickets(self):
+        count_tickets = SeatAssignment__set.count()
+        return self.ticket_available - count_tickets
 

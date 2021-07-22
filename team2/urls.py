@@ -19,5 +19,6 @@ from app_transportAgency import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.travels, name="home" ),
+    path('', views.travels, name="travels_view" ),
+    path('ticket/', views.ticket, name="ticket" ),
 ]
