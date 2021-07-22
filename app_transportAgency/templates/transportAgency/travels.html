@@ -1,37 +1,199 @@
 {% extends "base.html" %}
-
-{% block title %}Travel Scheduling{% endblock  %}
-
-
+{% load static %}
+{% block title %}Programacion de Viajes{% endblock %}
+{% block css %}
+<link href="{% static 'transportAgency/css/card.css' %}" rel="stylesheet">
+{% endblock %}
 
 
 {% block container %}
+
+<div>
+    <h1>Programacion de Viajes</h1>
     <div class="container">
-    <h1 class="mb-5" >Viajes programados para hoy</h1>
-
         <div class="row">
-            {% for t in travels  %}
-    
-                <div class="shadow mb-5 ms-1 col-xl-3 col-lg-3" style="padding:25px;margin:auto;">
-                    <strong><p class="text-primary">{{t.routes}}</p></strong>
-                    <hr>
-                    <p><strong>Horario: </strong>{{t.routes.schedule}}</p>
-                    <p><strong>Precio</strong>: {{t.routes.precio}}</p>
-                    <strong><p>Tiempo de viaje {{t.routes.route_time}} horas</p></strong>
-                    <hr>
-                    {% if t.state == "1" %}
-                        <strong><p class="text-success text-end"> {{t.get_state_display}}</p></strong>
-                    {% elif t.state == "2"%}
-                        <strong><p class="text-warning text-end"> {{t.get_state_display}}</p></strong>
-                    {% else %}
-                        <strong><p class="text-danger text-end"> {{t.get_state_display}}</p></strong>
-                    {% endif %}
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-success">A tiempo</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">24</span>
+                                    <span class="widget-49-date-month">julio</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">Precio: L.70</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 2 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Saba</span></li>
+                                <li class="widget-49-meeting-item"><span>Dastino: La Ceiba</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a href="#" class="btn btn-sm btn-buy">Comprar</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            
-            {% endfor %}
-        </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-warning">En viaje</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">850</span>
+                                    <span class="widget-49-date-month">Lps</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">22/07/2121</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 8 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Danli</span></li>
+                                <li class="widget-49-meeting-item"><span>Destino: SPS</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a class="btn btn-sm btn-nobuy">No disponible</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-danger">Finalizado</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">22</span>
+                                    <span class="widget-49-date-month">apr</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">Precio: L.80</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 2 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Saba</span></li>
+                                <li class="widget-49-meeting-item"><span>Destino: Trujillo</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a class="btn btn-sm btn-nobuy">No disponible</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-success">A tiempo</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">24</span>
+                                    <span class="widget-49-date-month">julio</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">Precio: L.70</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 2 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Saba</span></li>
+                                <li class="widget-49-meeting-item"><span>Dastino: La Ceiba</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a href="#" class="btn btn-sm btn-buy">Comprar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-warning">En viaje</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">22</span>
+                                    <span class="widget-49-date-month">Julio</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">Precio: L.850</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 8 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Danli</span></li>
+                                <li class="widget-49-meeting-item"><span>Destino: SPS</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a class="btn btn-sm btn-nobuy">No disponible</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card card-margin">
+                    <div class="card-header no-border">
+                        <h5 class="card-title-danger">Finalizado</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="widget-49">
+                            <div class="widget-49-title-wrapper">
+                                <div class="widget-49-date-success">
+                                    <span class="widget-49-date-day">22</span>
+                                    <span class="widget-49-date-month">apr</span>
+                                </div>
+                                <div class="widget-49-meeting-info">
+                                    <span class="widget-49-pro-title">Precio: L.80</span>
+                                    <span class="widget-49-meeting-time">Tiempo aprox: 2 horas</span>
+                                </div>
+                            </div>
+                            <ol class="widget-49-meeting-points">
+                                <li class="widget-49-meeting-item"><span>Origen: Saba</span></li>
+                                <li class="widget-49-meeting-item"><span>Destino: Trujillo</span></li>
+                                <li class="widget-49-meeting-item"><span>Esperamos que disfrute de su viaje</span></li>
+                            </ol>
+                            <div class="widget-49-meeting-action">
+                                <a class="btn btn-sm btn-nobuy">No disponible</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>   
         
+        {% block js %}
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+        {% endblock %}
+                 
+</div>
 
-    </div>
-    
-{% endblock  %}
+{% endblock %}
