@@ -66,60 +66,12 @@ body{
 .card-title-success{
     color: rgb(107, 168, 169);
 }
-.widget-49 .widget-49-title-wrapper .widget-49-date-warning {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: floralwhite;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-}
-.widget-49 .widget-49-title-wrapper .widget-49-date-warning .widget-49-date-day {
-  color: #FFC868;
-  font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 1;
-}
-.widget-49 .widget-49-title-wrapper .widget-49-date-warning .widget-49-date-month {
-  color: #FFC868;
-  line-height: 1;
-  font-size: 1rem;
-  text-transform: uppercase;
-}
 .card-title-warning{
     color: #FFC868;
-}
-
-.widget-49 .widget-49-title-wrapper .widget-49-date-danger {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: #feeeef;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-}
-
-.widget-49 .widget-49-title-wrapper .widget-49-date-danger .widget-49-date-day {
-  color: #F95062;
-  font-weight: 500;
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.widget-49 .widget-49-title-wrapper .widget-49-date-danger .widget-49-date-month {
-  color: #F95062;
-  line-height: 1;
-  font-size: 1rem;
-  text-transform: uppercase;
 }
 .card-title-danger{
     color: #F95062;
 }
-
 .widget-49 .widget-49-title-wrapper .widget-49-meeting-info {
   display: flex;
   flex-direction: column;
@@ -147,15 +99,12 @@ body{
   color: rgb(29, 77, 79);
   list-style: none;
 }
-
 .widget-49 .widget-49-meeting-points .widget-49-meeting-item span {
   margin-left: .5rem;
 }
-
 .widget-49 .widget-49-meeting-action {
   text-align: right;
 }
-
 .widget-49 .widget-49-meeting-action a {
   text-transform: uppercase;
 }
