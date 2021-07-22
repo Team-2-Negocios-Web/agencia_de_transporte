@@ -5,6 +5,7 @@ from .models import *
 from django.db.models import Q
 
 
+
 def travels(request):
     # fecha local del sistema
     time_today = datetime.now()
@@ -18,6 +19,8 @@ def travels(request):
     day = time_today.day
     hour = time_today.hour
     minute = time_today.minute
+
+   
     
     #Si la varieble travels tiene datos verificar y cambiar estados segun la fecha y hora
     if travels :
@@ -40,10 +43,12 @@ def travels(request):
             if time_route <= time_today.time() and t.state == "1" :
                 t.state  = "2"
                 t.save()
+                
             # Si t4(hora actual) es mayor t3(tiempo aproximado de la rutaa) entonces cambiar el estado a Finalizado    
             elif t4 >= t3 and t.state == "2":
                 t.state  = "3"
                 t.save()
+                
         
         #Hacemos consulta
         travels = TripScheduling.objects.filter(Q(date_trip=time_today) | Q(state="2")).order_by('routes')
