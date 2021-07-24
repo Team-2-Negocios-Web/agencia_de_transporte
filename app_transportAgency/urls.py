@@ -5,6 +5,6 @@ app_name = 'transportAgency'
 
 urlpatterns = [
     path('', views.travels, name="travels_view" ),
-    path('ticket/', views.ticket, name="ticket_view" ),
-    path('ticket/ajax', views.route, name="ajax_view" ),
+    path('ticket/', views.route, name="ticket_view" ),
+    path('ticket/ajax', views.ticket, name="ajax_view" ),
 ]

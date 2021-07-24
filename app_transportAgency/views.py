@@ -78,7 +78,7 @@ def travels(request):
     
 
 
-def ticket(request):
+def route(request):
     trips = TripScheduling.objects.filter(state="1")
 
 
@@ -90,7 +90,7 @@ def ticket(request):
     })
 
 
-def route(request):
+def ticket(request):
 
     if request.is_ajax() and request.method == "GET":
         #import pdb; pdb.set_trace()
