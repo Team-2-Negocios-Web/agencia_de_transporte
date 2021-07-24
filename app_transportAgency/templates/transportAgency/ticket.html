@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load transportAgency_filters %}
 
 {% block title %}Ticket{% endblock  %}
 
@@ -8,8 +9,35 @@
     <div class="container">
         <div class="row">
             <div class="shadow col-6 mt-5"  style="padding:25px;margin:auto;">
-                <form action="" method="post">
+                <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket"  >
                     {% csrf_token %}
+                    <!--Rutas-->
+                
+                        <div class="mb-3">
+                            <label for="route">Rutas</label>
+                            <select name="route" id="route" class="form-select">
+                                {% for t in trips  %}
+                                    <option value="{{t.routes.pk}}">{{t}}</option>
+                                    
+                                {% endfor %}
+                            </select>
+                            <button data-url="{% url 'transportAgency:ajax_view' %}"  type="button" id="button_route"  class="btn btn-primary mt-2">Buscar ruta</button>
+                        </div>
+                    
+                    <br>
+
+                    <!--Info de la ruta-->
+                    <p id="available">Ticket Disponible: 16</p>
+                    <p id="price">Precio: 34</p>
+                    
+
+                    <hr>
+
+                    <!--Reservacion del ticket a comprar-->
+                        <div class="mb-3">
+                            <label for="ticket_reservation">Dia de la reservacion: </label>
+                            <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                        </div>
 
                     <!--Cliente-->
                     <div class="mb-3">
@@ -20,43 +48,25 @@
                             {% endfor %}
                         </select>
                     </div>
+    
+                    <br>
+                 
+                    <hr >
+            
+        
+                     <!--Tickets a comprar-->
+                        <div class="mb-3">
+                            <label for="quantity">Cuantos tickets desea comprar</label>
+                            <input type="number" class="form-control" value='1' min='1' name="quantity" id="quantity" placeholder="">
+                            <button type="button" class="btn btn-primary mt-2" id="inputs_id">Generar inputs</button>
+                            <br>
+                        </div>
+                         <div class="inputs_clients"></div>
+                        <br>
+                        <hr>
 
-                    <!--Fecha de la reservacion para el viaje-->
-                    <div class="mb-3">
-                        <label for="date">Dia de la reservacion</label>
-                        <input type="date" class="form-control" name="date" id="date" placeholder="">
-                    </div>
 
-
-
-                    <!--Tickets a comprar-->
-                    <div class="mb-3">
-                        <label for="quantity">Cuantos tickets desea comprar</label>
-                        <input type="number" class="form-control" name="quantity" id="quantity" placeholder="">
-                    </div>
-
-                    <!--Rutas-->
-                    <div class="mb-3">
-                        <label for="route">Rutas</label>
-                        <select name="route" id="route" class="form-select">
-                            {% for r in routes  %}
-                                <option value="{{r.pk}}">{{r}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <!--Ticket disponible-->
-                    <div class="mb-3">
-                        <label for="available">Tickets Disponible</label>
-                        <input type="number" value="16" disabled class="form-control" name="available" id="available" placeholder="">
-                    </div>
-
-                    <!--Precio Total-->
-                    <div class="mb-3">
-                        <label for="total_price">Precio Total</label>
-                        <input type="number" value="00.00" disabled class="form-control" name="total_price" id="total_price" placeholder="">
-                    </div>
-
+                    <button>Hello</button>
                 
                 </form>
             </div>
@@ -71,6 +81,60 @@
     <script>
 
     $(function(){
+
+            // <=============== Parte del cliente =================================================>
+            var addButtonClient = $('#inputs_id')
+            var quantity = $('#quantity')
+            var inputsClients = $('.inputs_clients')
+
+            $(addButtonClient).click(function(event){
+                event.preventDefault()
+
+                
+                
+                //Agregar la cantidad de inputs segun la cantidad de boletos
+                $('.removed').remove()
+                if (quantity.val() > 1){
+                    $(inputsClients).append('<h5 class="removed">Acompañantes</h5>')
+                    for(var i = 0; i < quantity.val() - 1; i++){
+                        $(inputsClients).append(
+                            `
+                            <div class="removed">
+                                <div class="mb-3">
+                                    <label for="client${i}">Acompañante# ${i + 1}</label>
+                                        <select name="client${i}" id="client${i}" class="form-select">
+                                            {% for c in clients  %}
+                                                <option value="{{c.pk}}">{{c}}</option>
+                                            {% endfor %}
+                                        </select>
+                                </div>
+                            </div>
+                            `
+                        )
+                    }
+                }
+
+            })
+
+            // <================= Parte de la ruta para conseguir la informacion ===================>
+
+            var buttonRoute = $('#button_route')
+
+            $(buttonRoute).click(function(event){
+                event.preventDefault()
+
+                var $me = $(this)
+                var url = $me.data('url')
+                var ctx = {'route': $('#route').val()}
+
+                $.get(url, ctx, function(response){
+
+                    //available_tickets
+
+                    $('#price').text(`Precio: ${response.precio}`)
+                }, 'json')
+
+            })
 
     })
 

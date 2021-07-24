@@ -9,14 +9,14 @@ class Client(models.Model):
     email      = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name} {self.pk}'
     
 
 class Seating(models.Model):
     name_seating = models.CharField(max_length=3)
 
     def __str__(self):
-        return f'{self.name_seating}'
+        return f'{self.name_seating} {self.pk}'
 
 class Bus(models.Model): 
     name_bus = models.CharField(max_length=50)
@@ -38,14 +38,6 @@ class City(models.Model):
         verbose_name_plural = 'Cities'
     
     
-
-class SeatAssignment(models.Model):
-    bus     = models.ForeignKey(Bus,on_delete=models.CASCADE, blank=True, null=True)
-    seating = models.OneToOneField(Seating,on_delete=models.CASCADE, blank=True, null=True)
-    client  = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
-
-    def __str__(self):
-        return f'{self.bus} {self.seating} | {self.client}'
     
 class Schedule(models.Model):
     route_schedule = models.TimeField()
@@ -65,6 +57,7 @@ class Route(models.Model):
         return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule}'
 
 class TripScheduling(models.Model):
+    # ==> id: 27
     STATE = {
        ('1', 'A tiempo'),
        ('2', 'en viaje'),
@@ -77,21 +70,25 @@ class TripScheduling(models.Model):
 
 
     def __str__(self):
-        return f' Estado: {self.state} | Cita: {self.date_trip}'
+        return f' Origen: {self.routes.origin} - Destino: {self.routes.destiny} | Estado: {self.state}'
+
 
 
 class Ticket(models.Model):
     creation_date      = models.DateTimeField(auto_now_add=True,blank=True, null=True )
-    client             = models.ForeignKey(Client, on_delete=models.CASCADE, blank=True, null=True)
-    ticket_reservation = models.DateTimeField()
-    ticket_available   = models.IntegerField(default=16)
-    ticket_quantity    = models.IntegerField() # 3
+    client             = models.ForeignKey(Client,related_name="cliente_ticket", on_delete=models.CASCADE, blank=True, null=True)
+    companion          = models.ForeignKey(Client,related_name="companion_tciket", on_delete=models.CASCADE, blank=True, null=True)
+    ticket_reservation = models.DateField(blank=True, null=True)
+    ticket_available   = models.IntegerField(default=16, blank=True, null=True)
+    ticket_quantity    = models.IntegerField(blank=True, null=True) # 3
     total_price        = models.FloatField()
     routes             = models.ForeignKey(Route,on_delete=models.CASCADE, null=True, blank=True)
+    trips              = models.ForeignKey(TripScheduling, on_delete=models.CASCADE, null=True, blank=True) #27 ==>
     bus                = models.ForeignKey(Bus, on_delete=models.CASCADE, null=True, blank=True)
+    seating            = models.ForeignKey(Seating,on_delete=models.CASCADE, blank=True, null=True)
 
-    @property
-    def available_tickets(self):
-        count_tickets = SeatAssignment__set.count()
-        return self.ticket_available - count_tickets
+    def __str__(self):
+        return f'Fecha de reservacion : {self.ticket_reservation}  {self.pk} '
+
+
 
