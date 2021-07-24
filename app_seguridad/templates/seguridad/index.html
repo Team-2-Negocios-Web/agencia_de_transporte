@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Inicio de Sesion{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'Login.css' %}">
+{% endblock css %}
+
+
+
+{% block container %}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" action="{% url 'login_view' %}" method="post">
+                {% if messages %}
+                {% for message in messages %}
+                <div id="login-error" class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                {% csrf_token %}
+                <span class="login100-form-title p-b-43">
+                    Inicio de Sesion
+                </span>
+                <div class="wrap-input100 validate-input">
+                    <input autofocus name="usuario" class="input100" type="text" placeholder="Usuario">
+                </div>
+                <div class="wrap-input100 validate-input">
+                    <input name="contrasena" class="input100" type="password" placeholder="Contraseña">
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit">Iniciar Sesion</button>
+                </div>
+            </form>
+            <div class="login100-more" style="background-color: #6BA8A9" ;>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock container %}
