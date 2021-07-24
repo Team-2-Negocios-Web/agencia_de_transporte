@@ -79,7 +79,7 @@ def travels(request):
 
 
 def ticket(request):
-    trips = TripScheduling.objects.filter(state="3")
+    trips = TripScheduling.objects.filter(state="1")
 
 
     clients = Client.objects.all()
