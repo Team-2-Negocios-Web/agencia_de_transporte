@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}Cliente{% endblock  %}
+
+
+{% block container %}
+  
+       <form action="{% url 'transportAgency:client_view' %}" method="post">
+        {% csrf_token %}
+             
+             <div class="form-group">
+                        <label for="first_name">Nombre</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name" placeholder="Ing">
+                        <label for="last_name">Apellido</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Ingrese un monto">
+                        <label for="phone">Number</label>
+                        <input type="Number" class="form-control" name="phone" id="phone" placeholder="Ingrese un monto">
+                        <label for="email">Corre</label>
+                        <input type="text" class="form-control" name="email" id="email" placeholder="Ingrese un monto">
+            </div>
+                         <button type="submit" class="btn btn-dark m-3">Depositar</button>
+                        
+
+
+        </form>
+
+{% endblock  %}
+
+
+{% block js %}
+    <script>    
+    </script>
+{% endblock js %}

@@ -197,7 +197,19 @@ def ticket(request):
 
 
 
-    
+def cliente(request):
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        
+        client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
+        client.save()
+
+        
+
+    return render(request, 'transportAgency/client.html') 
         
         
            
