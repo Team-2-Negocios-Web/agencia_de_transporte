@@ -12,9 +12,8 @@
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket"  >
                     {% csrf_token %}
                     <!--Rutas-->
-                
                         <div class="mb-3">
-                            <label for="route">Rutas</label>
+                            <label for="route">Rutas: </label>
                             <select name="route" id="route" class="form-select">
                                 {% for t in trips  %}
                                     <option value="{{t.routes.pk}}">{{t}}</option>
@@ -23,51 +22,80 @@
                             </select>
                             <button data-url="{% url 'transportAgency:ajax_view' %}"  type="button" id="button_route"  class="btn btn-primary mt-2">Buscar ruta</button>
                         </div>
-                    
                     <br>
 
                     <!--Info de la ruta-->
                     <p id="available">Ticket Disponible: 16</p>
                     <p id="price">Precio: 34</p>
-                    
-
                     <hr>
 
-                    <!--Reservacion del ticket a comprar-->
-                        <div class="mb-3">
-                            <label for="ticket_reservation">Dia de la reservacion: </label>
-                            <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                    <div class="row">
+                        <div class="col">
+                            <!--Reservacion del ticket a comprar-->
+                            <div class="mb-3">
+                                <label for="ticket_reservation">Día de la reservación: </label>
+                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                            </div>
+                            <!--Cliente-->
+                            <div class="mb-3">
+                                <label for="client">Cliente: </label>
+                                <select name="client" id="client" class="form-select">
+                                    {% for c in clients  %}
+                                        <option value="{{c.pk}}">{{c}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
-
-                    <!--Cliente-->
-                    <div class="mb-3">
-                        <label for="client">Cliente</label>
-                        <select name="client" id="client" class="form-select">
-                            {% for c in clients  %}
-                                <option value="{{c.pk}}">{{c}}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="col">
+                            <button type="button" class="btn btn-primary mt-5 ms-5" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registrar Cliente</button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel" >Registrar Cliente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="recipient-name" class="col-form-label">Nombres:</label>
+                                                <input type="text" class="form-control" id="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="message-text" class="col-form-label">Apellidos:</label>
+                                                <input type="text" class="form-control" id="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="message-text" class="col-form-label">Teléfono:</label>
+                                                <input type="tel" class="form-control" id="">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="message-text" class="col-form-label">Correo:</label>
+                                                <input type="email" class="form-control" id="email" placeholder="name17@example.com">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary">Registrar</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-    
-                    <br>
-                 
-                    <hr >
-            
-        
-                     <!--Tickets a comprar-->
+                    <hr>
+                    <!--Tickets a comprar-->
                         <div class="mb-3">
-                            <label for="quantity">Cuantos tickets desea comprar</label>
+                            <label for="quantity">Cuantos tickets desea comprar: </label>
                             <input type="number" class="form-control" value='1' min='1' name="quantity" id="quantity" placeholder="">
                             <button type="button" class="btn btn-primary mt-2" id="inputs_id">Generar inputs</button>
                             <br>
                         </div>
-                         <div class="inputs_clients"></div>
-                        <br>
-                        <hr>
-
-
+                    <div class="inputs_clients"></div>
+                    <br>
+                    <hr>
                     <button>Hello</button>
-                
                 </form>
             </div>
         </div>
