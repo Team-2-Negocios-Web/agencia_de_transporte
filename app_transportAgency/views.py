@@ -195,7 +195,8 @@ def ticket(request):
 
             return render(request, 'transportAgency/ticket.html')
 
-
+def income(request):
+    return render(request, 'transportAgency/income.html')
 
     
         

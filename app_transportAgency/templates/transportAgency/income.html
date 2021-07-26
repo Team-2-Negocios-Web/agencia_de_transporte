@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ganancias{% endblock %}
+
+
+{% block container %}
+<div class="container">
+    <h1>Tabla de Ganancias</h1>
+    <table class="rwd-table">
+        <tr>
+            <th>Fecha</th>
+            <th>Boletos Vendidos</th>  
+            <th>Ganancias Totales</th>  
+             
+        </tr>
+        <tr>
+            <td data-th="Movie Title">Star Wars</td>
+            <td data-th="Genre">Adventure, Sci-fi</td>
+        <tr>
+            <td data-th="Movie Title">Howard The Duck</td>
+            <td data-th="Genre">"Comedy"</td>
+        </tr>
+        <tr>
+            <td data-th="Movie Title">American Graffiti</td>
+            <td data-th="Genre">Comedy, Drama</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}
