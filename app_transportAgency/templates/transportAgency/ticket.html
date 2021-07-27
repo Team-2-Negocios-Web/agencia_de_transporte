@@ -17,7 +17,7 @@
                             <label for="route">Rutas</label>
                             <select name="route" id="route" class="form-select">
                                 {% for t in trips  %}
-                                    <option value="{{t.routes.pk}}">{{t}}</option>
+                                    <option value="{{t.pk}}">{{t}}</option>
                                     
                                 {% endfor %}
                             </select>
@@ -28,7 +28,7 @@
 
                     <!--Info de la ruta-->
                     <p id="available">Ticket Disponible: 16</p>
-                    <p id="price">Precio: 34</p>
+                    <p id="price">Precio: 00.00</p>
                     
 
                     <hr>
@@ -66,7 +66,44 @@
                         <hr>
 
 
-                    <button>Hello</button>
+                    <button 
+                        data-token="{{csrf_token}}" 
+                        class="shadow btn btn-success" 
+                        id="button-confirm" 
+                        data-action="confirm" 
+                        data-url="{% url 'transportAgency:ajax_view' %}"
+                        data-bs-toggle ="modal"
+                        data-bs-target="#confirm-ticket"
+                    >
+                        Confirmar compra
+                    </button>
+
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirm-ticket" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmar la compra</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body"></div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button 
+                                        data-token="{{csrf_token}}" 
+                                        data-url="{% url 'transportAgency:ajax_view' %}" 
+                                        class="shadow btn btn-dark" 
+                                        id="button-reserve" 
+                                        data-action="finish" 
+                                    >
+                                        Proceso de compra
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 
                 </form>
             </div>
@@ -89,8 +126,6 @@
 
             $(addButtonClient).click(function(event){
                 event.preventDefault()
-
-                
                 
                 //Agregar la cantidad de inputs segun la cantidad de boletos
                 $('.removed').remove()
@@ -136,6 +171,93 @@
 
             })
 
+
+
+            //<================== Parte para la evaluacion de la compra en del ticket por Ajax POST ================> 
+
+           var $buttonReserve = $('#button-reserve') 
+           var $buttonConfirm = $('#button-confirm') 
+
+             $buttonConfirm.click(function(event){
+                event.preventDefault()
+                
+                //Variables route
+                var $me = $(this)
+                var url = $me.data('url')
+                var token = $me.data('token')
+                var action = $me.data('action')
+                    route  = $('#route')
+                    client = $('#client')
+                    quantity = $('#quantity')
+                    date_ticket = $("#ticket_reservation")
+
+                
+                var ctx = {
+                    'csrfmiddlewaretoken': token,
+                    'route'              : route.val(),
+                    'client'             : client.val(),
+                    'quantity'           : quantity.val(),
+                    'action'             : action,
+                    'ticket_reservation' : date_ticket.val(),
+                    
+                }
+
+                $('#confirm-ticket').modal('show')
+
+                $.post(url, ctx, function(response){
+                    if(response.error){
+                        $('.modal').find('.modal-body').html(response.error)
+                    } else {
+                        $('.modal').find('.modal-body').html(response.code)
+                    }
+                    
+                    
+                    
+                })
+            })
+
+            $buttonReserve.click(function(event){
+                event.preventDefault()
+                
+                //Variables route
+                var $me = $(this)
+                var url = $me.data('url')
+                var token = $me.data('token')
+                var action = $me.data('action')
+                    route  = $('#route')
+                    client = $('#client')
+                    quantity = $('#quantity')
+                    date_ticket = $("#ticket_reservation")
+                
+                
+                var ctx = {
+                    'csrfmiddlewaretoken': token,
+                    'route'              : route.val(),
+                    'client'             : client.val(),
+                    'quantity'           : quantity.val(),
+                    'ticket_reservation' : date_ticket.val(),
+                    'action'             : action,
+                }
+
+                if (quantity.val() > 1) {
+                    for(var i = 0; i < quantity.val() - 1; i++){
+                        value = `client${i}` 
+                        ctx[value] = $(`#client${i}`).val()
+                    }
+
+                }
+
+                console.log(ctx)
+
+                $.post(url, ctx, function(response){
+                    
+                    alert("se realizo la compra correctamente")
+                    $('#confirm-ticket').modal('hide')
+                    
+                })
+            })
+
+            
     })
 
     </script>
