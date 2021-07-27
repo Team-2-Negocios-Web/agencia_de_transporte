@@ -1,7 +1,4 @@
-body{
-    background: #F4F7FD;
-    margin-top:20px;
-}
+
 .card-margin {
     margin-bottom: 1.875rem;
 }
@@ -112,8 +109,15 @@ body{
     background-color: rgb(107, 168, 169);
     color: white;
 }
+.widget-49-meeting-action .btn-cancelar{
+  background-color: red;
+  color: white;
+}
 .widget-49-meeting-action .btn-nobuy{
     background-color: WHITE;
     color: black;
     cursor:not-allowed;
+}
+h1{
+  text-align: center;
 }
