@@ -24,8 +24,7 @@
                                     <h5 class="card-title-warning">{{t.get_state_display}}</h5>
                             {% else %}
                                     <h5 class="card-title-danger">{{t.get_state_display}}</h5>
-                            {% endif %}
-                        
+                            {% endif %}  
                         </div>
                         <div class="card-body pt-0">
                             <div class="widget-49">
@@ -41,18 +40,20 @@
                                 </div>
                                 <ol class="widget-49-meeting-points">
                                     <li class="widget-49-meeting-item"><span>Origen: {{t.routes.origin}}</span></li>
-                                    <li class="widget-49-meeting-item"><span>Dastino: {{t.routes.destiny}}</span></li>
+                                    <li class="widget-49-meeting-item"><span>Destino: {{t.routes.destiny}}</span></li>
                                     <li class="widget-49-meeting-item"><span>Horario: {{t.routes.schedule}}</span></li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
                                      {% if t.state == "1" %}
                                         <a href="#" class="btn btn-sm btn-buy">Comprar</a>
+                                        {% if request.user.is_superuser %}
+                                        <a href="#" class="btn btn-sm btn-cancelar">Cancelar</a>   
+                                        {% endif %}       
                                     {% elif t.state == "2" %}
                                         <a href="#" class="btn btn-sm btn-nobuy">No disponible</a>
                                     {% else %}
                                         <a href="#" class="btn btn-sm btn-nobuy">No disponible</a>
                                     {% endif %}
-
                                 </div>
                             </div>
                         </div>
