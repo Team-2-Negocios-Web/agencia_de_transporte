@@ -7,7 +7,7 @@
 
 {% block container %}
   
-       <form action="{% url 'transportAgency:client_view' %}" method="post">
+       <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
         {% csrf_token %}
              
              <div class="form-group">
@@ -31,5 +31,17 @@
 
 {% block js %}
     <script>    
+        $(function (){
+            $('#frm-client').on('submit', function (e) {
+                e.preventDefault(); 
+
+                $.post('', $(this). serialize(), function (response){
+                    notify('success', response.msj);
+                }, 'json');
+
+            });
+        });
+
+
     </script>
 {% endblock js %}
