@@ -2,28 +2,55 @@
 {% load static %}
 {% block title %}Ganancias{% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+{% endblock %}
+
 
 {% block container %}
-<div class="container">
     <h1>Tabla de Ganancias</h1>
+    <div class="input-group mb-3">
+        <label for="" style="padding: 20px; font-size: 20px;">Desde: </label>
+        <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+        <label for="" style="padding: 20px; font-size: 20px;">Hasta: </label>
+        <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+      </div>
+
     <table class="rwd-table">
         <tr>
             <th>Fecha</th>
-            <th>Boletos Vendidos</th>  
-            <th>Ganancias Totales</th>  
-             
+            <th>Boletos Vendidos</th>
+            <th>Rutas</th>
+            <th>Ganancias Totales</th>
         </tr>
         <tr>
-            <td data-th="Movie Title">Star Wars</td>
-            <td data-th="Genre">Adventure, Sci-fi</td>
-        <tr>
-            <td data-th="Movie Title">Howard The Duck</td>
-            <td data-th="Genre">"Comedy"</td>
+            <td data-th="Fecha">26-07-2021</td>
+            <td data-th="NBoletos">25</td>
+            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
+            <td data-th="ganancias">Lps. 25,000</td>
+            <tr>
+            <td data-th="Fecha">26-07-2021</td>
+            <td data-th="NBoletos">25</td>
+            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
+            <td data-th="ganancias">Lps. 25,000</td>
         </tr>
         <tr>
-            <td data-th="Movie Title">American Graffiti</td>
-            <td data-th="Genre">Comedy, Drama</td>
+            <td data-th="Fecha">26-07-2021</td>
+            <td data-th="NBoletos">25</td>
+            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
+            <td data-th="ganancias">Lps. 25,000</td>
+        </tr>
+        <tr>
+            <td data-th="Fecha">26-07-2021</td>
+            <td data-th="NBoletos">25</td>
+            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
+            <td data-th="ganancias">Lps. 25,000</td>
+        </tr>
+        <tr>
+            <td data-th="Fecha">26-07-2021</td>
+            <td data-th="NBoletos">25</td>
+            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
+            <td data-th="ganancias">Lps. 25,000</td>
         </tr>
     </table>
-</div>
 {% endblock %}
