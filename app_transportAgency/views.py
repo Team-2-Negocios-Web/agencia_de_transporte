@@ -265,7 +265,8 @@ def list_buses(request):
         'buses' : buses,
     })
 
-
+def income(request):
+    return render(request, 'transportAgency/income.html')
 
     
         
