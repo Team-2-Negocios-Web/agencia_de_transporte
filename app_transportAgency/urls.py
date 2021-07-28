@@ -9,4 +9,5 @@ urlpatterns = [
     path('ticket/ajax', views.ticket, name="ajax_view" ),
     path('buses/', views.list_buses, name="list_buses"),
     path('income/', views.income, name="income_view"),
+    path('travels/<int:id>', views.cancel_trip, name="cancel_trip"),
 ]
