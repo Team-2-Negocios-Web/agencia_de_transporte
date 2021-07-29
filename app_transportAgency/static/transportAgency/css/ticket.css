@@ -1,0 +1,24 @@
+.form-control-feedback {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
+.form-control {
+    padding-left: 30px!important;
+}
+hr{
+    height: 1px;
+    color: #357376;
+    background-color: #357376;
+    border: none;
+}
+
+.carousel-item {
+    height: 65vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
