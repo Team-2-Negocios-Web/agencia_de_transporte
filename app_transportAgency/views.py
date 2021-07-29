@@ -284,6 +284,7 @@ def income(request):
 
 def cliente(request):
     if request.is_ajax() and request.method == 'POST':
+        
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         phone = request.POST.get('phone')
