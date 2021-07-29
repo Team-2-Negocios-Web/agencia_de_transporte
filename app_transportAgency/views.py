@@ -253,11 +253,11 @@ def list_buses(request):
         html = f'''
 
         '''
-
+        
         for p in passenger:
 
             if  p.companion == None:
-                html += f'<p> Comprador: {p.client}  Asiento: {p.seating}</p>'
+                html += f'#<p> Comprador: {p.client}  Asiento: {p.seating}</p>'
             else:
                 html += f'<p>Comprador: {p.client}  | Acompañantes:{p.companion} Asiento: {p.seating}</p>'
 
