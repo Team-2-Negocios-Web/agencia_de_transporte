@@ -56,15 +56,6 @@
   }
 }
 
-body {
-  padding: 0 2em;
-  font-family: Montserrat, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  color: #444;
-  background: #eee;
-}
-
 h1 {
   font-weight: normal;
   letter-spacing: -1px;
@@ -96,4 +87,12 @@ h1 {
 .rwd-table th,
 .rwd-table td:before {
   color: #fff;
+}
+.btn{
+  background-color: #1D4D4F ;
+  color: white;
+}
+.btn:hover{
+  background-color: #6BA8A9;
+  color: white;
 }
