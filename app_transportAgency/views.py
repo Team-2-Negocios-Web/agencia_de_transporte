@@ -280,7 +280,7 @@ def cliente(request):
 
         
         return JsonResponse({'msj': 'El cliente ha sido registrado'})
-    return render(request, 'transportAgency/client.html') 
+    return render(request, 'transportAgency/ticket.html') 
         
         
            

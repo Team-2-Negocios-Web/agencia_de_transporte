@@ -57,6 +57,7 @@
                             <div class="text-center">
                                 <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registrar Cliente</button>
                             </div>
+                       
                             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -65,45 +66,54 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                         <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
+                                            {% csrf_token %}
                                             <div class="mb-3">
-                                                <label for="recipient-name" class="col-form-label">Nombres:</label>
+                                                <label for="first-name" class="col-form-label">Nombre:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-user form-control-feedback"></i>
-                                                    <input id="" type="text" class="form-control" placeholder="Escriba su nombre">
+                                                    <input id="first-name" name="first-name" type="text" class="form-control" placeholder="Escriba su nombre">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="message-text" class="col-form-label">Apellidos:</label>
+                                                <label for="last-name" class="col-form-label">Apellido:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-user form-control-feedback"></i>
-                                                    <input id="" type="text" class="form-control" placeholder="Escriba su apellido">
+                                                    <input id="last-name" name="last-name" type="text" class="form-control" placeholder="Escriba su apellido">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="message-text" class="col-form-label">Teléfono:</label>
+                                                <label for="phone" class="col-form-label">Teléfono:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-phone form-control-feedback"></i>
-                                                    <input id="tel" type="tel" class="form-control" placeholder="Escriba su número teléfonico">
+                                                    <input id="phone" name="phone" type="tel" class="form-control" placeholder="Escriba su número teléfonico">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="message-text" class="col-form-label">Correo:</label>
+                                                <label for="email" class="col-form-label">Correo:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-envelope form-control-feedback"></i>
-                                                    <input id="email" type="email" class="form-control" placeholder="Escriba su correo">
+                                                    <input id="email" name="email" type="email" class="form-control" placeholder="Escriba su correo">
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary">Registrar</button>
+                                        <button
+                                        data-token="{{csrf_token}}" 
+                                        id="button-register" 
+                                        data-url="{% url 'transportAgency:client_view' %}"
+                                        type="button"
+
+                                        class="btn btn-primary">Registrar
+                                        
+                                        </button>
                                     </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <hr>
@@ -308,6 +318,37 @@
 
             
     })
+    //Programacion de cliente
+   
+        var $buttonRegister = $('#button-register')
+
+        $buttonRegister.click(function(event){
+            event.preventDefault()
+
+            //Variables
+
+            var $me = $(this)
+            var url = $me.data('url')
+            var token = $me.data('token')
+          
+            first_name = $('#first-name')
+            last_name = $('#last-name')
+            phone = $('#phone')
+            email = $('#email')
+           
+            var ctx = {
+                'csrfmiddlewaretoken': token,
+                'first_name'         : first_name.val(),
+                'last_name'          : last_name.val(),
+                'phone'              : phone.val(),
+                'email'              : email.val()}
+
+      
+                
+                $.post(url, ctx, function(response){
+                    alert(response.msj)
+                },'json')       
+        })
 
     </script>
 {% endblock js %}

@@ -91,23 +91,20 @@
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<<<<<<< HEAD
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"> </script>
-    <script>
-        function notify (style, msg)
-        {
-            $.notify.defaults({ className: style });
-            $.notify(msg, {position: 'bottom'});
-        }
-    </script>    
-=======
+     
     <script src="https://haubek.github.io/dist/js/chosen.jquery.js"></script>
     <script>
         $(function(){
             $('.form-control-chosen').chosen();
         });
+
+        function notify (style, msg)
+        {
+            $.notify.defaults({ className: style });
+            $.notify(msg, {position: 'bottom'});
+        }
     </script>
->>>>>>> 048fb10ba6adf8cb2ac455634203a74ea20fb6f8
     {% block js %}{% endblock %}
 </body>
 
