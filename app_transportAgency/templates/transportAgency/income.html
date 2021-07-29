@@ -9,48 +9,41 @@
 
 {% block container %}
     <h1>Tabla de Ganancias</h1>
-    <div class="input-group mb-3">
-        <label for="" style="padding: 20px; font-size: 20px;">Desde: </label>
-        <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
-        <label for="" style="padding: 20px; font-size: 20px;">Hasta: </label>
-        <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
-    </div>
+    <form action="{% url 'transportAgency:income_view' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group mb-3">
+            <label for="" style="padding: 20px; font-size: 20px;">Desde: </label>
+            <input type="date" class="form-control"  name="ticket-reservation-from" id="ticket_reservation" placeholder="">
+            <label for="" style="padding: 20px; font-size: 20px;">Hasta: </label>
+            <input type="date" class="form-control"  name="ticket-reservation-to" id="ticket_reservation" placeholder="">
+            
+           `<button class="btn btn-primary">Buscar</button>`
+        </div>
+    </form>
 
     <table class="rwd-table">
-        <tr>
-            <th>Fecha</th>
-            <th>Boletos Vendidos</th>
-            <th>Rutas</th>
-            <th>Ganancias Totales</th>
-        </tr>
-        <tr>
-            <td data-th="Fecha">26-07-2021</td>
-            <td data-th="NBoletos">25</td>
-            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
-            <td data-th="ganancias">Lps. 25,000</td>
+        <thead>
             <tr>
-            <td data-th="Fecha">26-07-2021</td>
-            <td data-th="NBoletos">25</td>
-            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
-            <td data-th="ganancias">Lps. 25,000</td>
-        </tr>
-        <tr>
-            <td data-th="Fecha">26-07-2021</td>
-            <td data-th="NBoletos">25</td>
-            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
-            <td data-th="ganancias">Lps. 25,000</td>
-        </tr>
-        <tr>
-            <td data-th="Fecha">26-07-2021</td>
-            <td data-th="NBoletos">25</td>
-            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
-            <td data-th="ganancias">Lps. 25,000</td>
-        </tr>
-        <tr>
-            <td data-th="Fecha">26-07-2021</td>
-            <td data-th="NBoletos">25</td>
-            <td data-th="Rutas">San Pedro Sula - Tegucigalpa</td>
-            <td data-th="ganancias">Lps. 25,000</td>
-        </tr>
+                <th>Fecha</th>
+                <th>Rutas</th>
+                <th>Ganancias Totales</th>
+            </tr>
+        </thead>
+       <tbody>
+            {% if incomes %}
+                {% for i in incomes %}
+                    {% if i.price %}
+                        <tr>
+                            <td data-th="Fecha">{{i.ticket_reservation}}</td>
+                            <td data-th="Rutas">{{i.routes}}</td>
+                            <td data-th="ganancias">{{i.price}}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            
+            {% else %}
+                <p>No hay registro para esa fecha</p>
+            {% endif %}
+       </tbody>
     </table>
 {% endblock %}

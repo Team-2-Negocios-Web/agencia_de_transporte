@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from datetime import *
 import datetime as dt
 from .models import *
-from django.db.models import Q, F, Count
+from django.db.models import Q, F, Count, Sum
 
 
 
@@ -126,7 +126,7 @@ def ticket(request):
             trip = TripScheduling.objects.filter(date_trip=convert_reservation_to_date, routes=route).first()
 
             if trip:
-                if trip.state == "2":
+                if not trip.state == "1":
                     return JsonResponse({'error': "no esta disponible",}) 
             
 
@@ -160,18 +160,20 @@ def ticket(request):
                 #Traemos los tickets de esa fecha para ver si hay cupos
                 date_reservation = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).last()
                 
-                
+                #Si no existe un ticketm creamos un ticket que va contener la ruta y la fecha de la reservacion
                 if not date_reservation:
-                    instance_cliente = Client.objects.get(pk=4)
-                    tickets = Ticket (ticket_reservation=convert_reservation_to_date,client = instance_cliente,total_price = 0,routes=route)
+
+                    tickets = Ticket (ticket_reservation=convert_reservation_to_date,total_price = 0,routes=route)
                     tickets.save()
-                    
+                
+                #Volver actuarlizar la informacion de ticket
                 date_reservation = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).last()
                 count_seating = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).count()
 
                 if count_seating > 8:
                     return HttpResponse("ya no hay cupos")
                 else:
+                    # se crea el ticket del cliente principal
                     if date_reservation:
 
                         repeating_client = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
@@ -194,11 +196,12 @@ def ticket(request):
                                     ticket_reservation = convert_reservation_to_date,
                                     routes             = route ,
                                     bus                = route.bus,
-                                    seating            = seat # este no lo tenemos                                      
+                                    seating            = seat                                     
                                 )
                                 tickets.save()
                                 break
 
+                        #se crea el ticket para los acompañantes
                         if quantity > 1:
                                 for i in range(quantity - 1):
                                     acomp = int(request.POST.get(f'client{i}')) 
@@ -224,7 +227,7 @@ def ticket(request):
                                                 ticket_reservation = convert_reservation_to_date,
                                                 routes             = route ,
                                                 bus                = route.bus,
-                                                seating            = seat # este no lo tenemos                                      
+                                                seating            = seat                                     
                                             )
                                             tickets.save()
                                             break 
@@ -266,6 +269,17 @@ def list_buses(request):
     })
 
 def income(request):
+
+    if request.method == "POST":
+
+        date_from = request.POST.get('ticket-reservation-from')
+        date_to   = request.POST.get('ticket-reservation-to')
+        incomes   = Ticket.objects.values('ticket_reservation','routes').filter(ticket_reservation__range=(date_from,date_to)).annotate(price=Sum('total_price')).order_by()
+
+        return render(request, 'transportAgency/income.html', {
+            'incomes' : incomes,
+        })
+    
     return render(request, 'transportAgency/income.html')
 
 def cliente(request):
@@ -281,6 +295,31 @@ def cliente(request):
         
         return JsonResponse({'msj': 'El cliente ha sido registrado'})
     return render(request, 'transportAgency/ticket.html') 
+
+def cancel_trip(request, id):
+
+    today = datetime.now()  
+    trip = TripScheduling.objects.get(pk=id)
+
+    convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
+    one_hour_left = convert_to_datetime - timedelta(hours=1)
+    
+    if today >= one_hour_left:
+        return HttpResponse('Ya no se puede cancelar')
+    else:
+        trip.state = "4"
+        trip.save()
+        return HttpResponse(f'Se cancelo el viaje de la ruta {trip} ')
+
+
+    return render(request, 'transportAgency/travels.html')
+
+
+
+
+
+
+    
         
         
            
