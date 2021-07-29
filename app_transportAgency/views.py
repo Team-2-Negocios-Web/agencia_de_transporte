@@ -268,8 +268,5 @@ def list_buses(request):
 def income(request):
     return render(request, 'transportAgency/income.html')
 
-    
-        
-        
-           
-     
+def about(request):
+    return render(request, 'transportAgency/about.html')
