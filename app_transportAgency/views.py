@@ -285,3 +285,5 @@ def cliente(request):
         
            
      
+def about(request):
+    return render(request, 'transportAgency/about.html')
