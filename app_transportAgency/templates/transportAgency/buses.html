@@ -6,6 +6,7 @@
 
 {% block css %}
     <link href="{% static 'transportAgency/css/busescards.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
 {% endblock %}
 
 {% block container %}
@@ -14,13 +15,48 @@
         <h1>Listado de buses segun la fecha de reservacion</h1>
 
         <div class="row">
-            {% for b in buses %}
+                    <table class="rwd-table ">
+                        <thead>
+                            <tr>
+                                <th>Bus ID</th>
+                                <th>Fecha de salida</th>
+                                <th>cantidad de Pasajeros</th>
+                                <th>Ver pasajeros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in buses %}
 
 
-                {% if b.bus__name_bus %}
-                 
+                                {% if b.bus__name_bus %}
+                                    <tr>
+                                        
+                                        <td>{{b.bus__name_bus}}</td>
+                                        <td>{{b.ticket_reservation}}</td>
+                                        <td>{{b.passanger}}/15</td>
+                                        <td>
+                                            <button 
+                                                type="button" 
+                                                class="btn btn-info button_passenger "   
+                                                data-bs-toggle="modal"
+                                                data-bs-target=".passenger"
+                                                data-url="{% url 'transportAgency:list_buses' %}" 
+                                                data-bus="{{b.bus}}"  
+                                                data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" 
+                                                data-token="{{csrf_token }}"
+                                            > 
+                                                Ver pasajeros 
+                                            </button> 
+                                        </td>
+                                        
+                                    </tr>
+                                {% endif %}
+
+                            {% endfor %}    
+                        </tbody>
+                    </table>
                 
-                    <div class="col-lg-4">
+                    <!-- <div class="col-lg-4">
                         <div class="card" style="width: 18rem;">
                             <div class="card-body">
                                 <h5 class="card-title">{{b.bus__name_bus}}</h5>
@@ -41,7 +77,7 @@
                                 </button>
                             </div>
                         </div>   
-                    </div>
+                    </div> -->
                     <div class="modal" tabindex="-1" id="passenger">
                         <div class="modal-dialog modal-dialog-centered"">
                             <div class="modal-content">
@@ -52,18 +88,6 @@
                                 <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
                                     <p>Infor</p>
                                     <div id="infoP">
-                                        <table class= "table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Cliente</th>
-                                                    <th scope="col">Companion</th>
-                                                    <th scope="col">Asiento</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                                 <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
@@ -75,9 +99,7 @@
                     </div>
                 
                 
-                {% endif %}
-
-            {% endfor %}
+                
         </div>
 
     </div>
