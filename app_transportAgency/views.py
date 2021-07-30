@@ -256,13 +256,25 @@ def list_buses(request):
         
         for p in passenger:
 #<p> Comprador: {p.client}  Asiento: {p.seating}</p>
-            if  p.companion == None:
+            #if  p.companion == None:
                 html += f'''
-                            <p> Comprador: {p.client}  Asiento: {p.seating}</p>
-                            <a href="income.html> ver cliente </a>"
+                            <tr>
+                                <td>{p.client}</td>
+                                <td>{p.companion}</td>
+                                <td>{p.seating}</td>
+                                <td><button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Ver cliente</button></td>
+                            <tr>
                         '''
-            else:
-                html += f'<p>Comprador: {p.client}  | Acompañantes:{p.companion} Asiento: {p.seating}</p>'
+            #else:
+             #   html += f'''
+              #              <div style="text-align:center;">
+               #                 <p>Comprador: {p.client}</p>
+                #                <p>Acompañantes: {p.companion}</p>
+                 #               <p>Asiento: {p.seating}</p>
+                  #              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Ver cliente</button>
+                   #         </div>
+                    #        <hr>
+                     #   '''
 
         return JsonResponse({'code':html})
 

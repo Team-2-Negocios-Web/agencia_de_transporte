@@ -6,7 +6,7 @@
 
 {% block css %}
     <link href="{% static 'transportAgency/css/busescards.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
 {% endblock %}
 
 {% block container %}
@@ -37,7 +37,7 @@
                                         <td>
                                             <button 
                                                 type="button" 
-                                                class="btn btn-info button_passenger "   
+                                                class="btn btn-light button_passenger "   
                                                 data-bs-toggle="modal"
                                                 data-bs-target=".passenger"
                                                 data-url="{% url 'transportAgency:list_buses' %}" 
@@ -86,9 +86,20 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
-                                    <p>Infor</p>
-                                    <div id="infoP">
-                                    </div>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Cliente</th>
+                                                <th>Acompañante</th>
+                                                <th>Asiento</th>
+                                                <th>Ver Cliente</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tableb">
+                                            
+                                        </tbody>
+                                    </table>
+                                    
                                 </div>
                                 <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Close</button>
@@ -134,7 +145,7 @@
             $('#passenger').modal('show')
             
             $.post(url, ctx, function(response){
-                $('.modal').find('.modal-body').html(response.code)
+                $('.modal').find('.tableb').html(response.code)
 
             }, 'json')
 
