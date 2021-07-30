@@ -195,7 +195,7 @@
                             <div class="removed">
                                 <div class="mb-3">
                                     <label for="client${i}">Acompañante# ${i + 1}</label>
-                                        <select name="client${i}" id="client${i}" class="form-select">
+                                        <select name="client${i}" id="client${i}" class="form-select form-control-chosen">
                                             {% for c in clients  %}
                                                 <option value="{{c.pk}}">{{c}}</option>
                                             {% endfor %}
