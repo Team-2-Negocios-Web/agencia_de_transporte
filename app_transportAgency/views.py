@@ -282,20 +282,21 @@ def income(request):
     
     return render(request, 'transportAgency/income.html')
 
+
 def cliente(request):
     if request.is_ajax() and request.method == 'POST':
         
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        phone = request.POST.get('phone')
-        email = request.POST.get('email')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            phone = request.POST.get('phone')
+            email = request.POST.get('email')
 
-        client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
-        client.save()
+            client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
+            client.save()
 
-        
-        return JsonResponse({'msj': 'El cliente ha sido registrado'})
-    return render(request, 'transportAgency/ticket.html') 
+            return JsonResponse({'msj': 'La vista responde con exito'})   
+    return render(request, 'transportAgency/ticket.html')
+    
 
 def cancel_trip(request, id):
 

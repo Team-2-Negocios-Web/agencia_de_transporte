@@ -107,7 +107,7 @@
                                         id="button-register" 
                                         data-url="{% url 'transportAgency:client_view' %}"
                                         type="button"
-
+                                        data-action="confirm" 
                                         class="btn btn-primary">Registrar
                                         
                                         </button>
@@ -340,25 +340,55 @@
             var $me = $(this)
             var url = $me.data('url')
             var token = $me.data('token')
+            var action = $me.data('accion')
           
-            first_name = $('#first-name')
-            last_name = $('#last-name')
-            phone = $('#phone')
-            email = $('#email')
+            $first_name = $('#first-name')
+            $last_name = $('#last-name')
+            $phone = $('#phone')
+            $email = $('#email')
            
             var ctx = {
                 'csrfmiddlewaretoken': token,
-                'first_name'         : first_name.val(),
-                'last_name'          : last_name.val(),
-                'phone'              : phone.val(),
-                'email'              : email.val()}
+                'action' : action,
+                'first_name'         : $first_name.val(),
+                'last_name'          : $last_name.val(),
+                'phone'              : $phone.val(),
+                'email'              : $email.val()}
+              
+                if (!$first_name.val().trim())
+                {
+                    notify('error', 'Ingrese su nombre');
+                    $first_name.focus();
+                    return;
+                }
+                if (!$last_name.val().trim())
+                {
+                    notify('error', 'Ingrese su apellido');
+                    $last_name.focus();
+                    return;
+                }
 
-      
-                
+                if (!$phone.val().trim())
+                {
+                    notify('error', 'Ingrese su telefono');
+                    $phone.focus();
+                    return;
+                }
+
+                if (!$email.val().trim())
+                {
+                    notify('error', 'Ingrese su correo');
+                    $email.focus();
+                    return;
+                } 
                 $.post(url, ctx, function(response){
-                    
-                },'json')       
-        })
+                    notify('success', response.msj)
+                },'json')   
+                  
+        });
+
+        //Validation form client
+        
 
     </script>
 {% endblock js %}
