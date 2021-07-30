@@ -47,7 +47,7 @@
                                     {% if t.state == "1" %}
                                         <a href="#" class="btn btn-sm btn-buy">Comprar</a>
                                         {% if request.user.is_superuser %}
-                                        <a href="{% url 'transportAgency:cancel_trip' t.pk %}" class="btn btn-sm btn-cancelar">Cancelar</a>   
+                                        <button  data-id="{{t.pk}}"  data-action="confirm-cancel" data-url="{% url 'transportAgency:cancel_trip' %}" class="btn btn-sm btn-cancelar button-confirm">CANCELAR</button>
                                         {% endif %}       
                                     {% elif t.state == "2" %}
                                         <a href="#" class="btn btn-sm btn-nobuy text-danger">No disponible</a>
@@ -61,11 +61,84 @@
                 </div>       
             {% endfor %}
         </div>   
+        <!-- Modal -->
+        <div class="modal fade" id="confirm-modal" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="color:#fff; background-color: #357376;">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmar la compra</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"></div>
+                    <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                        <button 
+                            style="color:#fff; background-color: #357376;"
+                            data-token="{{csrf_token}}" 
+                            data-url="{% url 'transportAgency:cancel_trip' %}" 
+                            class="btn btn-success button-process"
+                            data-action="process-cancel" 
+                        >
+                            Proceso de compra
+                        </button>
+                    </div>
+                </div>
+            </div>
         
         {% block js %}
-        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+            <script>
+                $(function(){
+
+
+                    $('.button-confirm').click(function(event){
+    
+
+                        var $me = $(this)
+                        var id = $me.data('id')
+                        var url = $me.data('url')
+                        var action = $me.data('action')
+
+                         $('.modal').modal('show')
+                        $.get(url, {'action' : action, 'id': id}, function(response){
+                            $('#confirm-modal').find('.modal-body').html(response.html)
+                            $('.modal').find('#id-trip').hide()
+
+                
+                        }, 'json')
+
+                    })
+
+                    
+
+                     $('.button-process').click(function(event){
+    
+
+                        var $me = $(this)
+                        var url = $me.data('url')
+                        var action = $me.data('action')
+
+
+                        var id = $('#id-trip').val()
+                        var description = $("#description")
+
+
+                        if (!description.val().trim()){
+                            description.focus()
+                            return
+                        }
+
+                        $.get(url, {'action' : action, 'id': id, 'description': description.val() }, function(response){
+
+                            $('#confirm-modal').modal('hide')
+                            location.reload()
+                            
+                
+                        }, 'json')
+                    })
+                })
+            </script>
         {% endblock %}
 
 </div>

@@ -38,7 +38,7 @@
 }
 .rwd-table th,
 .rwd-table td {
-  text-align: left;
+  text-align: center;
 }
 @media (min-width: 480px) {
   .rwd-table th,
@@ -56,14 +56,6 @@
   }
 }
 
-body {
-  padding: 0 2em;
-  font-family: Montserrat, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  color: #444;
-  background: #eee;
-}
 
 h1 {
   font-weight: normal;

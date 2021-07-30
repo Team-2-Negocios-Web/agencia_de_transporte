@@ -125,6 +125,9 @@ def ticket(request):
 
             trip = TripScheduling.objects.filter(date_trip=convert_reservation_to_date, routes=route).first()
 
+            if convert_reservation_to_date < today:
+                return JsonResponse({'msg' : "No puedes escoger una fecha menor que esta"})
+
             if trip:
                 if not trip.state == "1":
                     return JsonResponse({'error': "no esta disponible",}) 
@@ -153,7 +156,7 @@ def ticket(request):
             client = Client.objects.get(pk=id_client)        
             
             if convert_reservation_to_date < today:
-                return HttpResponse("No puedes escoger una fecha menor que esta")
+                return JsonResponse({'msg' : "No puedes escoger una fecha menor que esta"})
             else: 
             # Crear el ticket
 
@@ -222,8 +225,8 @@ def ticket(request):
                                             tickets = Ticket (
                                                 client             = client,
                                                 companion          = acomp,       
-                                                total_price        = route.precio * quantity,
-                                                ticket_quantity    = quantity,
+                                                total_price        = route.precio,
+                                                ticket_quantity    = 1,
                                                 ticket_reservation = convert_reservation_to_date,
                                                 routes             = route ,
                                                 bus                = route.bus,
@@ -270,15 +273,13 @@ def list_buses(request):
 
 def income(request):
 
-    if request.method == "POST":
+    if request.is_ajax() and request.method == "POST":
 
-        date_from = request.POST.get('ticket-reservation-from')
-        date_to   = request.POST.get('ticket-reservation-to')
-        incomes   = Ticket.objects.values('ticket_reservation','routes').filter(ticket_reservation__range=(date_from,date_to)).annotate(price=Sum('total_price')).order_by()
+        date_from = request.POST.get('date-from')
+        date_to   = request.POST.get('date-to')
+        incomes   = Ticket.objects.values('ticket_reservation').filter(ticket_reservation__range=(date_from,date_to)).annotate(price=Sum('total_price')).order_by()
 
-        return render(request, 'transportAgency/income.html', {
-            'incomes' : incomes,
-        })
+        return JsonResponse({'incomes': list(incomes)})
     
     return render(request, 'transportAgency/income.html')
 
@@ -296,33 +297,57 @@ def cliente(request):
         return JsonResponse({'msj': 'El cliente ha sido registrado'})
     return render(request, 'transportAgency/ticket.html') 
 
-def cancel_trip(request, id):
+def cancel_trip(request):
 
-    today = datetime.now()  
-    trip = TripScheduling.objects.get(pk=id)
+    if request.is_ajax() and request.method == "GET":
 
-    convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
-    one_hour_left = convert_to_datetime - timedelta(hours=1)
-    
-    if today >= one_hour_left:
-        return HttpResponse('Ya no se puede cancelar')
-    else:
-        trip.state = "4"
-        trip.save()
-        return HttpResponse(f'Se cancelo el viaje de la ruta {trip} ')
+        id_trip = int(request.GET.get('id'))
+        action = request.GET.get('action')
+        trip = TripScheduling.objects.get(pk=id_trip)
+
+        if action == "confirm-cancel":
+            html = f'''
+                <p>Ruta:{trip}</p>
+                <strong><p>Horario: {trip.routes.schedule}</p></strong>
+                <br>
+                <textarea id="description" class="form-control" placeholder="Ingrese el motivo"></textarea>
+                <input id="id-trip" name="id-trip" value={trip.pk} class="form-control">
+                <br>
+            '''
+            return JsonResponse({'html':html})
+
+        else :
+            today = datetime.now()  
+        
+            convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
+            one_hour_left = convert_to_datetime - timedelta(hours=1)
+            
+            if today >= one_hour_left:
+                return JsonResponse({'msj':'Ya no se puede cancelar'})
+            else:
+                trip.state = "4"
+                trip.save()
+                return JsonResponse({'msj': f'Se cancelo el viaje de la ruta {trip}'})
 
 
     return render(request, 'transportAgency/travels.html')
 
 
 
+def details_ticket(request):
 
+    q = request.GET.get('q')
 
+    if q:
+        tickets = Ticket.objects.filter(ticket_reservation=q)
+    else:
+        tickets =  Ticket.objects.all().order_by('ticket_reservation')
 
     
-        
-        
-           
+
+    return render(request, 'transportAgency/detailsTicket.html', {
+        'tickets' : tickets,
+    })
      
 def about(request):
     return render(request, 'transportAgency/about.html')
