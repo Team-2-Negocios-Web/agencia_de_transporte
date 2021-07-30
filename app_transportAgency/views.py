@@ -255,9 +255,25 @@ def list_buses(request):
         '''
         
         for p in passenger:
-
+#<p> Comprador: {p.client}  Asiento: {p.seating}</p>
             if  p.companion == None:
-                html += f'#<p> Comprador: {p.client}  Asiento: {p.seating}</p>'
+                html += f'''
+                            <table class= "table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Asiento</th>
+                                    </tr>
+                                </thead>
+                                <tboady>
+                                    <tr>
+                                        <td>{p.client}</td>
+                                        <td>{p.seating}</td>
+                                    </tr>
+                                </tboady>
+                            </table>
+
+                        '''
             else:
                 html += f'<p>Comprador: {p.client}  | Acompañantes:{p.companion} Asiento: {p.seating}</p>'
 
