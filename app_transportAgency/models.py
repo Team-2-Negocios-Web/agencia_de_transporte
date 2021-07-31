@@ -60,9 +60,9 @@ class TripScheduling(models.Model):
     # ==> id: 27
     STATE = {
        ('1', 'A tiempo'),
-       ('2', 'en viaje'),
-       ('3', 'finalizado'),
-       ('4', 'cancelado'),
+       ('2', 'En viaje'),
+       ('3', 'Finalizado'),
+       ('4', 'Cancelado'),
    }
     date_trip   = models.DateField(auto_now_add=True)
     state       = models.CharField(max_length=1, choices=STATE)

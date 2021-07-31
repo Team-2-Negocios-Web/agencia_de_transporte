@@ -7,6 +7,7 @@
 {% block container %}
 <h1>Tabla de Clientes</h1>
 <form action="{% url 'transportAgency:customer' %}" method="post">
+    {% csrf_token %}
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="input-group rounded mb-5">
@@ -29,12 +30,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td data-th="nombre"></td>
-            <td data-th="rutas"></td>
-            <td data-th="telefono"></td>
-            <td data-th="correo"></td>
-        </tr>
+        {% for c in customers %}
+            <tr>
+                <td data-th="nombre">{{c.first_name}}</td>
+                <td data-th="apellido">{{c.last_name}}</td>
+                <td data-th="telefono">{{c.phone}}</td>
+                <td data-th="correo">{{c.email}}</td>
+            </tr>
+        
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}

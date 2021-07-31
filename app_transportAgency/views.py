@@ -332,7 +332,8 @@ def cancel_trip(request):
 
         else :
             today = datetime.now()  
-        
+
+            description =  request.GET.get('description')
             convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
             one_hour_left = convert_to_datetime - timedelta(hours=1)
             
@@ -340,6 +341,7 @@ def cancel_trip(request):
                 return JsonResponse({'msj':'Ya no se puede cancelar'})
             else:
                 trip.state = "4"
+                trip.description = description
                 trip.save()
                 return JsonResponse({'msj': f'Se cancelo el viaje de la ruta {trip}'})
 
@@ -364,7 +366,11 @@ def details_ticket(request):
     })
 
 def customer(request):
-    return render(request, 'transportAgency/customer.html')
+    customers = Client.objects.all()
+    return render(request, 'transportAgency/customer.html', {
+        'customers': customers,
+
+    })
      
 def about(request):
     return render(request, 'transportAgency/about.html')
