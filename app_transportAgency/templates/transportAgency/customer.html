@@ -3,9 +3,14 @@
 {% block title %}Clientes{% endblock %}
 {% block css %}
 <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
 {% endblock %}
 {% block container %}
-<h1>Tabla de Clientes</h1>
+    <div class="row justify-content-center m-4">
+        <div class="title">
+            <h1>Tabla de <span style="color: #6BA8A9;">Clientes</span></h1>
+        </div>
+    </div>
 <form action="{% url 'transportAgency:customer' %}" method="post">
     {% csrf_token %}
     <div class="row justify-content-center">
@@ -23,6 +28,7 @@
 <table class="rwd-table">
     <thead>
         <tr>
+            <th>Numero identidad</th>
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Telefono</th>
@@ -32,6 +38,7 @@
     <tbody>
         {% for c in customers %}
             <tr>
+                <td data-th="nombre">{{c.dni}}</td>
                 <td data-th="nombre">{{c.first_name}}</td>
                 <td data-th="apellido">{{c.last_name}}</td>
                 <td data-th="telefono">{{c.phone}}</td>
@@ -41,4 +48,6 @@
         {% endfor %}
     </tbody>
 </table>
+<br>
+<br>
 {% endblock %}
