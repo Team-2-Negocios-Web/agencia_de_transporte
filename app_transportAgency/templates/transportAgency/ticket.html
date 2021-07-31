@@ -11,8 +11,6 @@
 {% block container %}
     <div class="container">
 
-
-        <a href="{% url 'transportAgency:details_ticket' %}" class="btn btn-sm btn-primary">Ver tickets</a>
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
                     {% csrf_token %}
@@ -20,6 +18,12 @@
                                 <img src="https://i.pinimg.com/originals/bb/52/e9/bb52e9149a3188a74e63ac2ba4adf5cb.jpg"  class="img-fluid" alt="...">
                         </div>
                         <hr>
+
+                        <!--Reservacion del ticket a comprar-->
+                            <div class="mb-3">
+                                <label for="ticket_reservation">Día de la reservación: </label>
+                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                            </div>
 
                         <!--Rutas-->
                         <div class="mb-3">
@@ -36,7 +40,7 @@
                     <br>
 
                     <!--Info de la ruta-->
-                    <p id="available">Ticket Disponible: 16</p>
+                    <p id="available">Ticket Disponible: None/16</p>
                     <p id="price">Precio: 00.00</p>
                     
 
@@ -48,32 +52,36 @@
                             <div class="mb-3">
                                 <label for="client">Cliente: </label>
                                 <select name="client" id="client" class="form-select form-control-chosen">
+                                    <option value="">Seleccione al consumidor final</option>
                                     {% for c in clients  %}
-                                        <option value="{{c.pk}}">{{c}}</option>
+                                        <option value="{{c.pk}}">{{c.dni}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
-                            <!--Reservacion del ticket a comprar-->
-                            <div class="mb-3">
-                                <label for="ticket_reservation">Día de la reservación: </label>
-                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
-                            </div>
+                            
                         </div>
                         <div class="col">
                             <div class="text-center">
-                                <button style="color:#fff; background-color: #357376;width:150px;" type="button" class="btn btn-success mt-4 pull-right" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registrar Cliente</button>
+                                <button id="show-frm" style="color:#fff; background-color: #357376;width:150px;" type="button" class="btn btn-success mt-4 pull-right"  data-bs-whatever="@mdo">Registrar Cliente</button>
                             </div>
                        
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal-client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                     <div class="modal-header" style="color:#fff; background-color: #357376;">
                                         <h5 class="modal-title" id="exampleModalLabel" >Registrar Cliente</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"">
+                                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
                                          <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
                                             {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="dni" class="col-form-label">Numero de identidad:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-id-card form-control-feedback" aria-hidden="true" style="color:#357376;"></i>
+                                                    <input id="dni" name="dni" type="text" class="form-control" placeholder="Escriba su nombre">
+                                                </div>
+                                            </div>
                                             <div class="mb-3">
                                                 <label for="first-name" class="col-form-label">Nombre:</label>
                                                 <div class="form-group has-feedback">
@@ -203,18 +211,19 @@
                 event.preventDefault()
                 
                 //Agregar la cantidad de inputs segun la cantidad de boletos
-                $('.removed').remove()
+                $('.removed').empty()
                 if (quantity.val() > 1){
                     $(inputsClients).append('<h5 class="removed">Acompañantes</h5>')
                     for(var i = 0; i < quantity.val() - 1; i++){
                         $(inputsClients).append(
                             `
                             <div class="removed">
-                                <div class="mb-3">
+                                <div class="mb-4 col-6">
                                     <label for="client${i}">Acompañante# ${i + 1}</label>
-                                        <select name="client${i}" id="client${i}" class="form-select form-control-chosen">
+                                        <select name="client${i}" id="client${i}"  class="form-select form-control-chosen">
+                                            <option value="">Seleccione a su acompañante</option>
                                             {% for c in clients  %}
-                                                <option value="{{c.pk}}">{{c}}</option>
+                                                <option value="{{c.pk}}">{{c.dni}}</option>
                                             {% endfor %}
                                         </select>
                                 </div>
@@ -222,6 +231,7 @@
                             `
                         )
                     }
+                    $('.removed').find('.form-control-chosen').chosen();
                 }
 
             })
@@ -235,13 +245,21 @@
 
                 var $me = $(this)
                 var url = $me.data('url')
-                var ctx = {'route': $('#route').val()}
-
+                var ctx = {'route': $('#route').val(), 'ticket_reservation': $("#ticket_reservation").val()}
+               
                 $.get(url, ctx, function(response){
 
                     //available_tickets
 
                     $('#price').text(`Precio: ${response.precio}`)
+                    if (response.tickets > 1) {
+                        $('#available').text(`Ticket Disponible: ${response.tickets - 1}/15`)
+                    } else{ 
+                        $('#available').text(`Ticket Disponible: 0/15`)
+                    }
+                    
+                   
+                    $('.removed').load()
                 }, 'json')
 
             })
@@ -280,12 +298,12 @@
                 $('#confirm-ticket').modal('show')
 
                 $.post(url, ctx, function(response){
-                    alert(response.msg)
+                
                     if(response.error){
-                        $('.modal').find('.modal-body').html(response.error)
+                        $('.#confirm-ticket').find('.modal-body').html(response.error)
                     } else {
                     
-                        $('.modal').find('.modal-body').html(response.code)
+                        $('#confirm-ticket').find('.modal-body').html(response.code)
                     }
                     
                     
@@ -326,7 +344,12 @@
 
                 console.log(ctx)
                 $.post(url, ctx, function(response){
+<<<<<<< HEAD
+=======
+                    
+>>>>>>> 569a015ebdefd1e18591b8b9351cf544cff28729
                     $('#confirm-ticket').modal('hide')
+                    location.reload()
                     
                 })
             })
@@ -334,13 +357,20 @@
             
     })
     //Programacion de cliente
-   
+
+        $('#show-frm').click(function(event){
+            event.preventDefault()
+            $('#modal-client').modal('show') 
+        })
+
+
         var $buttonRegister = $('#button-register')
 
         $buttonRegister.click(function(event){
             event.preventDefault()
 
             //Variables
+            alert('sdsd')
 
             var $me = $(this)
             var url = $me.data('url')

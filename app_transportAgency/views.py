@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
+from django.contrib.auth.decorators import login_required
 from datetime import *
 import datetime as dt
 from .models import *
 from django.db.models import Q, F, Count, Sum
 
 
-
+@login_required()
 def travels(request):
     # fecha local del sistema
     time_today = datetime.now()
@@ -77,7 +78,7 @@ def travels(request):
 
     
 
-
+@login_required()
 def route(request):
     trips = Route.objects.all()
     clients = Client.objects.all()
@@ -87,7 +88,7 @@ def route(request):
         'clients': clients,
     })
 
-
+@login_required()
 def ticket(request):
 
     if request.is_ajax() and request.method == "GET":
@@ -95,12 +96,23 @@ def ticket(request):
         time_today = datetime.now()
 
         #conseguir el id de la ruta
-        id_route = request.GET.get('route')
+        id_route = int(request.GET.get('route'))
+        ticket_reservation = request.GET.get('ticket_reservation')
         route = Route.objects.filter(pk=id_route).first()
+
+        quantity_ticket = Ticket.objects.values().filter(routes=id_route, ticket_reservation=ticket_reservation).annotate(passenger=Count('client')).order_by()
+        
+        cont = 0
+        for qt in quantity_ticket:
+            cont += 1
+      
+
+        
+    
 
         precio = route.precio
     
-        return JsonResponse({'precio': precio,})
+        return JsonResponse({'precio': precio, 'tickets': cont})
         
     elif request.is_ajax() and request.method == "POST":
         #route=76&client=1&quantity=2&client0=1&client1=1&ticket_reservation
@@ -239,7 +251,7 @@ def ticket(request):
                 return render(request, 'transportAgency/ticket.html')
 
 
-
+@login_required()
 def list_buses(request):
 
     if request.is_ajax() and request.method == "POST":
@@ -259,25 +271,25 @@ def list_buses(request):
         '''
         
         for p in passenger:
-#<p> Comprador: {p.client}  Asiento: {p.seating}</p>
-            #if  p.companion == None:
-                html += f'''
-                            <tr>
-                                <td>{p.client}</td>
-                                <td>{p.companion}</td>
-                                <td>{p.seating}</td>
-                            <tr>
-                        '''
-            #else:
-             #   html += f'''
-              #              <div style="text-align:center;">
-               #                 <p>Comprador: {p.client}</p>
-                #                <p>Acompañantes: {p.companion}</p>
-                 #               <p>Asiento: {p.seating}</p>
-                  #              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Ver cliente</button>
-                   #         </div>
-                    #        <hr>
-                     #   '''
+    #<p> Comprador: {p.client}  Asiento: {p.seating}</p>
+                #if  p.companion == None:
+                    html += f'''
+                                <tr>
+                                    <td>{p.client}</td>
+                                    <td>{p.companion}</td>
+                                    <strong><td>{p.seating}</td></strong>
+                                <tr>
+                            '''
+                #else:
+                #   html += f'''
+                #              <div style="text-align:center;">
+                #                 <p>Comprador: {p.client}</p>
+                    #                <p>Acompañantes: {p.companion}</p>
+                    #               <p>Asiento: {p.seating}</p>
+                    #              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Ver cliente</button>
+                    #         </div>
+                        #        <hr>
+                        #   '''
 
         return JsonResponse({'code':html})
 
@@ -286,6 +298,7 @@ def list_buses(request):
         'buses' : buses,
     })
 
+@login_required()
 def income(request):
 
     if request.is_ajax() and request.method == "POST":
@@ -298,22 +311,27 @@ def income(request):
     
     return render(request, 'transportAgency/income.html')
 
-
+@login_required()
 def cliente(request):
     if request.is_ajax() and request.method == 'POST':
-        
-            first_name = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            phone = request.POST.get('phone')
-            email = request.POST.get('email')
+        dni = request.POST.get('dni')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
 
-            client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
-            client.save()
+
+        dni_exists = Client.objects.filter(dni=dni)
+        if dni_exists:
+            return JsonResponse({'msj': f'El numero de identidad de {dni} ya existe'})
+        client = Client(dni=dni,first_name = first_name, last_name = last_name, phone = phone, email = email)
+        client.save()
 
             return JsonResponse({'msj': 'La vista responde con exito'})   
     return render(request, 'transportAgency/ticket.html')
     
 
+@login_required()
 def cancel_trip(request):
 
     if request.is_ajax() and request.method == "GET":
@@ -351,8 +369,7 @@ def cancel_trip(request):
 
     return render(request, 'transportAgency/travels.html')
 
-
-
+@login_required()
 def details_ticket(request):
 
     q = request.GET.get('q')
@@ -368,12 +385,18 @@ def details_ticket(request):
         'tickets' : tickets,
     })
 
+@login_required()
 def customer(request):
-    customers = Client.objects.all()
-    return render(request, 'transportAgency/customer.html', {
-        'customers': customers,
+    
+    if request.user.is_superuser:
+        customers = Client.objects.all()
+        return render(request, 'transportAgency/customer.html', {
+            'customers': customers,
 
-    })
-     
+        })
+    else:
+        return HttpResponse("sdjhkhsd")
+
+@login_required()     
 def about(request):
     return render(request, 'transportAgency/about.html')
