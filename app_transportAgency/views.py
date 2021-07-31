@@ -262,7 +262,6 @@ def list_buses(request):
                                 <td>{p.client}</td>
                                 <td>{p.companion}</td>
                                 <td>{p.seating}</td>
-                                <td><a href="#" style="outline=none; text-decoration=none;"><i class="fa fa-user-circle" aria-hidden="true" style="color=red"></i></a></td>
                             <tr>
                         '''
             #else:

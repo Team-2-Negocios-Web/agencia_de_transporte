@@ -85,14 +85,13 @@
                                     <h5 class="modal-title">Lista de Pasajeros</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body" style="color:#fff; background-color: #2ce9ec;">
+                                <div class="modal-body" style="color:#fff; background-color: #0ebfc2;">
                                     <table class="rwd-table">
                                         <thead>
                                             <tr>
                                                 <th>Cliente</th>
                                                 <th>Acompañante</th>
                                                 <th>Asiento</th>
-                                                <th>Ver Cliente</th>
                                             </tr>
                                         </thead>
                                         <tbody class="tableb">
@@ -101,8 +100,10 @@
                                     </table>
                                     
                                 </div>
-                                <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                                <div class="modal-footer" style="color:#fff; background-color: #0ebfc2;">
+                                    <button type="button" class="btn btn-secondary" ><a href="{% url 'transportAgency:ticket_view' %}" style="outline:none; text-decoration:none;color: ivory;">Ver Clientes</a></button>
                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Close</button>
+                                   
                                     
                                 </div>
                             </div>
