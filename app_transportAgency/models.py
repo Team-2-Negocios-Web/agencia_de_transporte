@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import *
+from django.contrib.auth.models import User
 
 
 class Client(models.Model):
@@ -7,6 +8,7 @@ class Client(models.Model):
     last_name  = models.CharField(max_length=50)
     phone      = models.CharField(max_length=50)
     email      = models.CharField(max_length=50)
+    user       = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} {self.pk}'

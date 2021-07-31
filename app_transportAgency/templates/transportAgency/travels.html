@@ -45,7 +45,7 @@
                                 </ol>
                                 <div class="widget-49-meeting-action">
                                      {% if t.state == "1" %}
-                                        <a href="#" class="btn btn-sm btn-buy">Comprar</a>
+                                        <a href="#" class="btn btn-sm btn-buy">Ir a reservar</a>
                                         {% if request.user.is_superuser %}
                                         <button  data-id="{{t.pk}}"  data-action="confirm-cancel" data-url="{% url 'transportAgency:cancel_trip' %}" class="btn btn-sm btn-cancelar button-confirm">CANCELAR</button>
                                         {% endif %}       
@@ -79,7 +79,7 @@
                             class="btn btn-success button-process"
                             data-action="process-cancel" 
                         >
-                            Proceso de compra
+                            Cancelar Viaje
                         </button>
                     </div>
                 </div>

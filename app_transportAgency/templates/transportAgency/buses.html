@@ -60,7 +60,7 @@
                             <h5 class="modal-title">Lista de Pasajeros</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body" style="color:#fff; background-color: #0ebfc2;">
+                        <div class="modal-body" style="color:#fff; background-color:red;">
                             <table class="rwd-table">
                                 <thead>
                                     <tr>
@@ -75,7 +75,7 @@
                             </table>
                             
                         </div>
-                        <div class="modal-footer" style="color:#fff; background-color: #0ebfc2;">
+                        <div class="modal-footer" style="color:#fff; background-color: red;">
                             <button type="button" class="btn btn-secondary" ><a href="{% url 'transportAgency:ticket_view' %}" style="outline:none; text-decoration:none;color: ivory;">Ver Clientes</a></button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Close</button>
                             
@@ -88,22 +88,6 @@
         </div>
 
 
-
-        <div class="modal" tabindex="-1" id="passenger">
-            <div class="modal-dialog modal-dialog-centered"">
-                            <div class=" modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lista de Pasajeros</h5>
-                    <a class="btn m-lg-3" href="{% url 'transportAgency:customer' %}" style="background-color: #357376; color: white;">Lista Clientes</a>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="infoP">
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
     <br>
     <br>
