@@ -5,92 +5,93 @@
 {% block title %}Listado de buses{% endblock title %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
 {% endblock %}
 
 {% block container %}
 
-    <div class="container">
-        <h1>Listado de buses segun la fecha de reservacion</h1>
+<div class="container">
+    <div class="row justify-content-center m-4">
+        <div class="title">
+            <h1>Tabla de <span style="color: #6BA8A9;">Buses</span></h1>
+        </div>
+    </div>
 
-        <div class="row">
-            <table class="rwd-table ">
-                <thead>
-                    <tr>
-                        <th>Bus ID</th>
-                        <th>Fecha de salida</th>
-                        <th>cantidad de Pasajeros</th>
-                        <th>Ver pasajeros</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for b in buses %}
-                        {% if b.bus__name_bus %}
+    <div class="row">
+        <table class="rwd-table ">
+            <thead>
+                <tr>
+                    <th>Bus ID</th>
+                    <th>Fecha de Salida</th>
+                    <th>Cantidad de Pasajeros</th>
+                    <th>Ver Pasajeros</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in buses %}
+                {% if b.bus__name_bus %}
+                <tr>
+
+                    <td>{{b.bus__name_bus}}</td>
+                    <td>{{b.ticket_reservation}}</td>
+                    <td>{{b.passanger}}/15</td>
+                    <td>
+                        <button type="button" style="background-color: #357376; color: white; "
+                            class="btn button_passenger " data-bs-toggle="modal" data-bs-target=".passenger"
+                            data-url="{% url 'transportAgency:list_buses' %}" data-bus="{{b.bus}}"
+                            data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" data-token="{{csrf_token }}">
+                            Ver pasajeros
+                        </button>
+                    </td>
+
+                </tr>
+                {% endif %}
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="modal" tabindex="-1" id="passenger">
+            <div class="modal-dialog modal-dialog-centered"">
+                    <div class=" modal-content">
+                <div class="modal-header " style="color:#fff; background-color: #357376;">
+                    <h5 class="modal-title">Lista de Pasajeros</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="color:#fff; background-color:#dad4d4;">
+                    <table class="rwd-table">
+                        <thead>
                             <tr>
-                                
-                                <td>{{b.bus__name_bus}}</td>
-                                <td>{{b.ticket_reservation}}</td>
-                                <td>{{b.passanger}}/15</td>
-                                <td>
-                                    <button 
-                                        type="button" 
-                                        class="btn btn-light button_passenger "   
-                                        data-bs-toggle="modal"
-                                        data-bs-target=".passenger"
-                                        data-url="{% url 'transportAgency:list_buses' %}" 
-                                        data-bus="{{b.bus}}"  
-                                        data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" 
-                                        data-token="{{csrf_token }}"
-                                    > 
-                                        Ver pasajeros 
-                                    </button> 
-                                </td>
-                                
+                                <th>Cliente</th>
+                                <th>Acompañante</th>
+                                <th>Asiento</th>
                             </tr>
-                        {% endif %}
+                        </thead>
+                        <tbody class="tableb">
 
-                    {% endfor %}    
-                </tbody>
-            </table>
-        
-            <div class="modal" tabindex="-1" id="passenger">
-                <div class="modal-dialog modal-dialog-centered"">
-                    <div class="modal-content">
-                        <div class="modal-header "style="color:#fff; background-color: #357376;">
-                            <h5 class="modal-title">Lista de Pasajeros</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" style="color:#fff; background-color:red;">
-                            <table class="rwd-table">
-                                <thead>
-                                    <tr>
-                                        <th>Cliente</th>
-                                        <th>Acompañante</th>
-                                        <th>Asiento</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="tableb">
-                                    
-                                </tbody>
-                            </table>
-                            
-                        </div>
-                        <div class="modal-footer" style="color:#fff; background-color: red;">
-                            <button type="button" class="btn btn-secondary" ><a href="{% url 'transportAgency:ticket_view' %}" style="outline:none; text-decoration:none;color: ivory;">Ver Clientes</a></button>
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" >Close</button>
-                            
-                            
-                        </div>
-                    </div>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                    <button type="button" class="btn btn-secondary" style="background-color: #357376;"><a
+                            href="{% url 'transportAgency:ticket_view' %}"
+                            style="outline:none; text-decoration:none;color: ivory;">Ver Clientes</a></button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+
+
                 </div>
             </div>
-
         </div>
-
-
     </div>
-    <br>
-    <br>
+
+</div>
+
+
+</div>
+<br>
+<br>
 
 
 
@@ -122,8 +123,8 @@
                 'reservation': dateReservation,
             }
             $('#passenger').modal('show')
-            
-            $.post(url, ctx, function(response){
+
+            $.post(url, ctx, function (response) {
                 $('.modal').find('.tableb').html(response.code)
 
             }, 'json')
