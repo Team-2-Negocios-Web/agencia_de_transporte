@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Clientes{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+{% endblock %}
+{% block container %}
+<h1>Tabla de Clientes</h1>
+<form action="{% url 'transportAgency:customer' %}" method="post">
+    {% csrf_token %}
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="input-group rounded mb-5">
+                <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                    aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</form>
+<table class="rwd-table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Telefono</th>
+            <th>Correo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in customers %}
+            <tr>
+                <td data-th="nombre">{{c.first_name}}</td>
+                <td data-th="apellido">{{c.last_name}}</td>
+                <td data-th="telefono">{{c.phone}}</td>
+                <td data-th="correo">{{c.email}}</td>
+            </tr>
+        
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

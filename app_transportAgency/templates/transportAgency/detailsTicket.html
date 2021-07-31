@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Mostrar Tickets{% endblock title %}
+
+
+{% block container %}
+
+    <div class="container">
+
+        <a href="{% url 'transportAgency:ticket_view' %}" class="btn btn-info mt-5 mb-5">Reserva de ticket</a>
+        <br>
+
+        <div>
+            <form action="" >
+                <input type="date" class="form-control" name="q" placeholder='fecha'>
+                <br>
+                <button class="btn btn-dark">Buscar</button>
+            </form>
+        </div>    
+        <div class="row">
+            <div class="col">
+                <table class="table table-responsive " style="text-align:center">
+                    <thead>
+                        <tr>
+                            <th>Fecha de reservacion</th>
+                            <th>Cliente</th>
+                            <th>Acompañante</th>
+                            <th>Precio Total</th>
+                            <th>Ruta</th>
+                            <th>Bus</th>
+                            <th>Asiento</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for t in tickets  %}
+                        {% if t.bus %}
+                            {% if t.client and t.companion %}
+                                <tr>
+                                <td>{{t.ticket_reservation}}</td>
+                                <td>-</td>
+                                {% if t.companion %}
+                                <td>{{t.companion}}</td>
+
+                                {% else %}
+                                <td>-</td>
+                                {% endif %}
+                                <td>{{t.total_price}}</td>
+                                <td>{{t.routes}}</td>
+                                <td>{{t.bus}}</td>
+                                <td>{{t.seating}}</td>
+                            
+                                </tr>
+                            
+                            {% else %}
+                            <tr>
+                                <td>{{t.ticket_reservation}}</td>
+                                <td>{{t.client}}</td>
+                                {% if t.companion %}
+                                <td>{{t.companion}}</td>
+
+                                {% else %}
+                                <td>Nulo</td>
+                                {% endif %}
+                                <td>{{t.total_price}}</td>
+                                <td>{{t.routes}}</td>
+                                <td>{{t.bus}}</td>
+                                <td>{{t.seating}}</td>
+                            </tr>
+
+                            {% endif %}
+                        {% endif %}
+                        {% empty %}
+                        <tr>
+                            <td colspan=7>No hay</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock container %}
