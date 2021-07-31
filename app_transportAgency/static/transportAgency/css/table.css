@@ -56,7 +56,10 @@
   }
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 080ade97af638e076ba333ed92ec2df877f3cef1
 h1 {
   font-weight: normal;
   letter-spacing: -1px;
@@ -88,4 +91,12 @@ h1 {
 .rwd-table th,
 .rwd-table td:before {
   color: #fff;
+}
+.btn{
+  background-color: #1D4D4F ;
+  color: white;
+}
+.btn:hover{
+  background-color: #6BA8A9;
+  color: white;
 }

@@ -6,57 +6,51 @@
 
 {% block container %}
 
-    <div class="container">
-        <h1>Listado de buses segun la fecha de reservacion</h1>
+<div class="container">
+    <h1>Listado de buses segun la fecha de reservacion</h1>
 
 
-        {% for b in buses %}
+    {% for b in buses %}
 
 
-            {% if b.bus__name_bus %}
-                    
+    {% if b.bus__name_bus %}
 
-                <div class="card mb-3" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{b.bus__name_bus}}</h5>
-                        <p class="card-text">Fecha de salida del bus es {{b.ticket_reservation }}</p>
-                        <p class="card-text">Cantidad de pasajeros: {{b.passanger}}/15</p>
-                        
-                        <button 
-                            type="button" 
-                            class="btn btn-primary button_passenger"   
-                            data-bs-toggle="modal"
-                             data-bs-target=".passenger"
-                            data-url="{% url 'transportAgency:list_buses' %}" 
-                            data-bus="{{b.bus}}"  
-                            data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" 
-                            data-token="{{csrf_token }}"
-                        > 
-                            Ver pasajeros 
-                        </button>
-                    </div>
-                </div>   
 
-                <div class="modal" tabindex="-1" id="passenger">
-                    <div class="modal-dialog modal-dialog-centered"">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Lista de Pasajeros</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>Infor</p>
-                                <div id="infoP"></div>
-                            </div>
-                           
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
+    <div class="card mb-3" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{b.bus__name_bus}}</h5>
+            <p class="card-text">Fecha de salida del bus es {{b.ticket_reservation }}</p>
+            <p class="card-text">Cantidad de pasajeros: {{b.passanger}}/15</p>
 
-        {% endfor %}
-
+            <button type="button" class="btn btn-primary button_passenger" data-bs-toggle="modal"
+                data-bs-target=".passenger" data-url="{% url 'transportAgency:list_buses' %}" data-bus="{{b.bus}}"
+                data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" data-token="{{csrf_token }}">
+                Ver pasajeros
+            </button>
+        </div>
     </div>
+
+    <div class="modal" tabindex="-1" id="passenger">
+        <div class="modal-dialog modal-dialog-centered"">
+                        <div class=" modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Lista de Pasajeros</h5>
+                <a class="btn m-lg-3" href="{% url 'transportAgency:customer' %}" style="background-color: #357376; color: white;">Lista Clientes</a>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="infoP">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endfor %}
+
+</div>
 
 
 {% endblock container %}
@@ -69,31 +63,31 @@
 
         //'csrfmiddlewaretoken': csrfToken,
 
-        var $buttonPassenger =  $('.button_passenger')
+        var $buttonPassenger = $('.button_passenger')
 
-        $buttonPassenger.click(function(){
+        $buttonPassenger.click(function () {
 
 
-            var $me             = $(this)
-                url             = $me.data('url')
-                busId           = $me.data('bus')
-                dateReservation = $me.data('reservation')
-                token           = $me.data('token')
-            
+            var $me = $(this)
+            url = $me.data('url')
+            busId = $me.data('bus')
+            dateReservation = $me.data('reservation')
+            token = $me.data('token')
+
             var ctx = {
                 'csrfmiddlewaretoken': token,
                 'busId': busId,
                 'reservation': dateReservation,
             }
             $('#passenger').modal('show')
-            
-            $.post(url, ctx, function(response){
+
+            $.post(url, ctx, function (response) {
                 $('.modal').find('.modal-body').html(response.code)
 
             }, 'json')
 
 
-            
+
         })
     })
 

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Programación de Viajes{% endblock %}
+{% block title %}Programacion de Viajes{% endblock %}
 {% block css %}
 <link href="{% static 'transportAgency/css/card.css' %}" rel="stylesheet">
 {% endblock %}
@@ -9,7 +9,7 @@
 {% block container %}
 
 <div>
-    <h1 class="text-center mb-3">Programación de Viajes</h1>
+    <h1>Programacion de Viajes</h1>
     <div class="container">
         <div class="row">
 
@@ -31,7 +31,7 @@
                                 <div class="widget-49-title-wrapper">
                                     <div class="widget-49-date-success">
                                         <span class="widget-49-date-day">{{t.routes.precio}}</span>
-                                        <span class="widget-49-date-month font-weight-bold">Lps</span>
+                                        <span class="widget-49-date-month">Lps</span>
                                     </div>
                                     <div class="widget-49-meeting-info">
                                         <span class="widget-49-pro-title">{{t.date_trip}}</span>
@@ -44,15 +44,15 @@
                                     <li class="widget-49-meeting-item"><span>Horario: {{t.routes.schedule}}</span></li>
                                 </ol>
                                 <div class="widget-49-meeting-action">
-                                    {% if t.state == "1" %}
+                                     {% if t.state == "1" %}
                                         <a href="#" class="btn btn-sm btn-buy">Comprar</a>
                                         {% if request.user.is_superuser %}
                                         <button  data-id="{{t.pk}}"  data-action="confirm-cancel" data-url="{% url 'transportAgency:cancel_trip' %}" class="btn btn-sm btn-cancelar button-confirm">CANCELAR</button>
                                         {% endif %}       
                                     {% elif t.state == "2" %}
-                                        <a href="#" class="btn btn-sm btn-nobuy text-danger">No disponible</a>
+                                        <a href="#" class="btn btn-sm btn-nobuy">No disponible</a>
                                     {% else %}
-                                        <a href="#" class="btn btn-sm btn-nobuy text-danger">No disponible</a>
+                                        <a href="#" class="btn btn-sm btn-nobuy">No disponible</a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                 })
             </script>
         {% endblock %}
-
+                 
 </div>
 
 {% endblock %}
