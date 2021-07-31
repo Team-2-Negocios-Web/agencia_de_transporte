@@ -7,29 +7,18 @@
 
 {% block container %}
     <div class="container">
-<<<<<<< HEAD
 
 
         <a href="{% url 'transportAgency:details_ticket' %}" class="btn btn-sm btn-primary">Ver tickets</a>
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
-=======
-        <div class="row">
-            <div class="shadow col-6 mt-5"  style="padding:25px;margin:auto;">
-                <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket"  >
->>>>>>> 080ade97af638e076ba333ed92ec2df877f3cef1
                     {% csrf_token %}
                     <!--Rutas-->
                 
                         <div class="mb-3">
-<<<<<<< HEAD
                             <label for="route">Rutas: </label>
                             <select name="route" id="route" class="form-select form-control-chosen">
                                 <option value="">Seleccione un ruta</option>
-=======
-                            <label for="route">Rutas</label>
-                            <select name="route" id="route" class="form-select">
->>>>>>> 080ade97af638e076ba333ed92ec2df877f3cef1
                                 {% for t in trips  %}
                                     <option value="{{t.routes.pk}}">{{t}}</option>
                                     
