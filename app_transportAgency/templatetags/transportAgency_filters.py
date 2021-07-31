@@ -1,5 +1,6 @@
 from django import template
 from app_transportAgency.models import Route, Ticket
+from django.db.models import Count
 
 register = template.Library()
 
@@ -9,4 +10,4 @@ def price_route(route):
 
 @register.simple_tag
 def client_seating(date, route):
-    return Ticket.objects.values('client','companion','seating').filter(ticket_reservation=date, routes=route)
+    return Ticket.objects.filter(ticket_reservation=date, routes=route).annotate(seats=Count('client'))

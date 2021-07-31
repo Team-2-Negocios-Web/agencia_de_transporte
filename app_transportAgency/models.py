@@ -9,7 +9,7 @@ class Client(models.Model):
     email      = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} '
+        return f'{self.first_name} {self.last_name} {self.pk}'
     
 
 class Seating(models.Model):
@@ -60,13 +60,14 @@ class TripScheduling(models.Model):
     # ==> id: 27
     STATE = {
        ('1', 'A tiempo'),
-       ('2', 'en viaje'),
-       ('3', 'finalizado'),
-       ('4', 'cancelado'),
+       ('2', 'En viaje'),
+       ('3', 'Finalizado'),
+       ('4', 'Cancelado'),
    }
-    date_trip = models.DateField(auto_now_add=True)
-    state     = models.CharField(max_length=1, choices=STATE)
-    routes    = models.ForeignKey(Route,  on_delete=models.PROTECT, blank=True, null=True)
+    date_trip   = models.DateField(auto_now_add=True)
+    state       = models.CharField(max_length=1, choices=STATE)
+    routes      = models.ForeignKey(Route,  on_delete=models.PROTECT, blank=True, null=True)
+    description = models.TextField(blank=True, null=True) 
 
 
     def __str__(self):
