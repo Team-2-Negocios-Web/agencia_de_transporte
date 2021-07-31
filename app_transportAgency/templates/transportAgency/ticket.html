@@ -62,10 +62,10 @@
                         </div>
                         <div class="col">
                             <div class="text-center">
-                                <button style="color:#fff; background-color: #357376;width:150px;" type="button" class="btn btn-success mt-4 pull-right" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registrar Cliente</button>
+                                <button id="show-frm" style="color:#fff; background-color: #357376;width:150px;" type="button" class="btn btn-success mt-4 pull-right"  data-bs-whatever="@mdo">Registrar Cliente</button>
                             </div>
                        
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="modal-client" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                     <div class="modal-header" style="color:#fff; background-color: #357376;">
@@ -291,10 +291,10 @@
                 $.post(url, ctx, function(response){
                     alert(response.msg)
                     if(response.error){
-                        $('.modal').find('.modal-body').html(response.error)
+                        $('.#confirm-ticket').find('.modal-body').html(response.error)
                     } else {
                     
-                        $('.modal').find('.modal-body').html(response.code)
+                        $('#confirm-ticket').find('.modal-body').html(response.code)
                     }
                     
                     
@@ -346,7 +346,13 @@
             
     })
     //Programacion de cliente
-   
+
+        $('#show-frm').click(function(event){
+            event.preventDefault()
+            $('#modal-client').modal('show') 
+        })
+
+
         var $buttonRegister = $('#button-register')
 
         $buttonRegister.click(function(event){
@@ -373,7 +379,7 @@
                 'phone'              : phone.val(),
                 'email'              : email.val()}
 
-      
+
                 
                 $.post(url, ctx, function(response){
                         alert(response.msj)
