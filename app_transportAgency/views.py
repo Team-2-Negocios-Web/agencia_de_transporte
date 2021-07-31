@@ -127,7 +127,7 @@ def ticket(request):
 
             if trip:
                 if not trip.state == "1":
-                    return JsonResponse({'error': "no esta disponible",}) 
+                    return JsonResponse({'error': "No esta disponible",}) 
             
 
             html = f'''
@@ -153,7 +153,7 @@ def ticket(request):
             client = Client.objects.get(pk=id_client)        
             
             if convert_reservation_to_date < today:
-                return HttpResponse("No puedes escoger una fecha menor que esta")
+                return JsonResponse({'error': 'No puedes escoger una fecha menor que esta',})
             else: 
             # Crear el ticket
 
@@ -171,7 +171,7 @@ def ticket(request):
                 count_seating = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).count()
 
                 if count_seating > 8:
-                    return HttpResponse("ya no hay cupos")
+                    return HttpResponse("Ya no hay cupos")
                 else:
                     # se crea el ticket del cliente principal
                     if date_reservation:

@@ -149,7 +149,9 @@
                         >
                             Confirmar compra
                         </button>
+
                     <!-- Modal -->
+                
                     <div class="modal fade" id="confirm-ticket" >
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -317,10 +319,7 @@
                 }
 
                 console.log(ctx)
-
                 $.post(url, ctx, function(response){
-                    
-                    alert("se realizo la compra correctamente")
                     $('#confirm-ticket').modal('hide')
                     
                 })
