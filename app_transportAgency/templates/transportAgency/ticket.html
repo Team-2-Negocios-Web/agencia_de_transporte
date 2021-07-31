@@ -346,12 +346,12 @@
 
                 }
 
-
+                
 
                 console.log(ctx)
                 $.post(url, ctx, function(response){
                     $('#confirm-ticket').modal('hide')
-                    
+                    notify('success', 'Se  ha realizado la compraa')
                 })
             })
 
