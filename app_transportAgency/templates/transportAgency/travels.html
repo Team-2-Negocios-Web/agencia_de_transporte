@@ -51,7 +51,7 @@
                             </ol>
                             <div class="widget-49-meeting-action">
                                 {% if t.state == "1" %}
-                                <a href="#" class="btn btn-sm btn-buy">Ir a reservar</a>
+                                <a href="{% url 'transportAgency:ticket_view' %}" class="btn btn-sm btn-buy">Ir a reservar</a>
                                 {% if request.user.is_superuser %}
                                 <button data-id="{{t.pk}}" data-action="confirm-cancel"
                                     data-url="{% url 'transportAgency:cancel_trip' %}"

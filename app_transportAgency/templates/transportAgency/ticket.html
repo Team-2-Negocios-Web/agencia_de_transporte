@@ -11,8 +11,6 @@
 {% block container %}
     <div class="container">
 
-
-        <a href="{% url 'transportAgency:details_ticket' %}" class="btn btn-sm btn-primary">Ver tickets</a>
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
                     {% csrf_token %}
@@ -20,6 +18,12 @@
                                 <img src="https://i.pinimg.com/originals/bb/52/e9/bb52e9149a3188a74e63ac2ba4adf5cb.jpg"  class="img-fluid" alt="...">
                         </div>
                         <hr>
+
+                        <!--Reservacion del ticket a comprar-->
+                            <div class="mb-3">
+                                <label for="ticket_reservation">Día de la reservación: </label>
+                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                            </div>
 
                         <!--Rutas-->
                         <div class="mb-3">
@@ -36,7 +40,7 @@
                     <br>
 
                     <!--Info de la ruta-->
-                    <p id="available">Ticket Disponible: 16</p>
+                    <p id="available">Ticket Disponible: None/16</p>
                     <p id="price">Precio: 00.00</p>
                     
 
@@ -54,11 +58,7 @@
                                     {% endfor %}
                                 </select>
                             </div>
-                            <!--Reservacion del ticket a comprar-->
-                            <div class="mb-3">
-                                <label for="ticket_reservation">Día de la reservación: </label>
-                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
-                            </div>
+                            
                         </div>
                         <div class="col">
                             <div class="text-center">
@@ -72,7 +72,7 @@
                                         <h5 class="modal-title" id="exampleModalLabel" >Registrar Cliente</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"">
+                                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
                                          <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
                                             {% csrf_token %}
                                             <div class="mb-3">
@@ -243,13 +243,20 @@
 
                 var $me = $(this)
                 var url = $me.data('url')
-                var ctx = {'route': $('#route').val()}
-
+                var ctx = {'route': $('#route').val(), 'ticket_reservation': $("#ticket_reservation").val()}
+               
                 $.get(url, ctx, function(response){
 
                     //available_tickets
 
                     $('#price').text(`Precio: ${response.precio}`)
+                    if (response.tickets > 1) {
+                        $('#available').text(`Ticket Disponible: ${response.tickets - 1}/15`)
+                    } else{ 
+                        $('#available').text(`Ticket Disponible: 0/15`)
+                    }
+                    
+                   
                     $('.removed').load()
                 }, 'json')
 
@@ -289,7 +296,7 @@
                 $('#confirm-ticket').modal('show')
 
                 $.post(url, ctx, function(response){
-                    alert(response.msg)
+                
                     if(response.error){
                         $('.#confirm-ticket').find('.modal-body').html(response.error)
                     } else {
@@ -337,8 +344,8 @@
 
                 $.post(url, ctx, function(response){
                     
-                    alert("se realizo la compra correctamente")
                     $('#confirm-ticket').modal('hide')
+                    location.reload()
                     
                 })
             })

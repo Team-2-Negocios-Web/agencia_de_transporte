@@ -69,31 +69,33 @@
     <form action="{% url 'transportAgency:income_view' %}" method="post">
         {% csrf_token %}
         <div class="input-group mb-3">
-            <label for="" style="padding: 7px; font-size: 20px;">Desde: </label>
+            <label for="" style="padding: 5px; font-size: 18px;">Desde: </label>
             <input type="date" class="form-control" name="ticket-reservation-from" id="ticket-reservation-from"
                 placeholder="">
-            <label for="" style="padding: 7px; font-size: 20px;">Hasta: </label>
+            <label for="" style="padding: 5px; font-size: 18px;">Hasta: </label>
             <input type="date" class="form-control" name="ticket-reservation-to" id="ticket-reservation-to"
                 placeholder="">
 
-            <button id="button-graph" class="btn btn-primary" data-token="{{csrf_token}}"
+            <button id="button-graph" class="btn" data-token="{{csrf_token}}"
                 data-url="{% url 'transportAgency:income_view' %}">
                 Buscar
             </button>
         </div>
     </form>
 
-    <div id="show-buttons" style="display:none">
-        <button class="btn btn-primary" id="button-grafico">Grafico</button>
-        <button class="btn btn-primary" id="button-tabla">Tabla</button>
+    <div id="show-buttons" style="display:none;text-align:center;margin-bottom:20px ;margin-top:20px ;">
+        <button class="btn" id="button-grafico">Grafico</button>
+        <button class="btn" id="button-tabla">Tabla</button>
     </div>
-    <br>
+    
     <div class="row">
         <div class="col">
-            <div class="shadow" id="graph"></div>
+            <div class="shadow" id="graph" style="border-radius:5px"></div>
             <div id="table-incomes" style="display:none"></div>
         </div>
     </div>
+    <br>
+    <br>
 
 
 
@@ -142,11 +144,12 @@
 
                         Highcharts.chart('graph', {
                             title: {
-                                text: 'Ganancias de las rutas por fecha'
+                                text: 'Ganancias de las rutas por fecha',
+                                
                             },
                             colors: ['#357376'],
                             xAxis: {
-                                categories: label
+                                categories: label,
                             },
                             series: [{
                                 name: 'Ganancia: ',

@@ -96,12 +96,23 @@ def ticket(request):
         time_today = datetime.now()
 
         #conseguir el id de la ruta
-        id_route = request.GET.get('route')
+        id_route = int(request.GET.get('route'))
+        ticket_reservation = request.GET.get('ticket_reservation')
         route = Route.objects.filter(pk=id_route).first()
+
+        quantity_ticket = Ticket.objects.values().filter(routes=id_route, ticket_reservation=ticket_reservation).annotate(passenger=Count('client')).order_by()
+        
+        cont = 0
+        for qt in quantity_ticket:
+            cont += 1
+      
+
+        
+    
 
         precio = route.precio
     
-        return JsonResponse({'precio': precio,})
+        return JsonResponse({'precio': precio, 'tickets': cont})
         
     elif request.is_ajax() and request.method == "POST":
         #route=76&client=1&quantity=2&client0=1&client1=1&ticket_reservation
@@ -265,7 +276,7 @@ def list_buses(request):
                                 <tr>
                                     <td>{p.client}</td>
                                     <td>{p.companion}</td>
-                                    <td>{p.seating}</td>
+                                    <strong><td>{p.seating}</td></strong>
                                 <tr>
                             '''
                 #else:
