@@ -47,7 +47,9 @@
                             <!--Cliente-->
                             <div class="mb-3">
                                 <label for="client">Cliente: </label>
+                               
                                 <select name="client" id="client" class="form-select form-control-chosen">
+                                    <option value="">Seleccione un cliente</option>
                                     {% for c in clients  %}
                                         <option value="{{c.pk}}">{{c}}</option>
                                     {% endfor %}
@@ -92,7 +94,7 @@
                                                 <label for="phone" class="col-form-label">Teléfono:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-phone form-control-feedback" style="color:#357376;"></i>
-                                                    <input id="phone" name="phone" type="tel" class="form-control" placeholder="Escriba su número teléfonico">
+                                                    <input id="phone" name="phone" type="number" class="form-control" placeholder="Escriba su número teléfonico">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -111,7 +113,7 @@
                                         id="button-register" 
                                         data-url="{% url 'transportAgency:client_view' %}"
                                         type="button"
-                                        data-action="confirm" 
+                                 
                                         class="btn btn-primary">Registrar
                                         
                                         </button>
@@ -149,7 +151,7 @@
                             data-action="confirm" 
                             data-url="{% url 'transportAgency:ajax_view' %}"
                             data-bs-toggle ="modal"
-                            data-bs-target="#confirm-ticket"
+                    
                         >
                             Confirmar compra
                         </button>
@@ -174,7 +176,7 @@
                                         id="button-reserve" 
                                         data-action="finish" 
                                     >
-                                        Proceso de compra
+                                        Realizar la compra
                                     </button>
                                 </div>
                             </div>
@@ -277,10 +279,28 @@
                     
                 }
 
+                if (!route.val().trim()){
+                    notify('error', 'Seleccione su ruta');
+                    route.focus();
+                    return;
+                }
+
+                if(!client.val().trim()){
+                    notify('error', 'Seleccione el cliente');
+                    client.focus();
+                    return;
+                }
+
+                if(!date_ticket.val().trim()){
+                    notify('error', 'Seleccione la fecha de viaje');
+                    date_ticket.focus();
+                    return;
+                }
+              
+
                 $('#confirm-ticket').modal('show')
 
                 $.post(url, ctx, function(response){
-                    alert(response.msg)
                     if(response.error){
                         $('.modal').find('.modal-body').html(response.error)
                     } else {
@@ -316,6 +336,8 @@
                     'action'             : action,
                 }
 
+                
+                
                 if (quantity.val() > 1) {
                     for(var i = 0; i < quantity.val() - 1; i++){
                         value = `client${i}` 
@@ -323,6 +345,8 @@
                     }
 
                 }
+
+
 
                 console.log(ctx)
                 $.post(url, ctx, function(response){
@@ -377,6 +401,12 @@
                 {
                     notify('error', 'Ingrese su telefono');
                     $phone.focus();
+                    return;
+                }
+
+                if (isNaN($phone.val().trim())){
+                    notify('error', 'El valor ingresado no es válido');
+                    $phone.val('').focus();
                     return;
                 }
 

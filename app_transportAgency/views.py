@@ -126,7 +126,7 @@ def ticket(request):
             trip = TripScheduling.objects.filter(date_trip=convert_reservation_to_date, routes=route).first()
 
             if convert_reservation_to_date < today:
-                return JsonResponse({'msg' : "No puedes escoger una fecha menor que esta"})
+                return JsonResponse({'error' : "No puedes escoger una fecha menor que esta"})
 
             if trip:
                 if not trip.state == "1":
@@ -157,7 +157,7 @@ def ticket(request):
             
             if convert_reservation_to_date < today:
                 
-                return JsonResponse({'msg' : "No puedes escoger una fecha menor que esta"})
+                return JsonResponse({'error' : "No puedes escoger una fecha menor que esta"})
             else: 
             # Crear el ticket
 
@@ -310,7 +310,7 @@ def cliente(request):
             client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
             client.save()
 
-            return JsonResponse({'msj': 'La vista responde con exito'})   
+            return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
     return render(request, 'transportAgency/ticket.html')
     
 
