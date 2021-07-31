@@ -5,7 +5,6 @@
 {% block title %}Listado de buses{% endblock title %}
 
 {% block css %}
-    <link href="{% static 'transportAgency/css/busescards.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
 {% endblock %}
 
@@ -56,28 +55,6 @@
                         </tbody>
                     </table>
                 
-                    <!-- <div class="col-lg-4">
-                        <div class="card" style="width: 18rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">{{b.bus__name_bus}}</h5>
-                                <p class="card-text">Fecha de salida: <span style = "color: rgb(207, 77, 77);"> {{b.ticket_reservation }} </span></p>
-                                <p class="card-text">Cantidad de pasajeros: <span style="color: rgb(99, 160, 9);">{{b.passanger}}/15</span></p>
-                
-                                <button 
-                                    type="button" 
-                                    class="btn btn-info button_passenger "   
-                                    data-bs-toggle="modal"
-                                    data-bs-target=".passenger"
-                                    data-url="{% url 'transportAgency:list_buses' %}" 
-                                    data-bus="{{b.bus}}"  
-                                    data-reservation="{{b.ticket_reservation | date:'Y-m-d'}}" 
-                                    data-token="{{csrf_token }}"
-                                > 
-                                    Ver pasajeros 
-                                </button>
-                            </div>
-                        </div>   
-                    </div> -->
                     <div class="modal" tabindex="-1" id="passenger">
                         <div class="modal-dialog modal-dialog-centered"">
                             <div class="modal-content">
