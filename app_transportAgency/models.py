@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Client(models.Model):
+    dni        = models.CharField(max_length=13,null=True, blank=True)
     first_name = models.CharField(max_length=50)
     last_name  = models.CharField(max_length=50)
     phone      = models.CharField(max_length=50)

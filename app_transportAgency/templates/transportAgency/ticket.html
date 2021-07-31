@@ -50,7 +50,7 @@
                                 <select name="client" id="client" class="form-select form-control-chosen">
                                     <option value="">Seleccione al consumidor final</option>
                                     {% for c in clients  %}
-                                        <option value="{{c.pk}}">{{c}}</option>
+                                        <option value="{{c.pk}}">{{c.dni}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -75,6 +75,13 @@
                                     <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"">
                                          <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
                                             {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="dni" class="col-form-label">Numero de identidad:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-id-card form-control-feedback" aria-hidden="true" style="color:#357376;"></i>
+                                                    <input id="dni" name="dni" type="text" class="form-control" placeholder="Escriba su nombre">
+                                                </div>
+                                            </div>
                                             <div class="mb-3">
                                                 <label for="first-name" class="col-form-label">Nombre:</label>
                                                 <div class="form-group has-feedback">
@@ -214,7 +221,7 @@
                                         <select name="client${i}" id="client${i}"  class="form-select form-control-chosen">
                                             <option value="">Seleccione a su acompañante</option>
                                             {% for c in clients  %}
-                                                <option value="{{c.pk}}">{{c}}</option>
+                                                <option value="{{c.pk}}">{{c.dni}}</option>
                                             {% endfor %}
                                         </select>
                                 </div>
@@ -346,11 +353,13 @@
             event.preventDefault()
 
             //Variables
+            alert('sdsd')
 
             var $me = $(this)
             var url = $me.data('url')
             var token = $me.data('token')
-          
+
+            dni = $('#dni')
             first_name = $('#first-name')
             last_name = $('#last-name')
             phone = $('#phone')
@@ -358,6 +367,7 @@
            
             var ctx = {
                 'csrfmiddlewaretoken': token,
+                'dni'                : dni.val(),
                 'first_name'         : first_name.val(),
                 'last_name'          : last_name.val(),
                 'phone'              : phone.val(),
@@ -366,7 +376,7 @@
       
                 
                 $.post(url, ctx, function(response){
-   
+                        alert(response.msj)
                 },'json')       
         })
 

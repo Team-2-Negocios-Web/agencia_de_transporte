@@ -302,12 +302,17 @@ def income(request):
 @login_required()
 def cliente(request):
     if request.is_ajax() and request.method == 'POST':
+        dni = request.POST.get('dni')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         phone = request.POST.get('phone')
         email = request.POST.get('email')
 
-        client = Client(first_name = first_name, last_name = last_name, phone = phone, email = email)
+
+        dni_exists = Client.objects.filter(dni=dni)
+        if dni_exists:
+            return JsonResponse({'msj': f'El numero de identidad de {dni} ya existe'})
+        client = Client(dni=dni,first_name = first_name, last_name = last_name, phone = phone, email = email)
         client.save()
 
         
