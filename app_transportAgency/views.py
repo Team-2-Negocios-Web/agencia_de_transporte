@@ -348,6 +348,9 @@ def details_ticket(request):
     return render(request, 'transportAgency/detailsTicket.html', {
         'tickets' : tickets,
     })
+
+def customer(request):
+    return render(request, 'transportAgency/customer.html')
      
 def about(request):
     return render(request, 'transportAgency/about.html')

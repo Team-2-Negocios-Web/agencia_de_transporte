@@ -4,6 +4,9 @@
 
 {% block title %}Ticket{% endblock  %}
 
+{% block css %}
+    <link rel="stylesheet" href="{% static 'transportAgency/css/ticket.css' %}">
+{% endblock %}
 
 {% block container %}
     <div class="container">
@@ -13,66 +16,170 @@
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
                     {% csrf_token %}
-                    <!--Rutas-->
-                
+                        <div class="mb-3" style="width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;">
+                                <img src="https://i.pinimg.com/originals/bb/52/e9/bb52e9149a3188a74e63ac2ba4adf5cb.jpg"  class="img-fluid" alt="...">
+                        </div>
+                        <hr>
+
+                        <!--Rutas-->
                         <div class="mb-3">
                             <label for="route">Rutas: </label>
                             <select name="route" id="route" class="form-select form-control-chosen">
                                 <option value="">Seleccione un ruta</option>
                                 {% for t in trips  %}
-                                    <option value="{{t.routes.pk}}">{{t}}</option>
+                                    <option value="{{t.pk}}">{{t}}</option>
                                     
                                 {% endfor %}
                             </select>
-                            <button data-url="{% url 'transportAgency:ajax_view' %}"  type="button" id="button_route"  class="btn btn-primary mt-2">Buscar ruta</button>
+                            <button data-url="{% url 'transportAgency:ajax_view' %}"  style="color:#fff; background-color: #357376;" type="button" id="button_route"  class="btn btn-success mt-2 pull-right">Buscar ruta</button>
                         </div>
-                    
                     <br>
 
                     <!--Info de la ruta-->
                     <p id="available">Ticket Disponible: 16</p>
-                    <p id="price">Precio: 34</p>
+                    <p id="price">Precio: 00.00</p>
                     
 
                     <hr>
 
-                    <!--Reservacion del ticket a comprar-->
-                        <div class="mb-3">
-                            <label for="ticket_reservation">Dia de la reservacion: </label>
-                            <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                    <div class="row">
+                        <div class="col">
+                            <!--Cliente-->
+                            <div class="mb-3">
+                                <label for="client">Cliente: </label>
+                                <select name="client" id="client" class="form-select form-control-chosen">
+                                    {% for c in clients  %}
+                                        <option value="{{c.pk}}">{{c}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <!--Reservacion del ticket a comprar-->
+                            <div class="mb-3">
+                                <label for="ticket_reservation">Día de la reservación: </label>
+                                <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
+                            </div>
                         </div>
+                        <div class="col">
+                            <div class="text-center">
+                                <button style="color:#fff; background-color: #357376;" type="button" class="btn btn-success mt-4 pull-right" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Registrar Cliente</button>
+                            </div>
+                       
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header" style="color:#fff; background-color: #357376;">
+                                        <h5 class="modal-title" id="exampleModalLabel" >Registrar Cliente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"">
+                                         <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <label for="first-name" class="col-form-label">Nombre:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-user form-control-feedback" style="color:#357376;"></i>
+                                                    <input id="first-name" name="first-name" type="text" class="form-control" placeholder="Escriba su nombre">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="last-name" class="col-form-label">Apellido:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-user form-control-feedback" style="color:#357376;"></i>
+                                                    <input id="last-name" name="last-name" type="text" class="form-control" placeholder="Escriba su apellido">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="phone" class="col-form-label">Teléfono:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-phone form-control-feedback" style="color:#357376;"></i>
+                                                    <input id="phone" name="phone" type="tel" class="form-control" placeholder="Escriba su número teléfonico">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="col-form-label">Correo:</label>
+                                                <div class="form-group has-feedback">
+                                                    <i class="fa fa-envelope form-control-feedback" style="color:#357376;"></i>
+                                                    <input id="email" name="email" type="email" class="form-control" placeholder="Escriba su correo">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                        <button
+                                        data-token="{{csrf_token}}" 
+                                        id="button-register" 
+                                        data-url="{% url 'transportAgency:client_view' %}"
+                                        type="button"
+                                        style="color:#fff; background-color: #357376;"
+                                        class="btn btn-success">Registrar
+                                        
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!--Cliente-->
-                    <div class="mb-3">
-                        <label for="client">Cliente</label>
-                        <select name="client" id="client" class="form-select">
-                            {% for c in clients  %}
-                                <option value="{{c.pk}}">{{c}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-    
-                    <br>
-                 
-                    <hr >
-            
-        
-                     <!--Tickets a comprar-->
-                        <div class="mb-3">
-                            <label for="quantity">Cuantos tickets desea comprar</label>
-                            <input type="number" class="form-control" value='1' min='1' name="quantity" id="quantity" placeholder="">
-                            <button type="button" class="btn btn-primary mt-2" id="inputs_id">Generar inputs</button>
-                            <br>
                         </div>
-                         <div class="inputs_clients"></div>
+                    </div>
+                    <hr>
+                    <!--Tickets a comprar-->
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label for="quantity">Cuantos tickets desea comprar: </label>
+                                    <input type="number" class="form-control" value='1' min='1' name="quantity" id="quantity" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="text-center">
+                                    <button style="color:#fff; background-color: #357376;" type="button" class="btn btn-success mt-4 pull-right" id="inputs_id">Generar Cupos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="inputs_clients"></div>
                         <br>
                         <hr>
-
-
-                    <button>Hello</button>
-                
+                        <button 
+                            style="color:#fff; background-color: #357376;"
+                            data-token="{{csrf_token}}" 
+                            class="btn btn-success pull-right" 
+                            id="button-confirm" 
+                            data-action="confirm" 
+                            data-url="{% url 'transportAgency:ajax_view' %}"
+                            data-bs-toggle ="modal"
+                            data-bs-target="#confirm-ticket"
+                        >
+                            Confirmar compra
+                        </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="confirm-ticket" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="color:#fff; background-color: #357376;">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirmar la compra</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body" style="color:#fff; background-color: #6BA8A9;"></div>
+                                <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                    <button 
+                                        style="color:#fff; background-color: #357376;"
+                                        data-token="{{csrf_token}}" 
+                                        data-url="{% url 'transportAgency:ajax_view' %}" 
+                                        class="btn btn-success" 
+                                        id="button-reserve" 
+                                        data-action="finish" 
+                                    >
+                                        Proceso de compra
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-5"></div>
                 </form>
-            </div>
         </div>
     </div>
     
@@ -92,8 +199,6 @@
 
             $(addButtonClient).click(function(event){
                 event.preventDefault()
-
-                
                 
                 //Agregar la cantidad de inputs segun la cantidad de boletos
                 $('.removed').remove()
@@ -139,7 +244,6 @@
 
             })
 
-<<<<<<< HEAD
 
 
             //<================== Parte para la evaluacion de la compra en del ticket por Ajax POST ================> 
@@ -229,9 +333,38 @@
             })
 
             
-=======
->>>>>>> 080ade97af638e076ba333ed92ec2df877f3cef1
     })
+    //Programacion de cliente
+   
+        var $buttonRegister = $('#button-register')
+
+        $buttonRegister.click(function(event){
+            event.preventDefault()
+
+            //Variables
+
+            var $me = $(this)
+            var url = $me.data('url')
+            var token = $me.data('token')
+          
+            first_name = $('#first-name')
+            last_name = $('#last-name')
+            phone = $('#phone')
+            email = $('#email')
+           
+            var ctx = {
+                'csrfmiddlewaretoken': token,
+                'first_name'         : first_name.val(),
+                'last_name'          : last_name.val(),
+                'phone'              : phone.val(),
+                'email'              : email.val()}
+
+      
+                
+                $.post(url, ctx, function(response){
+   
+                },'json')       
+        })
 
     </script>
 {% endblock js %}
