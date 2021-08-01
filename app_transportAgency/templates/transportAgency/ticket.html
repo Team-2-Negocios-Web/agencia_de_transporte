@@ -10,9 +10,6 @@
 
 {% block container %}
     <div class="container">
-
-
-        <a href="{% url 'transportAgency:details_ticket' %}" class="btn btn-sm btn-primary">Ver tickets</a>
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
                     {% csrf_token %}
@@ -154,6 +151,7 @@
                         >
                             Confirmar compra
                         </button>
+                        <a href="{% url 'transportAgency:details_ticket' %}" class="btn" style="background-color: #357376 ; color: white;">Ver tickets</a>
                     <!-- Modal -->
                     <div class="modal fade" id="confirm-ticket" >
                         <div class="modal-dialog">
