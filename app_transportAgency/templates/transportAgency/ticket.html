@@ -10,7 +10,6 @@
 
 {% block container %}
     <div class="container">
-
         <div class="shadow col-8 mt-5 mb-5"  style="padding:25px;margin:auto;">
                 <form action="{% url 'transportAgency:ajax_view' %}" method="post" id="frm-ticket">
                     {% csrf_token %}
@@ -162,7 +161,7 @@
                         >
                             Confirmar compra
                         </button>
-
+                        <a href="{% url 'transportAgency:details_ticket' %}" class="btn" style="background-color: #357376 ; color: white;">Ver tickets</a>
                     <!-- Modal -->
                 
                     <div class="modal fade" id="confirm-ticket" >
@@ -246,6 +245,19 @@
 
                 var $me = $(this)
                 var url = $me.data('url')
+
+                if(!$("#ticket_reservation").val().trim()){
+                    notify('error', 'Seleccione la fecha de viaje');
+                    $("#ticket_reservation").focus();
+                    return;
+                }
+
+                if (!$('#route').val().trim()){
+                    notify('error', 'Seleccione su ruta');
+                    $('#route').focus();
+                    return;
+                }
+
                 var ctx = {'route': $('#route').val(), 'ticket_reservation': $("#ticket_reservation").val()}
                
                 $.get(url, ctx, function(response){
@@ -296,6 +308,12 @@
                     
                 }
 
+                if(!date_ticket.val().trim()){
+                    notify('error', 'Seleccione la fecha de viaje');
+                    date_ticket.focus();
+                    return;
+                }
+
                 if (!route.val().trim()){
                     notify('error', 'Seleccione su ruta');
                     route.focus();
@@ -308,11 +326,7 @@
                     return;
                 }
 
-                if(!date_ticket.val().trim()){
-                    notify('error', 'Seleccione la fecha de viaje');
-                    date_ticket.focus();
-                    return;
-                }
+                
               
 
                 $('#confirm-ticket').modal('show')
