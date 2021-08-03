@@ -8,19 +8,20 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'transportAgency/css/routes.css' %}">
 <link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
 {% endblock css %}
 
 
 
 {% block container %}
+<div class="row justify-content-center">
+    <div class="title">
+        <h1>Registro de <span style="color: #6BA8A9;">Rutas</span></h1>
+    </div>
+</div>
 <div class="container-login100">
     <div class="wrap-login100">
         <form class="login100-form validate-form" action="{% url 'login_view' %}" method="post">
-            <div class="row justify-content-center">
-                <div class="title">
-                    <h1>Registro de <span style="color: #6BA8A9;">Rutas</span></h1>
-                </div>
-            </div>
             <label for="">Origen:</label>
             <div class="wrap-input100 validate-input">
                 <input autofocus name="origen" class="input100" type="text" placeholder="Origen">
@@ -47,6 +48,28 @@
                 <button class="login100-form-btn" type="submit">Registrar Ruta</button>
             </div>
         </form>
+
+        <!--- Tabla -->
+    <table class="rwd-table">
+        <thead>
+            <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Tiempo Aproximado</th>
+                <th>Precio</th>
+                <th>Bus</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    <td data-th="origen"></td>
+                    <td data-th="destino"></td>
+                    <td data-th="tiempoaprox"></td>
+                    <td data-th="precio"></td>
+                    <td  data-th="bus"></td>
+                </tr>
+        </tbody>
+    </table>
     </div>
 </div>
 {% endblock container %}
