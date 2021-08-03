@@ -162,7 +162,12 @@ def ticket(request):
             convert_reservation_to_date = datetime.strptime(ticket_reservation, '%Y-%m-%d').date()
 
             route   = Route.objects.get(pk=id_trip)
-            client = Client.objects.get(pk=id_client)        
+            client = Client.objects.get(pk=id_client)   
+
+            print(id_trip)                
+            print(route.bus)
+
+            employee = Client.objects.get(pk=request.user.client.pk)     
             
             if convert_reservation_to_date < today:
                 
@@ -204,6 +209,7 @@ def ticket(request):
                                 print(f"Este asiento no tiene cupo {date_reservation.seating}")
                                 tickets = Ticket (
                                     client             = client,
+                                    employee           = employee,
                                     total_price        = route.precio,
                                     ticket_quantity    = quantity,
                                     ticket_reservation = convert_reservation_to_date,
@@ -234,6 +240,7 @@ def ticket(request):
                                             print(f"Este asiento no tiene cupo {date_reservation.seating}")
                                             tickets = Ticket (
                                                 client             = client,
+                                                employee           = employee,
                                                 companion          = acomp,       
                                                 total_price        = route.precio,
                                                 ticket_quantity    = 1,

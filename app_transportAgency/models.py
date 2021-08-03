@@ -57,7 +57,7 @@ class Route(models.Model):
     bus        = models.ForeignKey(Bus, on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
-        return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule}'
+        return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule} id: {self.pk} bus: {self.bus}'
 
 class TripScheduling(models.Model):
     # ==> id: 27
