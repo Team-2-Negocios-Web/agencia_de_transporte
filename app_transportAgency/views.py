@@ -396,7 +396,7 @@ def edit_customer(request, id):
 @login_required()
 def delete_customer(request, id):
     Client.objects.get(pk=id).delete()
-    return redirect(reverse('customer'))
+    return HttpResponseRedirect('/transportAgency/customer/')
 
 
 
