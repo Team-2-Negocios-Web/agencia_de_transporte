@@ -96,6 +96,8 @@
                     <th>Precio</th>
                     <th>Tiempo aproximado</th>
                     <th>Horario</th>
+                    <th>Bus</th>
+                    <th>Accion</th>
                 </thead>
 
                 <tbody>
@@ -106,6 +108,10 @@
                             <td>{{r.precio}}</td>
                             <td>{{r.route_time}} horas</td>
                             <td>{{r.schedule}}</td>
+                            <td>{{r.bus}}</td>
+                            <td>
+                                <a href="#" class="text-success"><span class="fas fa-edit"></span></a>
+                            </td>
                         
                         </tr>
                     {% endfor %}
@@ -203,7 +209,7 @@
 
                     }
                     
-                })
+                },'json')
 
             })
             

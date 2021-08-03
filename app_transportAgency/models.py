@@ -57,7 +57,7 @@ class Route(models.Model):
     bus        = models.ForeignKey(Bus, on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self):
-        return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule} id: {self.pk} bus: {self.bus}'
+        return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule} '
 
 class TripScheduling(models.Model):
     # ==> id: 27
@@ -82,7 +82,7 @@ class Ticket(models.Model):
     creation_date      = models.DateTimeField(auto_now_add=True,blank=True, null=True )
     employee           = models.ForeignKey(Client,related_name="employee_ticket", on_delete=models.CASCADE, blank=True, null=True)
     client             = models.ForeignKey(Client,related_name="cliente_ticket", on_delete=models.CASCADE, blank=True, null=True)
-    companion          = models.ForeignKey(Client,related_name="companion_tciket", on_delete=models.CASCADE, blank=True, null=True)
+    companion          = models.ManyToManyField(Client,related_name="companion_ticket", null=True, blank=True)
     ticket_reservation = models.DateField(blank=True, null=True)
     ticket_available   = models.IntegerField(default=16, blank=True, null=True)
     ticket_quantity    = models.IntegerField(blank=True, null=True) # 3
@@ -90,7 +90,7 @@ class Ticket(models.Model):
     routes             = models.ForeignKey(Route,on_delete=models.CASCADE, null=True, blank=True)
     trips              = models.ForeignKey(TripScheduling, on_delete=models.CASCADE, null=True, blank=True) #27 ==>
     bus                = models.ForeignKey(Bus, on_delete=models.CASCADE, null=True, blank=True)
-    seating            = models.ForeignKey(Seating,on_delete=models.CASCADE, blank=True, null=True)
+    seating            = models.ManyToManyField(Seating, null=True, blank=True)
 
     def __str__(self):
         return f'Fecha de reservacion : {self.ticket_reservation}  {self.pk} '

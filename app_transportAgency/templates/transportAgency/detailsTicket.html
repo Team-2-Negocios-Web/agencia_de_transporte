@@ -35,6 +35,7 @@
                 <th>Fecha de reservacion</th>
                 <th>Cliente</th>
                 <th>Acompañante</th>
+                <th>Cantidad de boletos</th>
                 <th>Precio Total</th>
                 <th>Ruta</th>
                 <th>Bus</th>
@@ -43,42 +44,36 @@
         </thead>
         <tbody>
             {% for t in tickets %}
-            {% if t.bus %}
-            {% if t.client and t.companion %}
-            <tr>
-                <td data-th="reservacion">{{t.ticket_reservation}}</td>
-                <td>-</td>
-                {% if t.companion %}
-                <td data-th="acompañante">{{t.companion}}</td>
 
-                {% else %}
-                <td>-</td>
+                {% if t.bus %}
+                    <tr>
+                        <td data-th="reservacion">{{t.ticket_reservation}}</td>
+                        <td>{{t.client}}</td>
+
+                        {% if t.companion %}
+                            <td data-th="acompañante">
+                                {% for a in t.companion.all  %}
+                                    <p>{{a}}</p>
+                                {% endfor %}
+                            </td>
+                        
+                        {% else %}
+
+                        <td>-</td>
+
+                        {% endif %}    
+                        <td>{{t.ticket_quantity}}</td>
+                        <td data-th="preciot">{{t.total_price}}</td>
+                        <td data-th="ruta">{{t.routes}}</td>
+                        <td data-th="bus">{{t.bus}}</td>
+                        <td>
+                        {% for s in t.seating.all  %}    
+                            <p>{{s}}</p>
+                        {% endfor %}
+                        </td>
+
+                    </tr>
                 {% endif %}
-                <td data-th="preciot">{{t.total_price}}</td>
-                <td data-th="ruta">{{t.routes}}</td>
-                <td data-th="bus">{{t.bus}}</td>
-                <td data-th="asiento">{{t.seating}}</td>
-
-            </tr>
-
-            {% else %}
-            <tr>
-                <td data-th="reservacion">{{t.ticket_reservation}}</td>
-                <td data-th="cliente">{{t.client}}</td>
-                {% if t.companion %}
-                <td data-th="acompañante">{{t.companion}}</td>
-
-                {% else %}
-                <td>Nulo</td>
-                {% endif %}
-                <td data-th="preciot">{{t.total_price}}</td>
-                <td data-th="ruta">{{t.routes}}</td>
-                <td data-th="bus">{{t.bus}}</td>
-                <td data-th="asiento">{{t.seating}}</td>
-            </tr>
-
-            {% endif %}
-            {% endif %}
             {% empty %}
             <tr>
                 <td colspan=7>No hay</td>
