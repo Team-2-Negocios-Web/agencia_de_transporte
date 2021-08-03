@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}Registro de Rutas{% endblock %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'transportAgency/css/routes.css' %}">
+{% endblock css %}
+
+
+
+{% block container %}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" action="{% url 'login_view' %}" method="post">
+                <span class="login100-form-title p-b-43">
+                    Registro de Rutas
+                </span>
+                <label for="">Origen:</label>
+                <div class="wrap-input100 validate-input">
+                    <input autofocus name="origen" class="input100" type="text" placeholder="Origen">
+                </div>
+                <label for="">Destino:</label>
+                <div class="wrap-input100 validate-input">
+                    <input autofocus name="destino" class="input100" type="text" placeholder="Destino">
+                </div>
+                <label for="">Tiempo Aproximado</label>
+                <div class="wrap-input100 validate-input">
+                    <input autofocus name="tiempoaprox" class="input100" type="text" placeholder="8">
+                </div>
+                <label for="">Precio: </label>
+                <div class="wrap-input100 validate-input">
+                    <input autofocus name="precio" class="input100" type="text" placeholder="850">
+                </div>
+                <label for="bus">Bus: </label>
+                <div class="mb-3">
+                    <select name="bus" id="bus" class="form-select form-control-chosen">
+                        <option value="">Seleccione el bus que hara la ruta</option> 
+                    </select>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" type="submit">Registrar Ruta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock container %}
