@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import JsonResponse, HttpResponse, Http404, request
 from django.contrib.auth.decorators import login_required
 from datetime import *
 import datetime as dt
@@ -142,9 +142,10 @@ def ticket(request):
             
 
             html = f'''
-                <p>Nombre del Client: {client}</p>
+                <p>Empleado: {request.user.client}</p>
+                <p>Nombre del Cliente: {client}</p>
                 <p> Ruta: {route}</p>
-                <p>Acompañantes: {quantity}</p>
+                <p>Cantidad de tickets: {quantity}</p>
                 <p>Precio: {route.precio}</p>
                 <p>Precio Total: {route.precio * quantity}</p>
 
@@ -183,14 +184,14 @@ def ticket(request):
                 count_seating = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).count()
 
                 if count_seating > 16:
-                    return HttpResponse("Ya no hay cupos")
+                    return JsonResponse({'error': "Ya no hay cupos"})
                 else:
                     # se crea el ticket del cliente principal
                     if date_reservation:
 
                         repeating_client = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
                         if repeating_client.exists():
-                            return HttpResponse("Este cliente ya tiene un asiento asignado")
+                            return HttpResponse("Este cliente ya tiene un asiento asignado para este viaje")
 
                         seats = Seating.objects.all()
                         for s in seats[::-1]:
@@ -245,7 +246,6 @@ def ticket(request):
                                             break 
 
                 return render(request, 'transportAgency/ticket.html')
-
 
 @login_required()
 def list_buses(request):
@@ -323,7 +323,6 @@ def cliente(request):
         return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
     return render(request, 'transportAgency/ticket.html')
     
-
 @login_required()
 def cancel_trip(request):
 

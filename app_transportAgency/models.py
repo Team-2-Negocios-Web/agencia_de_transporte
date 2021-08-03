@@ -80,6 +80,7 @@ class TripScheduling(models.Model):
 
 class Ticket(models.Model):
     creation_date      = models.DateTimeField(auto_now_add=True,blank=True, null=True )
+    employee           = models.ForeignKey(Client,related_name="employee_ticket", on_delete=models.CASCADE, blank=True, null=True)
     client             = models.ForeignKey(Client,related_name="cliente_ticket", on_delete=models.CASCADE, blank=True, null=True)
     companion          = models.ForeignKey(Client,related_name="companion_tciket", on_delete=models.CASCADE, blank=True, null=True)
     ticket_reservation = models.DateField(blank=True, null=True)

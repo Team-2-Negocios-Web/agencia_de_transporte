@@ -1,31 +1,38 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}
     Rutas
 {% endblock title %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static 'transportAgency/css/routes.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+{% endblock css %}
 
 {% block container %}
+
+<div class="row justify-content-center m-4">
+    <div class="title">
+        <h1>Registro de <span style="color: #6BA8A9;">Rutas</span></h1>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
-
-     
-       
         <!--Tabla de formulario-->
-        <div class="col-4  mt-5">
+        <div class="col-4 ">
 
         <form action="{% url 'transportAgency:register_route' %}" method="post">
             {% csrf_token %}
 
-            <h3>Ingreso de cliente</h3>
-            <div class="row justify-content-end">
-            
-                <button class="btn col-5" style="background: #357376;color:#fff;" type="button" id="button-city">Agregar Cuidad</button>
-                
+            <div class="row justify-content-start mb-3">
+                <button class="btn col-5 " style="background: #357376;color:#fff;" type="button" id="button-city">Agregar Cuidad</button>
             </div>
+            
             <div class="mb-3">
                 <label for="origin">Cuidad Origen</label>
-                <select class="form-select" name="origin" id="origin">
+                <select class="form-select form-control-chosen" name="origin" id="origin">
                     <option value="">Seleccione una cuidad origen</option>
                     {% for c in cities %}
                         <option value="{{c.pk}}">{{c}}</option>
@@ -35,7 +42,7 @@
 
             <div class="mb-3">
                 <label for="destiny">Cuidad Destino</label>
-                <select class="form-select" name="destiny" id="destiny">
+                <select class="form-select form-control-chosen" name="destiny" id="destiny">
                     <option value="">Seleccione una cuidad destino</option>
                     {% for c in cities %}
                         <option value="{{c.pk}}">{{c}}</option>
@@ -55,7 +62,7 @@
 
             <div class="mb-3">
                 <label for="schedule">Horario</label>
-                <select class="form-select" name="schedule" id="schedule">
+                <select class="form-select form-control-chosen" name="schedule" id="schedule">
                     <option value="">Seleccione el horario de la ruta</option>
                     {% for s in schedules %}
                         <option value="{{s.pk}}">{{s}}</option>
@@ -67,7 +74,7 @@
 
             <div class="mb-3">
                 <label for="bus">Seleccione el bus</label>
-                <select class="form-select" name="bus" id="bus">
+                <select class="form-select form-control-chosen" name="bus" id="bus">
                     <option value="">Seleccione el bus</option>
                     {% for b in buses %}
                         <option value="{{b.pk}}">{{b}}</option>
@@ -75,14 +82,14 @@
                 </select>
             </div>
 
-            <button class="btn btn-primary" data-url="{% url 'transportAgency:register_route' %}" type="button" id="button-route" data-token="{{csrf_token }}" >Guardar ruta</button>
+            <button class="btn" style="background-color:#357376"data-url="{% url 'transportAgency:register_route' %}" type="button" id="button-route" data-token="{{csrf_token }}" >Guardar ruta</button>
         </form>
             
         </div>
 
         <!--Tabla de las rutas-->
         <div class="col-8">
-            <table class="table" style="text-align:center" >
+            <table class="rwd-table" >
                 <thead>
                     <th>Cuidad Origen</th>
                     <th>Cuidad Destino</th>
@@ -104,6 +111,8 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <br>
+            <br>
         </div>
     </div>
 </div>
@@ -119,16 +128,16 @@
             </div>
             <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
                 <form action="" method="post">
-                    <div class="mb-3">
-                        <label for="city">Ingrese el nombre de la cuidad</label>
-                        <input type="text" id="city" name="city" class="form-control">
+                    <div class="mb-3 ms-3">
+                        <label for="city" >Ingrese el nombre de la cuidad</label>
+                        <input type="text" id="city" name="city" class="form-control" placeholder="municipio, departamento">
                     </div>
                 </form>
             </div>
             <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" style="background-color:red;" data-bs-dismiss="modal">Cerrar</button>
                 <button style="color:#fff; background-color: #357376;" data-token="{{csrf_token}}"
-                    data-url="{% url 'transportAgency:register_city' %}" class="btn btn-success button-process" id="button-register-city">
+                    data-url="{% url 'transportAgency:register_city' %}" class="btn" id="button-register-city">
                     Guardar Cuidad
                 </button>
             </div>
