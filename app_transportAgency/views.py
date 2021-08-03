@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, Http404
+from django.http import JsonResponse, HttpResponse, Http404, request
 from django.contrib.auth.decorators import login_required
 from datetime import *
 import datetime as dt
@@ -246,7 +246,6 @@ def ticket(request):
 
                 return render(request, 'transportAgency/ticket.html')
 
-
 @login_required()
 def list_buses(request):
 
@@ -323,7 +322,6 @@ def cliente(request):
         return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
     return render(request, 'transportAgency/ticket.html')
     
-
 @login_required()
 def cancel_trip(request):
 
@@ -402,3 +400,7 @@ def customer(request):
 @login_required()     
 def about(request):
     return render(request, 'transportAgency/about.html')
+
+@login_required()
+def makeroutes(request):
+    return render(request, 'transportAgency/routes.html')

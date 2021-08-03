@@ -14,5 +14,6 @@ urlpatterns = [
     path('travels/', views.cancel_trip, name="cancel_trip"),
     path('details/', views.details_ticket, name="details_ticket"),
     path('customer/', views.customer, name="customer"),
+    path('makeroutes', views.makeroutes, name="makeroutes_view"),
 ]
  
