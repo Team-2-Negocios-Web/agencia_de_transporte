@@ -326,14 +326,22 @@
                     return;
                 }
 
-                
-              
+                for(var i = 0; i < quantity.val() - 1; i++){
+                    if(!$(`#client${i}`).val().trim()){
+                        notify(`'error', 'Seleccione el acompañante#${i}`);
+                        $(`#client${i}`).focus();
+                        return;
+                    }   
+                }
+
+            
 
                 $('#confirm-ticket').modal('show')
 
                 $.post(url, ctx, function(response){
+                    console.log(response.error)
                     if(response.error){
-                        $('.#confirm-ticket').find('.modal-body').html(response.error)
+                        $('#confirm-ticket').find('.modal-body').html(response.error)
                     } else {
                     
                         $('#confirm-ticket').find('.modal-body').html(response.code)

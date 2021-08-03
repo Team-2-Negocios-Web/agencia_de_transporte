@@ -7,7 +7,7 @@ from django.urls import reverse
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
-        return redirect(reverse('transportAgency:travels_view'))
+        return redirect(reverse('transportAgency:about'))
 
         
     return render(request, 'seguridad/index.html')
@@ -21,7 +21,7 @@ def log_in(request):
 
         if user is not None:
             login(request, user)
-            return redirect(reverse('transportAgency:travels_view'))
+            return redirect(reverse('transportAgency:about'))
         else:
             messages.add_message(request, messages.ERROR, 'El usuario o contraseña son incorrectos o su cuenta ha sido desactivada')
             return redirect('/')

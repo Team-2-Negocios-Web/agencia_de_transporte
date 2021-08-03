@@ -105,10 +105,6 @@ def ticket(request):
         cont = 0
         for qt in quantity_ticket:
             cont += 1
-      
-
-        
-    
 
         precio = route.precio
     
@@ -131,13 +127,13 @@ def ticket(request):
             convert_reservation_to_date = datetime.strptime(ticket_reservation, '%Y-%m-%d').date()
 
         
-            
             route   = Route.objects.get(pk=id_trip)
             client = Client.objects.get(pk=id_client)
 
             trip = TripScheduling.objects.filter(date_trip=convert_reservation_to_date, routes=route).first()
 
             if convert_reservation_to_date < today:
+                print("No puedes escoger una fecha menor que esta")
                 return JsonResponse({'error' : "No puedes escoger una fecha menor que esta"})
 
             if trip:
@@ -186,7 +182,7 @@ def ticket(request):
                 date_reservation = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).last()
                 count_seating = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).count()
 
-                if count_seating > 8:
+                if count_seating > 16:
                     return HttpResponse("Ya no hay cupos")
                 else:
                     # se crea el ticket del cliente principal
@@ -271,29 +267,27 @@ def list_buses(request):
         '''
         
         for p in passenger:
-    #<p> Comprador: {p.client}  Asiento: {p.seating}</p>
-                #if  p.companion == None:
-                    html += f'''
-                                <tr>
-                                    <td>{p.client}</td>
-                                    <td>{p.companion}</td>
-                                    <strong><td>{p.seating}</td></strong>
-                                <tr>
-                            '''
-                #else:
-                #   html += f'''
-                #              <div style="text-align:center;">
-                #                 <p>Comprador: {p.client}</p>
-                    #                <p>Acompañantes: {p.companion}</p>
-                    #               <p>Asiento: {p.seating}</p>
-                    #              <button type="button" class="btn btn-primary" data-bs-dismiss="modal" >Ver cliente</button>
-                    #         </div>
-                        #        <hr>
-                        #   '''
+            html += f'''
+                        <tr>
+                            <td>{p.client}</td>
+                            <td>{p.companion}</td>
+                            <strong><td>{p.seating}</td></strong>
+                        <tr>
+                    '''
+               
 
         return JsonResponse({'code':html})
 
-    buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').annotate(passanger=Count('client')).order_by()
+    q = request.GET.get('q')
+
+    if q:
+        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').filter(ticket_reservation=q).annotate(passanger=Count('client')).order_by()
+    
+    else:
+        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').annotate(passanger=Count('client')).order_by()
+    
+
+    
     return render(request, 'transportAgency/buses.html', {
         'buses' : buses,
     })
@@ -388,11 +382,20 @@ def details_ticket(request):
 def customer(request):
     
     if request.user.is_superuser:
-        customers = Client.objects.all()
-        return render(request, 'transportAgency/customer.html', {
-            'customers': customers,
 
-        })
+        q = request.GET.get('q')
+
+        if q:
+            customers = Client.objects.filter(dni__startswith=q) 
+
+        else:
+            customers = Client.objects.all()
+
+
+        return render(request, 'transportAgency/customer.html', {
+                'customers': customers
+            })
+        
     else:
         return HttpResponse("sdjhkhsd")
 

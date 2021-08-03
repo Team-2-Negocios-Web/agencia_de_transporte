@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Acerca de{% endblock %}
+{% block title %}Transport HN{% endblock %}
 {% block css %}
     <link rel="stylesheet" href="{% static 'transportAgency/css/ticket.css' %}">
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/carousel/">
@@ -19,7 +19,7 @@
                 <div class="container">
                     <div class="hm carousel-caption text-start" style="color: #fff;">
                         <h1>Tegucigalpa, Francisco Morazán</h1>
-                        <p><a class="btn btn-lg" href="#" style="color:#fff; background-color: #357376;">Ver Rutas</a></p>
+                        <p><a class="btn btn-lg" href="{% url 'transportAgency:travels_view' %}"style="color:#fff; background-color: #357376;">Ver viajes</a></p>
                     </div>
                 </div>
             </div>
@@ -28,7 +28,7 @@
                 <div class="container">
                     <div class="hm carousel-caption text-start" style="color: #fff;">
                         <h1>San Pedro Sula, Cortes</h1>
-                        <p><a class="btn btn-lg " href="#" style="color:#fff; background-color: #357376;">Ver Rutas</a></p>
+                        <p><a class="btn btn-lg " href="{% url 'transportAgency:travels_view' %}" style="color:#fff; background-color: #357376;">Ver viajes</a></p>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                 <div class="container">
                     <div class=" hm carousel-caption text-start" style="color: #fff;">
                         <h1>La Ceiba, Atlántida</h1>
-                        <p><a class="btn btn-lg " href="#" style="color:#fff; background-color: #357376;">Ver Rutas</a></p>
+                        <p><a class="btn btn-lg " href="{% url 'transportAgency:travels_view' %}" style="color:#fff; background-color: #357376; text-align:center">Ver viajes.</a></p>
                     </div>
                 </div>
             </div>
