@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse, HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from datetime import *
@@ -246,6 +246,34 @@ def ticket(request):
 
                 return render(request, 'transportAgency/ticket.html')
 
+def bus_crud(request):
+    buses = Bus.objects.all() 
+    
+   
+    return render(request, 'transportAgency/addbus.html', {
+        'buses' : buses,
+    })
+@login_required()
+def eliminar_bus(request, id):
+    Bus.objects.get(pk=id).delete()
+    return redirect(reverse('Bus'))
+
+@login_required()
+def editar_bus(request, id):
+    bus = get_object_or_404(Bus, pk=id)
+
+    if request.method == 'POST':
+        nombre = request.POST.get('name-bus')
+        
+
+        bus.name_bus = nombre
+        
+        bus.save()
+        
+    return render(request, 'transportagency/addbus.html', {
+            'data': bus,
+            'buses': Bus.objects.all()
+        }, )
 
 @login_required()
 def list_buses(request):
