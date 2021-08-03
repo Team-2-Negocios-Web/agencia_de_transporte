@@ -5,7 +5,10 @@
 
 body,html{
     height:100%;
-    font-family:sans-serif}
+    font-family:sans-serif;
+    overflow-y: hidden;
+}
+
 
 input{outline:none;
     border:none}
@@ -39,7 +42,7 @@ input{outline:none;
     width:660px;
     min-height:100vh;
     display:block;
-    padding:173px 55px 55px}
+    padding:100px 55px 55px}
 
 .login100-form-title{
     width:100%;
