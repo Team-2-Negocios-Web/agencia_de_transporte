@@ -7,6 +7,7 @@
 
 {% block css %}
 <link rel="stylesheet" href="{% static 'transportAgency/css/routes.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
 {% endblock css %}
 
 
@@ -16,9 +17,11 @@
     <div class="container-login100">
         <div class="wrap-login100">
             <form class="login100-form validate-form" action="{% url 'login_view' %}" method="post">
-                <span class="login100-form-title p-b-43">
-                    Registro de Rutas
-                </span>
+                <div class="row justify-content-center m-4">
+                    <div class="title">
+                        <h1>Registro de <span style="color: #6BA8A9;">Rutas</span></h1>
+                    </div>
+                </div>
                 <label for="">Origen:</label>
                 <div class="wrap-input100 validate-input">
                     <input autofocus name="origen" class="input100" type="text" placeholder="Origen">
