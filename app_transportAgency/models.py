@@ -5,10 +5,10 @@ from django.contrib.auth.models import User
 
 class Client(models.Model):
     dni        = models.CharField(max_length=13,null=True, blank=True)
-    first_name = models.CharField(max_length=50)
-    last_name  = models.CharField(max_length=50)
-    phone      = models.CharField(max_length=50)
-    email      = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=50,null=True, blank=True)
+    last_name  = models.CharField(max_length=50,null=True, blank=True)
+    phone      = models.CharField(max_length=50,null=True, blank=True)
+    email      = models.CharField(max_length=50,null=True, blank=True)
     user       = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

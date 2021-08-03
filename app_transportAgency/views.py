@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, Http404, request
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, HttpResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponse, Http404, request, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import *
 import datetime as dt
@@ -410,7 +409,60 @@ def cliente(request):
         client.save()
         return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
     return render(request, 'transportAgency/ticket.html')
+
+
+@login_required()
+def edit_customer(request, id):
+    customer = get_object_or_404(Client, pk=id)
+    if request.method == 'POST':
+        dni = request.POST.get('dni')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+
+        customer.dni = dni
+        customer.first_name = first_name
+        customer.last_name = last_name
+        customer.phone = phone
+        customer.email = email
+        customer.save()
+        
+        return HttpResponseRedirect('/transportAgency/customer/')
+       
+
+    return render(request, 'transportagency/customer.html',  {'c': customer, 'customers': Client.objects.all()})
+
+
+@login_required()
+def delete_customer(request, id):
+    Client.objects.get(pk=id).delete()
+    return HttpResponseRedirect('/transportAgency/customer/')
+
+
+
+@login_required()
+def customer(request):
     
+    if request.user.is_superuser:
+
+        q = request.GET.get('q')
+
+        if q:
+            customers = Client.objects.filter(dni__startswith=q) 
+
+        else:
+            customers = Client.objects.all()
+
+
+        return render(request, 'transportAgency/customer.html', {
+                'customers': customers
+            })
+        
+    else:
+        return HttpResponse("sdjhkhsd")
+
+
 @login_required()
 def cancel_trip(request):
 
@@ -465,26 +517,7 @@ def details_ticket(request):
         'tickets' : tickets,
     })
 
-@login_required()
-def customer(request):
-    
-    if request.user.is_superuser:
 
-        q = request.GET.get('q')
-
-        if q:
-            customers = Client.objects.filter(dni__startswith=q) 
-
-        else:
-            customers = Client.objects.all()
-
-
-        return render(request, 'transportAgency/customer.html', {
-                'customers': customers
-            })
-        
-    else:
-        return HttpResponse("sdjhkhsd")
 
 @login_required()     
 def about(request):

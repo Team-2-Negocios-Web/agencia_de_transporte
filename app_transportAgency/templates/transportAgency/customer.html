@@ -5,12 +5,19 @@
 <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
 <link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
 {% endblock %}
+
+
 {% block container %}
+
+
     <div class="row justify-content-center m-4">
         <div class="title">
             <h1>Tabla de <span style="color: #6BA8A9;">Clientes</span></h1>
         </div>
     </div>
+
+
+
 <form action="{% url 'transportAgency:customer' %}" >
     <div class="row justify-content-center">
         <div class="col-md-4">
@@ -21,16 +28,60 @@
                     <i class="fas fa-search"></i>
                 </span>
             </div>
+          
         </div>
     </div>
 </form>
-<table class="rwd-table">
+
+<div class="container">
+<div class="row justify-content m-4">
+<div class="col-4">
+            {% if c %}
+            <form action="{% url 'transportAgency:edit_customer' c.id %}" method="post">
+            {% else %}
+            <form action="{% url 'transportAgency:customer'  %}" method="post">
+            {% endif %}
+
+            {% csrf_token %}
+                <div class="mb-3">
+                    <label for="dni" class="form-label">Numero de identidad</label>
+                    <input type="number" class="form-control" name="dni" id="dni" value="{{c.dni}}">
+                </div>
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" name="first_name" id="first_name" value="{{c.first_name}}">
+                </div>
+                 <div class="mb-3">
+                    <label for="last_name" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" name="last_name" id="last_name" value="{{c.last_name}}">
+                </div>
+                 <div class="mb-3">
+                    <label for="phone" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" name="phone" id="phone" value="{{c.phone}}">
+                </div>
+                 <div class="mb-3">
+                    <label for="email" class="form-label">Correo</label>
+                    <input type="text" class="form-control" name="email" id="email" value="{{c.email}}">
+                </div>
+                <div class="mb-3">
+                    <input type="submit" class="btn btn-success" value="Actualizar Participantes">
+                </div>
+             
+            
+            </form>
+        
+</div>
+    
+       
+<div class="col-6">
+    <table class="rwd-table">
     <thead>
         <tr>
             <th>Numero identidad</th>
             <th>Nombre Completo</th>
             <th>Telefono</th>
             <th>Correo</th>
+            <th>Accciones</th>
         </tr>
     </thead>
     <tbody>
@@ -40,11 +91,19 @@
                 <td data-th="nombre">{{c.first_name}} {{c.last_name}}</td>
                 <td data-th="telefono">{{c.phone}}</td>
                 <td data-th="correo">{{c.email}}</td>
+                <td class="text-center">
+                    <a onclick="if (!confirm('Confirme la eliminacion')) return false;" href="{% url 'transportAgency:delete_customer' c.id %}" class="text-danger"><span class="fas fa-trash-alt"></span></a>
+                    <a href="{% url 'transportAgency:edit_customer' c.id %}" class="text-success"><span class="fas fa-edit"></span></a>
+                </td>
             </tr>
         
         {% endfor %}
     </tbody>
 </table>
+</div>
+
 <br>
 <br>
+</div>
+
 {% endblock %}
