@@ -16,5 +16,8 @@ urlpatterns = [
     path('customer/', views.customer, name="customer"),
     path('routes/', views.register_route, name="register_route"),
     path('city/', views.register_city, name="register_city"),
+    path('bus_crud/', views.bus_crud, name="bus_crud"),
+    path('bus_crud/<int:id>/eliminar/', views.eliminar_bus, name='eliminar_bus'),
+    path('bus_crud/<int:id>/editar/', views.editar_bus, name='editar_bus'),
 ]
  

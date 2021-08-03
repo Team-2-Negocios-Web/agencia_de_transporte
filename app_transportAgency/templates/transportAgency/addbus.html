@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+{% load transportAgency_filters %}
+
+{% block title %}Buses{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
+<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+{% endblock %}
+
+{% block container %}
+<div class="row justify-content-center m-4">
+    <div class="title">
+        <h1>Tabla de <span style="color: #6BA8A9;">Buses</span></h1>
+    </div>
+</div>
+<div class="container">
+    
+    <div class="row justify-content-center m-4">
+        <div class="col-4 ">
+            <form method="post" >
+            {% csrf_token %}
+                <div class="mb-3">
+                    <label for="name-bus" class="form-label">Nombre del bus</label>
+                    <input type="text" class="form-control" name="name-bus" id="name-bus" value="{{data.name_bus}}">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-lg btn-primary">Guardar</button>
+                </div>
+            
+            </form>
+        
+        </div>
+        <div class="col-6">
+            <table class="rwd-table">
+                <thead>
+                    <tr>
+                        <th>Bus name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>	
+                    {% for b in buses %}
+                    <tr>
+
+                        <td>{{b.name_bus}}</td>
+                        <td>
+                            <a onclick="if (!confirm('Confirme la eliminacion')) return false;" href="{% url 'transportAgency:eliminar_bus' b.id %}" class="text-danger"><span class="fas fa-trash-alt"></span></a>
+                            <a href="{% url 'transportAgency:editar_bus' b.id %}" class="text-success"><span class="fas fa-edit"></span></a>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}		
+                </tbody>
+            </table>
+        
+        </div>
+    </div>
+   
+</div>
+<br>
+<br>
+
+
+
+
+{% endblock container %}
+
+
+{% block js %}
+<script>
+
+    $(function () {
+
+        //'csrfmiddlewaretoken': csrfToken,
+
+        var $buttonPassenger = $('.button_passenger')
+
+        $buttonPassenger.click(function () {
+
+
+            var $me = $(this)
+            url = $me.data('url')
+            busId = $me.data('bus')
+            dateReservation = $me.data('reservation')
+            token = $me.data('token')
+
+            var ctx = {
+                'csrfmiddlewaretoken': token,
+                'busId': busId,
+                'reservation': dateReservation,
+            }
+            $('#passenger').modal('show')
+
+            $.post(url, ctx, function (response) {
+                $('.modal').find('.tableb').html(response.code)
+
+            }, 'json')
+
+
+
+        })
+    })
+
+</script>
+{% endblock %}
