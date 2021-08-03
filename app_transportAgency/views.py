@@ -402,3 +402,66 @@ def customer(request):
 @login_required()     
 def about(request):
     return render(request, 'transportAgency/about.html')
+
+@login_required()
+def register_city(request):
+
+    if request.is_ajax() and request.method == "POST":
+        city = request.POST.get('city')
+
+        cities = City.objects.filter(name_city= city).first()
+
+        if cities:
+            return JsonResponse({'error': 'ingrese la misma cuidad'})
+        else :
+            cities = City(name_city=city)
+            cities.save()
+            return JsonResponse({'success' : 'Se ingreso correctamente el nombre de la cuidad'})
+
+    return render(request, 'transportAgency/routes.html')
+
+
+@login_required()  
+def register_route(request):
+
+    if request.is_ajax() and request.method == "POST":
+
+        origin = int(request.POST.get('origin'))
+        destiny = int(request.POST.get('destiny'))
+        price = float(request.POST.get('price'))
+        route_time = int(request.POST.get('route-time'))
+        schedule = int(request.POST.get('schedule'))
+        bus = int(request.POST.get('bus'))
+
+
+        origin_id = City.objects.get(pk=origin)
+        destiny_id = City.objects.get(pk=destiny)
+        schedule_id = Schedule.objects.get(pk=schedule)
+        bus_id = Bus.objects.get(pk=bus)
+
+        route_exists = Route.objects.filter(origin=origin_id, destiny=destiny_id, schedule=schedule_id).first()
+                
+        if route_exists:
+            return JsonResponse({'error': "La ruta ya existe para ese horario"})
+        else:
+            route = Route(
+                origin     = origin_id,
+                destiny    = destiny_id, 
+                route_time = route_time,
+                precio     = price,  
+                schedule   = schedule_id,             
+                bus        = bus_id,
+            )
+            route.save()
+            return JsonResponse({'success':'Se guardo la ruta existosamente'})
+       
+    routes = Route.objects.all()
+    cities = City.objects.all()
+    schedules = Schedule.objects.all()
+    buses = Bus.objects.all()
+    return render(request, 'transportAgency/routes.html', {
+        'routes': routes,
+        'cities': cities,
+        'schedules': schedules,
+        'buses': buses,
+    })

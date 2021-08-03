@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Rutas
+{% endblock title %}
+
+
+{% block container %}
+<div class="container">
+    <div class="row">
+
+     
+       
+        <!--Tabla de formulario-->
+        <div class="col-4  mt-5">
+
+        <form action="{% url 'transportAgency:register_route' %}" method="post">
+            {% csrf_token %}
+
+            <h3>Ingreso de cliente</h3>
+            <div class="row justify-content-end">
+            
+                <button class="btn col-5" style="background: #357376;color:#fff;" type="button" id="button-city">Agregar Cuidad</button>
+                
+            </div>
+            <div class="mb-3">
+                <label for="origin">Cuidad Origen</label>
+                <select class="form-select" name="origin" id="origin">
+                    <option value="">Seleccione una cuidad origen</option>
+                    {% for c in cities %}
+                        <option value="{{c.pk}}">{{c}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="destiny">Cuidad Destino</label>
+                <select class="form-select" name="destiny" id="destiny">
+                    <option value="">Seleccione una cuidad destino</option>
+                    {% for c in cities %}
+                        <option value="{{c.pk}}">{{c}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="price">Precio de la ruta</label>
+                <input type="number" min=1 class="form-control" name=price id="price">
+            </div>
+
+            <div class="mb-3">
+                <label for="route-time">Tiempo apoximado</label>
+                <input type="number" min=1 class="form-control" name=route-time id="route-time">
+            </div>
+
+            <div class="mb-3">
+                <label for="schedule">Horario</label>
+                <select class="form-select" name="schedule" id="schedule">
+                    <option value="">Seleccione el horario de la ruta</option>
+                    {% for s in schedules %}
+                        <option value="{{s.pk}}">{{s}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+    
+
+            <div class="mb-3">
+                <label for="bus">Seleccione el bus</label>
+                <select class="form-select" name="bus" id="bus">
+                    <option value="">Seleccione el bus</option>
+                    {% for b in buses %}
+                        <option value="{{b.pk}}">{{b}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="btn btn-primary" data-url="{% url 'transportAgency:register_route' %}" type="button" id="button-route" data-token="{{csrf_token }}" >Guardar ruta</button>
+        </form>
+            
+        </div>
+
+        <!--Tabla de las rutas-->
+        <div class="col-8">
+            <table class="table" style="text-align:center" >
+                <thead>
+                    <th>Cuidad Origen</th>
+                    <th>Cuidad Destino</th>
+                    <th>Precio</th>
+                    <th>Tiempo aproximado</th>
+                    <th>Horario</th>
+                </thead>
+
+                <tbody>
+                    {% for r in routes %}
+                        <tr>
+                            <td>{{r.origin}}</td>
+                            <td>{{r.destiny}}</td>
+                            <td>{{r.precio}}</td>
+                            <td>{{r.route_time}} horas</td>
+                            <td>{{r.schedule}}</td>
+                        
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+ <!-- Modal -->
+<div class="modal fade" id="register-city">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="color:#fff; background-color: #357376;">
+                <h5 class="modal-title" id="exampleModalLabel">Registro de cuidad</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
+                <form action="" method="post">
+                    <div class="mb-3">
+                        <label for="city">Ingrese el nombre de la cuidad</label>
+                        <input type="text" id="city" name="city" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="color:#fff; background-color: #6BA8A9;">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                <button style="color:#fff; background-color: #357376;" data-token="{{csrf_token}}"
+                    data-url="{% url 'transportAgency:register_city' %}" class="btn btn-success button-process" id="button-register-city">
+                    Guardar Cuidad
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock container %}
+
+
+{% block js %}
+
+    <script>
+
+        $(function(){
+            
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+
+            $('#button-city').click(function(event){
+                event.preventDefault()
+                $('#register-city').modal('show')
+            })
+
+             $('#button-register-city').click(function(event){
+                event.preventDefault()
+
+                var $me = $(this)
+                var url = $me.data('url')
+                var token = $me.data('token')
+                var city = $('#city')
+
+                if(!city.val().trim()){
+                    notify('error', 'Ingrese el nombre de la cuidad')
+                    city.focus()
+                    return
+                }
+
+                ctx = {
+                    'csrfmiddlewaretoken': token,
+                    'city' : city.val().toLowerCase(), 
+                }
+                console.log(city.val().toLowerCase())
+
+
+                $.post(url, ctx, function(response){
+                    if(response.error){
+                        notify('error', response.error)
+                        sleep(800).then(() => {
+                            location.reload()
+                        });
+                        
+                    } else {
+        
+                        notify('success', response.success)
+                        sleep(800).then(() => {
+                            location.reload()
+                        });
+                        
+                        
+
+                    }
+                    
+                })
+
+            })
+            
+            $('#button-route').click(function(event){
+                event.preventDefault()
+                var $me = $(this)
+         
+                var token = $me.data('token')
+                var url = $me.data('url')
+                var origin = $('#origin')
+                var destiny = $('#destiny')
+                var price = $('#price')
+                var routeTime = $('#route-time')
+                var schedule = $('#schedule')
+                var bus = $('#bus')
+
+                if(!origin.val().trim()){
+                    notify('error', 'Ingrese datos al campo de la cuidad origen')
+                    origin.focus()
+                    return
+                }
+
+                if(!destiny.val().trim()){
+                    notify('error', 'Ingrese datos al campo de la cuidad destino')
+                    destiny.focus()
+                    return
+                }
+
+                if(origin.val() === destiny.val()){
+                    notify('error', 'No se puede ingresar las misma cuidades')
+                    origin.focus()
+                    destiny.focus()
+                    return
+                }
+
+                if(!price.val().trim()){
+                    notify('error', 'Ingrese el precio de la ruta')
+                    price.focus()
+                    return
+                }
+
+                if(!routeTime.val().trim()){
+                    notify('error', 'Ingrese el tiempo aproximado de la ruta')
+                    routeTime.focus()
+                    return
+                }
+
+                if(!schedule.val().trim()){
+                    notify('error', 'Ingrese el horaririo de la ruta')
+                    schedule.focus()
+                    return
+                }
+
+
+                if(!bus.val().trim()){
+                    notify('error', 'Ingrese el bus')
+                    bus.focus()
+                    return
+                }
+
+                ctx = {
+                'csrfmiddlewaretoken': token,
+                'origin' : origin.val(),
+                'destiny': destiny.val(),
+                'price'  : price.val(),
+                'route-time': routeTime.val(),
+                'schedule' : schedule.val(),
+                'bus' : bus.val(),
+                }
+
+                $.post(url, ctx, function(response){
+                    if(response.error){
+                        notify('error', response.error)
+                        sleep(800).then(() => {
+                            location.reload()
+                        });
+                        
+                    } else {
+                        notify('success', response.success)
+                        sleep(800).then(() => {
+                            location.reload()
+                        });
+                        
+                        
+                    }
+
+                })
+
+            })
+
+            
+            
+        })
+    
+    
+    </script>
+
+
+{% endblock js %}
