@@ -105,7 +105,7 @@
                             <td>{{t.client}}</td>
                             <td>{{t.ticket_quantity}}</td>
                             <td data-th="ruta">{{t.routes.origin | capfirst}} - {{t.routes.destiny | capfirst}}</td>
-                            <td><a href="{% url 'transportAgency:info_ticket' t.pk %}">Mostrar datos</a></td>
+                            <td><a href="{% url 'transportAgency:info_ticket' t.pk %}">Mostrar Datos</a></td>
                         </tr>
                     {% endif %}
                 {% empty %}
