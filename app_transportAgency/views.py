@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse, Http404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponse, Http404, request, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from datetime import *
 import datetime as dt
@@ -142,9 +143,10 @@ def ticket(request):
             
 
             html = f'''
-                <p>Nombre del Client: {client}</p>
+                <p>Empleado: {request.user.client}</p>
+                <p>Nombre del Cliente: {client}</p>
                 <p> Ruta: {route}</p>
-                <p>Acompañantes: {quantity}</p>
+                <p>Cantidad de tickets: {quantity}</p>
                 <p>Precio: {route.precio}</p>
                 <p>Precio Total: {route.precio * quantity}</p>
 
@@ -161,7 +163,12 @@ def ticket(request):
             convert_reservation_to_date = datetime.strptime(ticket_reservation, '%Y-%m-%d').date()
 
             route   = Route.objects.get(pk=id_trip)
-            client = Client.objects.get(pk=id_client)        
+            client = Client.objects.get(pk=id_client)   
+
+            print(id_trip)                
+            print(route.bus)
+
+            employee = Client.objects.get(pk=request.user.client.pk)     
             
             if convert_reservation_to_date < today:
                 
@@ -183,38 +190,43 @@ def ticket(request):
                 count_seating = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route).count()
 
                 if count_seating > 16:
-                    return HttpResponse("Ya no hay cupos")
+                    return JsonResponse({'error': "Ya no hay cupos"})
                 else:
                     # se crea el ticket del cliente principal
                     if date_reservation:
 
-                        repeating_client = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
-                        if repeating_client.exists():
-                            return HttpResponse("Este cliente ya tiene un asiento asignado")
-
-                        seats = Seating.objects.all()
-                        for s in seats[::-1]:
-                    
-                            seat = Seating.objects.get(pk=s.pk)
-                            exist_seat = Ticket.objects.filter(seating=seat,ticket_reservation=convert_reservation_to_date,routes=route)
-                            if exist_seat.exists():
-                                print("Este asiento en esta ruta ya esta ocupado")
-                            else:
-                                print(f"Este asiento no tiene cupo {date_reservation.seating}")
-                                tickets = Ticket (
-                                    client             = client,
-                                    total_price        = route.precio,
-                                    ticket_quantity    = quantity,
-                                    ticket_reservation = convert_reservation_to_date,
-                                    routes             = route ,
-                                    bus                = route.bus,
-                                    seating            = seat                                     
-                                )
-                                tickets.save()
-                                break
-
                         #se crea el ticket para los acompañantes
                         if quantity > 1:
+
+                                repeating_client = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
+                                if repeating_client.exists():
+                                    return HttpResponse("Este cliente ya tiene un asiento asignado para este viaje")
+
+                                seats = Seating.objects.all()
+                                for s in seats[::-1]:
+                            
+                                    seat = Seating.objects.get(pk=s.pk)
+                                    exist_seat = Ticket.objects.filter(seating=seat,ticket_reservation=convert_reservation_to_date,routes=route)
+                                    if exist_seat.exists():
+                                        print("Este asiento en esta ruta ya esta ocupado")
+                                    else:
+                                        print(f"Este asiento no tiene cupo {date_reservation.seating}")
+                                        tickets = Ticket (
+                                            client             = client,
+                                            employee           = employee,
+                                            total_price        = route.precio * quantity,
+                                            ticket_quantity    = quantity,
+                                            ticket_reservation = convert_reservation_to_date,
+                                            routes             = route ,
+                                            bus                = route.bus,
+                                                                            
+                                        )
+                                        tickets.save()
+                                        tickets = Ticket.objects.all().last()
+                                        tickets.seating.add(seat)
+                                        tickets.save()
+                                        break
+
                                 for i in range(quantity - 1):
                                     acomp = int(request.POST.get(f'client{i}')) 
                                     acomp = Client.objects.get(pk=acomp)
@@ -231,66 +243,87 @@ def ticket(request):
                                             print("Este asiento en esta ruta ya esta ocupado")
                                         else:
                                             print(f"Este asiento no tiene cupo {date_reservation.seating}")
-                                            tickets = Ticket (
-                                                client             = client,
-                                                companion          = acomp,       
-                                                total_price        = route.precio,
-                                                ticket_quantity    = 1,
-                                                ticket_reservation = convert_reservation_to_date,
-                                                routes             = route ,
-                                                bus                = route.bus,
-                                                seating            = seat                                     
-                                            )
-                                            tickets.save()
-                                            break 
+                                            client_register = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
+                                            
+                                            if not client_register:
+                                                tickets = Ticket.objects.all().last()
+                                                tickets.seating.add(seat)
+                                                tickets.save()
+                                                break;
+                                            else:
+                                                tickets = Ticket.objects.all().last()
+                                                tickets.seating.add(seat)
+                                                tickets.companion.add(acomp)
+                                                tickets.save()
+                                                break 
+                        else:
 
+                            repeating_client = Ticket.objects.filter(ticket_reservation=convert_reservation_to_date,routes=route,client=client)
+                            if repeating_client.exists():
+                                return HttpResponse("Este cliente ya tiene un asiento asignado para este viaje")
+
+                            seats = Seating.objects.all()
+                            for s in seats[::-1]:
+                        
+                                seat = Seating.objects.get(pk=s.pk)
+                                exist_seat = Ticket.objects.filter(seating=seat,ticket_reservation=convert_reservation_to_date,routes=route)
+                                if exist_seat.exists():
+                                    print("Este asiento en esta ruta ya esta ocupado")
+                                else:
+                                    print(f"Este asiento no tiene cupo {date_reservation.seating}")
+                                    tickets = Ticket (
+                                        client             = client,
+                                        employee           = employee,
+                                        total_price        = route.precio,
+                                        ticket_quantity    = quantity,
+                                        ticket_reservation = convert_reservation_to_date,
+                                        routes             = route ,
+                                        bus                = route.bus,
+                                                                        
+                                    )
+                                    tickets.save()
+                                    
+                                    tickets = Ticket.objects.all().last()
+                                    tickets.seating.add(seat)
+                                    tickets.save()
+                                    break
                 return render(request, 'transportAgency/ticket.html')
 
+@login_required()
+def bus_crud(request):
+    
+    if request.method == "POST":
+        nombre = request.POST.get('name-bus')
+        bus = Bus(name_bus=nombre)
+        bus.save()
+
+        bus = Bus.objects.all().last()
+        seats = Seating.objects.all()
+        for s in seats:
+            bus.seating.add(s)
+            bus.save()
+
+    buses = Bus.objects.all() 
+    return render(request, 'transportAgency/addbus.html', {'buses' : buses,})
 
 @login_required()
-def list_buses(request):
+def eliminar_bus(request, id):
+    Bus.objects.get(pk=id).delete()
+    return redirect(reverse('transportAgency:bus_crud'))
 
-    if request.is_ajax() and request.method == "POST":
-        #import pdb; pdb.set_trace()
+@login_required()
+def editar_bus(request, id):
+    bus = get_object_or_404(Bus, pk=id)
+
+    if request.method == 'POST':
+        nombre = request.POST.get('name-bus')
+        bus.name_bus = nombre
+        bus.save()
         
-        
-        bus_id = int(request.POST.get('busId'))
-        date_reservation = request.POST.get('reservation')
-        print(date_reservation)
-        convert_reservation_to_date = datetime.strptime(date_reservation, '%Y-%m-%d').date()
-
-        passenger = Ticket.objects.filter(bus__id=bus_id, ticket_reservation=convert_reservation_to_date)
-        print(passenger)
-
-        html = f'''
-
-        '''
-        
-        for p in passenger:
-            html += f'''
-                        <tr>
-                            <td>{p.client}</td>
-                            <td>{p.companion}</td>
-                            <strong><td>{p.seating}</td></strong>
-                        <tr>
-                    '''
-               
-
-        return JsonResponse({'code':html})
-
-    q = request.GET.get('q')
-
-    if q:
-        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').filter(ticket_reservation=q).annotate(passanger=Count('client')).order_by()
-    
-    else:
-        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').annotate(passanger=Count('client')).order_by()
-    
-
-    
-    return render(request, 'transportAgency/buses.html', {
-        'buses' : buses,
-    })
+    return render(request, 'transportagency/addbus.html', {
+            'data': bus,
+            'buses': Bus.objects.all()
+        }, )
 
 @login_required()
 def income(request):
@@ -322,7 +355,59 @@ def cliente(request):
         client.save()
         return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
     return render(request, 'transportAgency/ticket.html')
+
+
+@login_required()
+def edit_customer(request, id):
+    customer = get_object_or_404(Client, pk=id)
+    if request.method == 'POST':
+        dni = request.POST.get('dni')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+
+        customer.dni = dni
+        customer.first_name = first_name
+        customer.last_name = last_name
+        customer.phone = phone
+        customer.email = email
+        customer.save()
+        
+        return HttpResponseRedirect('/transportAgency/customer/')
+       
+
+    return render(request, 'transportagency/customer.html',  {'c': customer, 'customers': Client.objects.all()})
+
+
+@login_required()
+def delete_customer(request, id):
+    Client.objects.get(pk=id).delete()
+    return HttpResponseRedirect('/transportAgency/customer/')
+
+
+
+@login_required()
+def customer(request):
     
+    if request.user.is_superuser:
+
+        q = request.GET.get('q')
+
+        if q:
+            customers = Client.objects.filter(dni__startswith=q) 
+
+        else:
+            customers = Client.objects.all()
+
+
+        return render(request, 'transportAgency/customer.html', {
+                'customers': customers
+            })
+        
+    else:
+        return HttpResponse("sdjhkhsd")
+
 
 @login_required()
 def cancel_trip(request):
@@ -334,6 +419,14 @@ def cancel_trip(request):
         trip = TripScheduling.objects.get(pk=id_trip)
 
         if action == "confirm-cancel":
+            today = datetime.now()  
+            convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
+            one_hour_left = convert_to_datetime - timedelta(hours=1)
+            
+            if today >= one_hour_left:
+                print("ya no se puede cancelar")
+                return JsonResponse({'error':'No se puede cancelar el viaje una hora antes'})
+
             html = f'''
                 <p>Ruta:{trip}</p>
                 <strong><p>Horario: {trip.routes.schedule}</p></strong>
@@ -378,26 +471,7 @@ def details_ticket(request):
         'tickets' : tickets,
     })
 
-@login_required()
-def customer(request):
-    
-    if request.user.is_superuser:
 
-        q = request.GET.get('q')
-
-        if q:
-            customers = Client.objects.filter(dni__startswith=q) 
-
-        else:
-            customers = Client.objects.all()
-
-
-        return render(request, 'transportAgency/customer.html', {
-                'customers': customers
-            })
-        
-    else:
-        return HttpResponse("sdjhkhsd")
 
 @login_required()     
 def about(request):
@@ -465,3 +539,5 @@ def register_route(request):
         'schedules': schedules,
         'buses': buses,
     })
+
+
