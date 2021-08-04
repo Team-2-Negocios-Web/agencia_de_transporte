@@ -31,7 +31,7 @@
             </div>
             
             <div class="mb-3">
-                <label for="origin">Cuidad Origen</label>
+                <label for="origin">Cuidad Origen:</label>
                 <select class="form-select form-control-chosen" name="origin" id="origin">
                     <option value="">Seleccione una cuidad origen</option>
                     {% for c in cities %}
@@ -41,7 +41,7 @@
             </div>
 
             <div class="mb-3">
-                <label for="destiny">Cuidad Destino</label>
+                <label for="destiny">Cuidad Destino:</label>
                 <select class="form-select form-control-chosen" name="destiny" id="destiny">
                     <option value="">Seleccione una cuidad destino</option>
                     {% for c in cities %}
@@ -51,17 +51,17 @@
             </div>
 
             <div class="mb-3">
-                <label for="price">Precio de la ruta</label>
+                <label for="price">Precio de la Ruta:</label>
                 <input type="number" min=1 class="form-control" name=price id="price">
             </div>
 
             <div class="mb-3">
-                <label for="route-time">Tiempo apoximado</label>
+                <label for="route-time">Tiempo Apoximado:</label>
                 <input type="number" min=1 class="form-control" name=route-time id="route-time">
             </div>
 
             <div class="mb-3">
-                <label for="schedule">Horario</label>
+                <label for="schedule">Horario:</label>
                 <select class="form-select form-control-chosen" name="schedule" id="schedule">
                     <option value="">Seleccione el horario de la ruta</option>
                     {% for s in schedules %}
@@ -73,7 +73,7 @@
     
 
             <div class="mb-3">
-                <label for="bus">Seleccione el bus</label>
+                <label for="bus">Seleccione el Bus:</label>
                 <select class="form-select form-control-chosen" name="bus" id="bus">
                     <option value="">Seleccione el bus</option>
                     {% for b in buses %}
@@ -104,7 +104,7 @@
                         <tr>
                             <td>{{r.origin}}</td>
                             <td>{{r.destiny}}</td>
-                            <td>{{r.precio}}</td>
+                            <td>L.{{r.precio}}</td>
                             <td>{{r.route_time}} horas</td>
                             <td>{{r.schedule}}</td>
                             <td>{{r.bus}}</td>
@@ -125,14 +125,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="color:#fff; background-color: #357376;">
-                <h5 class="modal-title" id="exampleModalLabel">Registro de cuidad</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Registro de Cuidad</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="color:#fff; background-color: #6BA8A9;">
                 <form action="" method="post">
                     <div class="mb-3 ms-3">
-                        <label for="city" >Ingrese el nombre de la cuidad</label>
-                        <input type="text" id="city" name="city" class="form-control" placeholder="municipio, departamento">
+                        <label for="city" >Ingrese el nombre de la cuidad:</label>
+                        <input type="text" id="city" name="city" class="form-control" placeholder="Municipio, Departamento">
                     </div>
                 </form>
             </div>
@@ -181,14 +181,14 @@
                 }
 
                 if(!isNaN(city.val())){
-                    notify('error', 'No se permite ingresar numero en este campo')
+                    notify('error', 'No se permite ingresar numeros en este campo')
                     city.focus()
                     return
                 }
 
                 for(var i = 0 ; i < city.val().length; i++){
                     if(!isNaN(city.val()[i])){
-                        notify('error', "No se permite ingresar numero en este campo")
+                        notify('error', "No se permite ingresar numeros en este campo")
                         city.focus()
                         return
                     }
@@ -249,7 +249,7 @@
                 }
 
                 if(origin.val() === destiny.val()){
-                    notify('error', 'No se puede ingresar las misma cuidades')
+                    notify('error', 'No se puede ingresar las mismas cuidades')
                     origin.focus()
                     destiny.focus()
                     return
@@ -262,7 +262,7 @@
                 }
 
                 if(price.val() < 50){
-                    notify('error', 'Solo se aceptan precios mayores o iguales de L.50')
+                    notify('error', 'Solo se aceptan precios mayores o iguales a L.50')
                     price.focus()
                     return
                 }
@@ -273,7 +273,7 @@
                     return
                 }
                 if(routeTime.val() < 1){
-                    notify('error', 'No puede ingrese un tiempo aproximado menor de 0')
+                    notify('error', 'No puede ingrese un tiempo aproximado menor de 0 horas')
                     routeTime.focus()
                     return
                 }
