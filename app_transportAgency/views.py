@@ -553,6 +553,13 @@ def register_route(request):
                 bus        = bus_id,
             )
             route.save()
+
+            route = Route.objects.all().last()
+            #instancia para obtener el id de las rutas
+            route_id = Route.objects.get(pk=route.pk)
+            #Creamos nuestras rutas y guardamos
+            travels = TripScheduling(state="1", routes=route_id)
+            travels.save()
             return JsonResponse({'success':'Se guardo la ruta existosamente'})
        
     routes = Route.objects.all()
