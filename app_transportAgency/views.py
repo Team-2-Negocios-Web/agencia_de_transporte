@@ -319,65 +319,11 @@ def editar_bus(request, id):
         nombre = request.POST.get('name-bus')
         bus.name_bus = nombre
         bus.save()
-            
-            
         
     return render(request, 'transportagency/addbus.html', {
             'data': bus,
             'buses': Bus.objects.all()
         }, )
-
-@login_required()
-def list_buses(request):
-
-    if request.is_ajax() and request.method == "POST":
-        #import pdb; pdb.set_trace()
-        
-        
-        bus_id = int(request.POST.get('busId'))
-        date_reservation = request.POST.get('reservation')
-        print(date_reservation)
-        convert_reservation_to_date = datetime.strptime(date_reservation, '%Y-%m-%d').date()
-
-        passenger = Ticket.objects.filter(bus__id=bus_id, ticket_reservation=convert_reservation_to_date)
-        print(passenger)
-
-        html = f'''
-        '''
-        
-        for p in passenger:
-            html += f'''
-                <tr>
-                    <td>{p.client}</td>
-            '''   
-            html += '<td>'
-            for c in p.companion.all():
-                html += f'''
-                    <p>{c}</p>
-                '''
-            html += '</td><td>'
-            for s in p.seating.all():
-                html += f'''
-                    <strong><p>{s}</p></strong>
-                '''
-            html += '</td></tr>'
-   
-
-        return JsonResponse({'code':html})
-
-    q = request.GET.get('q')
-
-    if q:
-        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').filter(ticket_reservation=q).annotate(passanger=Count('client')).order_by()
-    
-    else:
-        buses = Ticket.objects.values('ticket_reservation','bus','bus__name_bus', 'routes').annotate(passanger=Count('client')).order_by()
-    
-
-    
-    return render(request, 'transportAgency/buses.html', {
-        'buses' : buses,
-    })
 
 @login_required()
 def income(request):
@@ -473,6 +419,14 @@ def cancel_trip(request):
         trip = TripScheduling.objects.get(pk=id_trip)
 
         if action == "confirm-cancel":
+            today = datetime.now()  
+            convert_to_datetime = datetime(year=today.year, month=today.month, day=today.day, hour=trip.routes.schedule.route_schedule.hour)
+            one_hour_left = convert_to_datetime - timedelta(hours=1)
+            
+            if today >= one_hour_left:
+                print("ya no se puede cancelar")
+                return JsonResponse({'error':'No se puede cancelar el viaje una hora antes'})
+
             html = f'''
                 <p>Ruta:{trip}</p>
                 <strong><p>Horario: {trip.routes.schedule}</p></strong>
@@ -585,3 +539,5 @@ def register_route(request):
         'schedules': schedules,
         'buses': buses,
     })
+
+
