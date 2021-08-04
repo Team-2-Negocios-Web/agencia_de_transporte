@@ -29,58 +29,95 @@
             </div>
         </form>
     </div>
-    <table class="rwd-table ">
-        <thead>
-            <tr>
-                <th>Fecha de reservacion</th>
-                <th>Cliente</th>
-                <th>Acompañante</th>
-                <th>Cantidad de boletos</th>
-                <th>Precio Total</th>
-                <th>Ruta</th>
-                <th>Bus</th>
-                <th>Asiento</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for t in tickets %}
 
-                {% if t.bus %}
-                    <tr>
-                        <td data-th="reservacion">{{t.ticket_reservation}}</td>
-                        <td>{{t.client}}</td>
+    <!--Tabla y Vista de informacion-->
 
-                        {% if t.companion %}
-                            <td data-th="acompañante">
-                                {% for a in t.companion.all  %}
-                                    <p>{{a}}</p>
-                                {% endfor %}
-                            </td>
-                        
-                        {% else %}
+    <div class="row">
+        <div class="shadow col-4" style="padding:50px; border-radius:10px;">
+            <h3>Informacion del Ticket</h3>
+            <hr>
+            {% if info %}
+                <div>
+                    <p>Fecha de reservacion: {{info.ticket_reservation}}</p>
+                    <hr>
+                    <p>Horario: {{info.routes.schedule}}</p>
+                    <hr>
+                    <p>Empleado: {{info.employee}}</p>
+                    <hr>
+                    <p>Consumidor Final: {{info.client}}</p>
+                    <hr>
+                    <p>Cuidad Origen: {{info.routes.origin}}</p>
+                    <hr>
+                    <p>Cuidad Destino: {{info.routes.destiny}}</p>
+                    <hr>
+                    <p>Precio: L.{{info.routes.precio}}</p>
+                    <hr>
+                    <p>Cantidad de ticket: {{info.ticket_quantity}}</p>
+                    <hr>
+                    <p>Precio Total: L.{{info.total_price}}</p>
+                    <hr>
+                    <p>
+                        Acompañantes
+                        <ol>
+                            {% for a in info.companion.all  %}
+                                <li>{{a}}</li>
+                            {% endfor %}
+                        </ol>
+                    </p>
+                    <hr>
 
-                        <td>-</td>
+                    <p>
+                        Asientos
+                        <ol>
+                            {% for s in info.seating.all  %}
+                                <li>{{s}}</li>
+                            {% endfor %}
+                        </ol>
+                    </p>
+                    <hr>
+                    <p>Bus: {{info.bus}}</p>
+                </div>
+            
+            {% else %}
+                <p>Noy informacion que mostrar</p>
+            {% endif %}
+            
+        </div>
+        <div class="col-8" >
+        <table class="rwd-table">
+            <thead>
+                <tr>
+                    <th>Fecha de reservacion</th>
+                    <th>Cliente</th>
+                    <th>Cantidad</th>
+                    <th>Ruta</th>
+                    <th>Mostrar Informacion</th>
+                    
+                  
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tickets %}
 
-                        {% endif %}    
-                        <td>{{t.ticket_quantity}}</td>
-                        <td data-th="preciot">{{t.total_price}}</td>
-                        <td data-th="ruta">{{t.routes}}</td>
-                        <td data-th="bus">{{t.bus}}</td>
-                        <td>
-                        {% for s in t.seating.all  %}    
-                            <p>{{s}}</p>
-                        {% endfor %}
-                        </td>
-
-                    </tr>
-                {% endif %}
-            {% empty %}
-            <tr>
-                <td colspan=7>No hay</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                    {% if t.bus %}
+                        <tr>
+                            <td data-th="reservacion">{{t.ticket_reservation}}</td>
+                            <td>{{t.client}}</td>
+                            <td>{{t.ticket_quantity}}</td>
+                            <td data-th="ruta">{{t.routes.origin | capfirst}} - {{t.routes.destiny | capfirst}}</td>
+                            <td><a href="{% url 'transportAgency:info_ticket' t.pk %}">Mostrar datos</a></td>
+                        </tr>
+                    {% endif %}
+                {% empty %}
+                <tr>
+                    <td colspan=7>No hay</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    
     <br>
     <br>
 </div>

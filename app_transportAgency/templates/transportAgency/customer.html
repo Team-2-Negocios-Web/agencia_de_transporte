@@ -64,7 +64,7 @@
                     <input type="text" class="form-control" name="email" id="email" value="{{c.email}}">
                 </div>
                 <div class="mb-3">
-                    <input type="submit" class="btn btn-success" value="Actualizar Participantes">
+                    <input type="submit" class="btn btn-success" value="Actualizar Cliente">
                 </div>
              
             
@@ -92,7 +92,6 @@
                 <td data-th="telefono">{{c.phone}}</td>
                 <td data-th="correo">{{c.email}}</td>
                 <td class="text-center">
-                    <a onclick="if (!confirm('Confirme la eliminacion')) return false;" href="{% url 'transportAgency:delete_customer' c.id %}" class="text-danger"><span class="fas fa-trash-alt"></span></a>
                     <a href="{% url 'transportAgency:edit_customer' c.id %}" class="text-success"><span class="fas fa-edit"></span></a>
                 </td>
             </tr>

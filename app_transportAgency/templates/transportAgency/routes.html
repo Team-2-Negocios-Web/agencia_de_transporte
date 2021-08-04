@@ -180,6 +180,20 @@
                     return
                 }
 
+                if(!isNaN(city.val())){
+                    notify('error', 'No se permite ingresar numero en este campo')
+                    city.focus()
+                    return
+                }
+
+                for(var i = 0 ; i < city.val().length; i++){
+                    if(!isNaN(city.val()[i])){
+                        notify('error', "No se permite ingresar numero en este campo")
+                        city.focus()
+                        return
+                    }
+                }
+                
                 ctx = {
                     'csrfmiddlewaretoken': token,
                     'city' : city.val().toLowerCase(), 
@@ -246,14 +260,20 @@
                     price.focus()
                     return
                 }
-                if (isNaN(price.val().trim())){
-                    notify('error', 'El valor ingresado no es válido');
-                    prince.val('').focus();
-                    return;
+
+                if(price.val() < 50){
+                    notify('error', 'Solo se aceptan precios mayores o iguales de L.50')
+                    price.focus()
+                    return
                 }
-                
+
                 if(!routeTime.val().trim()){
                     notify('error', 'Ingrese el tiempo aproximado de la ruta')
+                    routeTime.focus()
+                    return
+                }
+                if(routeTime.val() < 1){
+                    notify('error', 'No puede ingrese un tiempo aproximado menor de 0')
                     routeTime.focus()
                     return
                 }
