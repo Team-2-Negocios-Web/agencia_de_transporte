@@ -22,7 +22,7 @@
             <form method="post" >
             {% csrf_token %}
                 <div class="mb-3">
-                    <label for="name-bus" class="form-label">Nombre del bus</label>
+                    <label for="name-bus" class="form-label">Nombre del bus:</label>
                     <input type="text" class="form-control" name="name-bus" id="name-bus" value="{{data.name_bus}}">
                 </div>
                 <div class="mb-3">
@@ -37,8 +37,8 @@
             <table class="rwd-table">
                 <thead>
                     <tr>
-                        <th>Bus name</th>
-                        <th>Actions</th>
+                        <th>Nombre del bus</th>
+                        <th>Editar</th>
                     </tr>
                 </thead>
                 <tbody>	
