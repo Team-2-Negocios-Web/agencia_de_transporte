@@ -54,7 +54,7 @@ class Route(models.Model):
     route_time = models.IntegerField()
     precio     = models.FloatField()
     schedule   = models.ForeignKey(Schedule, on_delete=models.CASCADE, blank=True, null=True)
-    bus        = models.ForeignKey(Bus, on_delete=models.PROTECT, blank=True, null=True)
+    bus        = models.ForeignKey(Bus, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f'Origen: {self.origin} - Destino: {self.destiny} | Destino: {self.schedule} '
@@ -89,7 +89,7 @@ class Ticket(models.Model):
     total_price        = models.FloatField()
     routes             = models.ForeignKey(Route,on_delete=models.CASCADE, null=True, blank=True)
     trips              = models.ForeignKey(TripScheduling, on_delete=models.CASCADE, null=True, blank=True) #27 ==>
-    bus                = models.ForeignKey(Bus, on_delete=models.CASCADE, null=True, blank=True)
+    bus                = models.ForeignKey(Bus, on_delete=models.SET_NULL, null=True, blank=True)
     seating            = models.ManyToManyField(Seating, null=True, blank=True)
 
     def __str__(self):

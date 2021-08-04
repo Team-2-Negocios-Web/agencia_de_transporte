@@ -309,7 +309,7 @@ def bus_crud(request):
 @login_required()
 def eliminar_bus(request, id):
     Bus.objects.get(pk=id).delete()
-    return redirect(reverse('Bus'))
+    return redirect(reverse('transportAgency:bus_crud'))
 
 @login_required()
 def editar_bus(request, id):
