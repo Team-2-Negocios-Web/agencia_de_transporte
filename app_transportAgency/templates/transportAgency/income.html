@@ -101,9 +101,9 @@
 
                 $.post(url, ctx, function (response) {
 
-                    if (response.incomes) {
+                    if (response.incomes.length) {
 
-                        console.log(response.incomes)
+                        
 
                         var label = []
                         for (var i = 0; i < response.incomes.length; i++) {
@@ -165,7 +165,10 @@
                         $('#show-buttons').css('display', 'block')
 
                     } else {
-                        alert("no se encontro datos")
+                        notify('error', "No se encontraron datos")
+                         $('#table-incomes').empty()
+                         $('#graph').empty()
+                        $('#show-buttons').css('display', 'none')
                     }
 
                 })

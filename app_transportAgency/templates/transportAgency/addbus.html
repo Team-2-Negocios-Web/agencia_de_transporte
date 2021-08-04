@@ -26,10 +26,11 @@
                     <input type="text" class="form-control" name="name-bus" id="name-bus" value="{{data.name_bus}}">
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-lg btn-primary">Guardar</button>
+                    <button class="btn btn-lg btn-primary" id="button-save">Guardar</button>
                 </div>
             
             </form>
+            <p>{{msg}}</p>
         
         </div>
         <div class="col-6">
@@ -46,7 +47,6 @@
 
                         <td>{{b.name_bus}}</td>
                         <td>
-                            <a onclick="if (!confirm('Confirme la eliminacion')) return false;" href="{% url 'transportAgency:eliminar_bus' b.id %}" class="text-danger"><span class="fas fa-trash-alt"></span></a>
                             <a href="{% url 'transportAgency:editar_bus' b.id %}" class="text-success"><span class="fas fa-edit"></span></a>
                         </td>
 
@@ -76,32 +76,7 @@
 
         //'csrfmiddlewaretoken': csrfToken,
 
-        var $buttonPassenger = $('.button_passenger')
-
-        $buttonPassenger.click(function () {
-
-
-            var $me = $(this)
-            url = $me.data('url')
-            busId = $me.data('bus')
-            dateReservation = $me.data('reservation')
-            token = $me.data('token')
-
-            var ctx = {
-                'csrfmiddlewaretoken': token,
-                'busId': busId,
-                'reservation': dateReservation,
-            }
-            $('#passenger').modal('show')
-
-            $.post(url, ctx, function (response) {
-                $('.modal').find('.tableb').html(response.code)
-
-            }, 'json')
-
-
-
-        })
+    
     })
 
 </script>
