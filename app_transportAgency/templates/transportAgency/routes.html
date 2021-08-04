@@ -246,7 +246,12 @@
                     price.focus()
                     return
                 }
-
+                if (isNaN(price.val().trim())){
+                    notify('error', 'El valor ingresado no es válido');
+                    prince.val('').focus();
+                    return;
+                }
+                
                 if(!routeTime.val().trim()){
                     notify('error', 'Ingrese el tiempo aproximado de la ruta')
                     routeTime.focus()
