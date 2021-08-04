@@ -263,16 +263,15 @@
                 $.get(url, ctx, function(response){
 
                     //available_tickets
+                    if (response.error){
+                        notify('error', response.error)
+                    } else {
+                        $('#price').text(`Precio: ${response.precio}`)
+                        $('#available').text(`Ticket Disponible: ${response.tickets}`)
+                        $('.removed').load()
 
-                    $('#price').text(`Precio: ${response.precio}`)
-                    if (response.tickets > 1) {
-                        $('#available').text(`Ticket Disponible: ${response.tickets - 1}/15`)
-                    } else{ 
-                        $('#available').text(`Ticket Disponible: 0/15`)
                     }
-                    
                    
-                    $('.removed').load()
                 }, 'json')
 
             })
@@ -320,6 +319,12 @@
                     return;
                 }
 
+                if(parseInt(quantity.val()) <= 0){
+                    notify('error', 'No puede ingreser un numero menor que cero');
+                    quantity.focus();
+                    return;
+                }
+
                 if(!client.val().trim()){
                     notify('error', 'Seleccione el cliente');
                     client.focus();
@@ -328,22 +333,34 @@
 
                 for(var i = 0; i < quantity.val() - 1; i++){
                     if(!$(`#client${i}`).val().trim()){
-                        notify(`'error', 'Seleccione el acompañante#${i}`);
+                        notify('error', `Seleccione el acompañante#${i + 1}`);
                         $(`#client${i}`).focus();
                         return;
                     }   
+
+                    if(client.val() === $(`#client${i}`).val()){
+                        notify('error', `El cliente principal no puede ser igual al acompañante#${i + 1}`);
+                        $(`#client${i}`).focus();
+                        return;
+                    }
+
+                    if($(`#client${i}`).val() === $(`#client${i + 1}`).val()){
+                        notify('error', `Los acompañantes no pueden ser iguales`);
+                        $(`#client${i}`).focus();
+                        return;
+                    }
                 }
 
             
 
-                $('#confirm-ticket').modal('show')
+                
 
                 $.post(url, ctx, function(response){
                     console.log(response.error)
                     if(response.error){
-                        $('#confirm-ticket').find('.modal-body').html(response.error)
+                        notify('error', response.error)
                     } else {
-                    
+                        $('#confirm-ticket').modal('show')
                         $('#confirm-ticket').find('.modal-body').html(response.code)
                     }
                     
@@ -412,13 +429,13 @@
             event.preventDefault()
 
             //Variables
-            alert('sdsd')
 
             var $me = $(this)
             var url = $me.data('url')
             var token = $me.data('token')
             var action = $me.data('accion')
-          
+
+            $dni = $('#dni')
             $first_name = $('#first-name')
             $last_name = $('#last-name')
             $phone = $('#phone')
@@ -426,11 +443,31 @@
            
             var ctx = {
                 'csrfmiddlewaretoken': token,
-                'action' : action,
+                'action'             : action,
+                'dni'                : $dni.val(),   
                 'first_name'         : $first_name.val(),
                 'last_name'          : $last_name.val(),
                 'phone'              : $phone.val(),
                 'email'              : $email.val()}
+
+                if (!$dni.val().trim()){
+                    notify('error', "Ingrese el numero de identidad")
+                    $dni.focus()
+                    return
+                }
+
+                if(isNaN($dni.val())){
+                    notify('error', "No se permiten letras en este campo")
+                    $dni.focus()
+                    return
+                }   
+
+                if($dni.val().length !== 13){
+                     notify('error', "Tiene que ingresar 13 digitos")
+                    $dni.focus()
+                    return
+                }
+
               
                 if (!$first_name.val().trim())
                 {
