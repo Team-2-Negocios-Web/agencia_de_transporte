@@ -6,3 +6,9 @@
 .form-control {
     padding-left: 30px!important;
 }
+
+.hr {
+    height: 3px !important; 
+    background-color: #357376;
+	border-bottom: 1px solid #357376 !important;
+}
