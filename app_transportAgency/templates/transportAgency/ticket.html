@@ -370,6 +370,9 @@
                     
                 })
             })
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
 
             $buttonReserve.click(function(event){
                 event.preventDefault()
@@ -410,7 +413,9 @@
                 $.post(url, ctx, function(response){
                     $('#confirm-ticket').modal('hide')
                     notify('success', 'Se  ha realizado la compraa')
-                    location.reload()
+                    sleep(800).then(() => {
+                        location.reload()
+                    });
                     
                 })
             })
@@ -426,10 +431,11 @@
 
 
         var $buttonRegister = $('#button-register')
+       
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-
+        
         $buttonRegister.click(function(event){
             event.preventDefault()
 
