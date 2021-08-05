@@ -367,7 +367,9 @@ def cliente(request):
             return JsonResponse({'msj': f'El numero de identidad de {dni} ya existe'})
         client = Client(dni=dni,first_name = first_name, last_name = last_name, phone = phone, email = email)
         client.save()
-        return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})   
+        
+        return JsonResponse({'msj': 'Se ha guardado el cliente con éxito'})  
+
     return render(request, 'transportAgency/ticket.html')
 
 
