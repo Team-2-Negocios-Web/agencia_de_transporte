@@ -20,13 +20,13 @@
 
                         <!--Reservacion del ticket a comprar-->
                             <div class="mb-3">
-                                <label for="ticket_reservation">Día de la reservación: </label>
+                                <label for="ticket_reservation">Fecha: </label>
                                 <input type="date" class="form-control"  name="ticket_reservation" id="ticket_reservation" placeholder="">
                             </div>
 
                         <!--Rutas-->
                         <div class="mb-3">
-                            <label for="route">Rutas: </label>
+                            <label for="route">Ruta: </label>
                             <select name="route" id="route" class="form-select form-control-chosen">
                                 <option value="">Seleccione un ruta</option>
                                 {% for t in trips  %}
@@ -39,8 +39,8 @@
                     <br>
 
                     <!--Info de la ruta-->
-                    <p id="available">Ticket Disponible: None/16</p>
-                    <p id="price">Precio: 00.00</p>
+                    <p id="available">Tickets Disponibles: None/16</p>
+                    <p id="price">Precio: L.00.00</p>
                     
 
                     <hr>
@@ -76,10 +76,10 @@
                                          <form action="{% url 'transportAgency:client_view' %}" id="frm-client" method="post">
                                             {% csrf_token %}
                                             <div class="mb-3">
-                                                <label for="dni" class="col-form-label">Numero de identidad:</label>
+                                                <label for="dni" class="col-form-label">Número de Identidad:</label>
                                                 <div class="form-group has-feedback">
                                                     <i class="fa fa-id-card form-control-feedback" aria-hidden="true" style="color:#357376;"></i>
-                                                    <input id="dni" name="dni" type="text" class="form-control" placeholder="Escriba su nombre">
+                                                    <input id="dni" name="dni" type="text" class="form-control" placeholder="Escriba su identidad">
                                                 </div>
                                             </div>
                                             <div class="mb-3">
@@ -120,7 +120,7 @@
                                         data-url="{% url 'transportAgency:client_view' %}"
                                         type="button"
                                  
-                                        class="btn btn-primary">Registrar
+                                        class="btn" style="color:#fff; background-color: #357376;">Registrar
                                         
                                         </button>
                                     </div>
@@ -135,7 +135,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="mb-3">
-                                    <label for="quantity">Cuantos tickets desea comprar: </label>
+                                    <label for="quantity">Número de tickets: </label>
                                     <input type="number" class="form-control" value='1' min='1' name="quantity" id="quantity" placeholder="">
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                         >
                             Confirmar compra
                         </button>
-                        <a href="{% url 'transportAgency:details_ticket' %}" class="btn" style="background-color: #357376 ; color: white;">Ver tickets</a>
+                        <a href="{% url 'transportAgency:details_ticket' %}" class="btn" style="background-color: #357376 ; color: white;">Ver Tickets</a>
                     <!-- Modal -->
                 
                     <div class="modal fade" id="confirm-ticket" >
@@ -266,8 +266,8 @@
                     if (response.error){
                         notify('error', response.error)
                     } else {
-                        $('#price').text(`Precio: ${response.precio}`)
-                        $('#available').text(`Ticket Disponible: ${response.tickets}`)
+                        $('#price').text(`Precio: L.${response.precio}`)
+                        $('#available').text(`Tickets Disponibles: ${response.tickets}`)
                         $('.removed').load()
 
                     }

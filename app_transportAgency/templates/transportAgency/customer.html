@@ -2,8 +2,9 @@
 {% load static %}
 {% block title %}Clientes{% endblock %}
 {% block css %}
-<link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/i.css' %}">
 {% endblock %}
 
 
@@ -22,9 +23,9 @@
     <div class="row justify-content-center">
         <div class="col-md-4">
             <div class="input-group rounded mb-5">
-                <input type="search" name="q" class="form-control rounded" placeholder="Search" aria-label="Search"
+                <input type="search" name="q" class="form-control rounded" placeholder="Buscar" aria-label="Search"
                     aria-describedby="search-addon" />
-                <span class="input-group-text border-0" id="search-addon">
+                <span class="input-group-text border-0" id="search-addon"  style="background-color:#357376; color:#fff;">
                     <i class="fas fa-search"></i>
                 </span>
             </div>
@@ -44,44 +45,58 @@
 
             {% csrf_token %}
                 <div class="mb-3">
-                    <label for="dni" class="form-label">Numero de identidad</label>
-                    <input type="number" class="form-control" name="dni" id="dni" value="{{c.dni}}">
+                    <label for="dni" class="form-label">Número de identidad</label>
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-id-card form-control-feedback" aria-hidden="true" style="color:#357376;"></i>
+                        <input type="number" class="form-control" name="dni" id="dni" value="{{c.dni}}">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="first_name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="first_name" id="first_name" value="{{c.first_name}}">
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-user form-control-feedback" style="color:#357376;"></i>
+                        <input type="text" class="form-control" name="first_name" id="first_name" value="{{c.first_name}}">
+                    </div>
                 </div>
-                 <div class="mb-3">
+                <div class="mb-3">
                     <label for="last_name" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" name="last_name" id="last_name" value="{{c.last_name}}">
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-user form-control-feedback" style="color:#357376;"></i>
+                        <input type="text" class="form-control" name="last_name" id="last_name" value="{{c.last_name}}">
+                    </div>
                 </div>
-                 <div class="mb-3">
-                    <label for="phone" class="form-label">Telefono</label>
-                    <input type="text" class="form-control" name="phone" id="phone" value="{{c.phone}}">
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Teléfono</label>
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-phone form-control-feedback" style="color:#357376;"></i>
+                        <input type="text" class="form-control" name="phone" id="phone" value="{{c.phone}}">
+                    </div>
                 </div>
-                 <div class="mb-3">
+                <div class="mb-3">
                     <label for="email" class="form-label">Correo</label>
-                    <input type="text" class="form-control" name="email" id="email" value="{{c.email}}">
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-envelope form-control-feedback" style="color:#357376;"></i>
+                        <input type="text" class="form-control" name="email" id="email" value="{{c.email}}">
+                    </div>
                 </div>
                 <div class="mb-3">
                     <input type="submit" class="btn btn-success" value="Actualizar Cliente">
                 </div>
-             
             
             </form>
         
 </div>
     
        
-<div class="col-6">
-    <table class="rwd-table">
+<div class="col-8">
+    <table class="rwd-table" id="id_tabla">
     <thead>
         <tr>
-            <th>Numero identidad</th>
+            <th>Número de Identidad</th>
             <th>Nombre Completo</th>
-            <th>Telefono</th>
+            <th>Teléfono</th>
             <th>Correo</th>
-            <th>Accciones</th>
+            <th>Editar</th>
         </tr>
     </thead>
     <tbody>
@@ -92,7 +107,7 @@
                 <td data-th="telefono">{{c.phone}}</td>
                 <td data-th="correo">{{c.email}}</td>
                 <td class="text-center">
-                    <a href="{% url 'transportAgency:edit_customer' c.id %}" class="text-success"><span class="fas fa-edit"></span></a>
+                    <a href="{% url 'transportAgency:edit_customer' c.id %}" class="text-white"><span class="fas fa-edit fa-2x"></span></a>
                 </td>
             </tr>
         
