@@ -1,0 +1,8 @@
+.form-control-feedback {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
+.form-control {
+    padding-left: 30px!important;
+}
