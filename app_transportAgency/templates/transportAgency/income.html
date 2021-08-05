@@ -41,7 +41,7 @@
     </form>
 
     <div id="show-buttons" style="display:none;text-align:center;margin-bottom:20px ;margin-top:20px ;">
-        <button class="btn" id="button-grafico">Grafico</button>
+        <button class="btn" id="button-grafico">Gráfico</button>
         <button class="btn" id="button-tabla">Tabla</button>
     </div>
     
@@ -112,7 +112,7 @@
 
                         Highcharts.chart('graph', {
                             title: {
-                                text: 'Ganancias de las rutas por fecha',
+                                text: 'Ganancias de las rutas por fecha:',
                                 
                             },
                             colors: ['#357376'],
@@ -120,7 +120,7 @@
                                 categories: label,
                             },
                             series: [{
-                                name: 'Ganancia: ',
+                                name: 'Ganancias: ',
                                 data: (function () {
                                     var data = [];
                                     for (var i = 0; i < response.incomes.length; i++) {
