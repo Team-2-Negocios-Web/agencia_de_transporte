@@ -25,6 +25,7 @@
  - Carlos Navarro **[Carloscuadra1400](https://github.com/Carloscuadra1400)**
  - Hugo Murillo **[huguito17](https://github.com/huguito17)**
  - Abdiel Banegas **[MisaelB7](https://github.com/MisaelB7)**
+ - Jorge Paz **[JorgeG18](https://github.com/JorgeG18)**
  - Kilby Salgado **[KilbySalgado](https://github.com/KilbySalgado)**
 <a>
 
