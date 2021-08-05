@@ -37,7 +37,7 @@
 
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transportAgency:travels_view' %}">Programaciónn de Viajes</a>
+                        <a class="nav-link" href="{% url 'transportAgency:travels_view' %}">Programación de Viajes</a>
                     </li>
 
                      <li class="dropdown">
@@ -57,7 +57,7 @@
                         <a class="nav-link" href="{% url 'transportAgency:bus_crud' %}">Registro de Buses</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'transportAgency:customer' %}">Registro de Cliente</a>
+                        <a class="nav-link" href="{% url 'transportAgency:customer' %}">Actualizar Cliente</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'transportAgency:income_view' %}">Ganancias</a>
@@ -99,10 +99,13 @@
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"> </script>
     <script src="https://haubek.github.io/dist/js/chosen.jquery.js"></script>
     <script>
-        $(document).ready( function () {
-            $('#id_tabla').DataTable();
+         $(document).ready( function () {
+            $('#id_tabla').DataTable({
+            "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+            }
         });
-
+        });
         $(function () {
             $('.form-control-chosen').chosen();
         });

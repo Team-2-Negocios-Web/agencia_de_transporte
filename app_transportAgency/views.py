@@ -364,7 +364,7 @@ def cliente(request):
 
         dni_exists = Client.objects.filter(dni=dni)
         if dni_exists:
-            return JsonResponse({'msj': f'El numero de identidad de {dni} ya existe'})
+            return JsonResponse({'error': f'El numero de identidad de {dni} ya existe'})
         client = Client(dni=dni,first_name = first_name, last_name = last_name, phone = phone, email = email)
         client.save()
         
