@@ -3,8 +3,9 @@
 {% block title %}Mostrar Tickets{% endblock title %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
-<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/table.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/i.css' %}">
 {% endblock %}
 
 {% block container %}
@@ -20,7 +21,7 @@
         <form action="">
             <div class="row justify-content-end">
                 <div class="col justify-content-start">
-                    <a href="{% url 'transportAgency:ticket_view' %}" class="btn btn-info">Reserva de ticket</a>
+                    <a href="{% url 'transportAgency:ticket_view' %}" class="btn btn-info">Reservación de ticket</a>
                 </div>
                 <div class="row col-5 mb-4">
                     <input type="date" class="form-control col m-1" name="q" placeholder='fecha'>
@@ -34,66 +35,66 @@
 
     <div class="row">
         <div class="shadow col-4" style="padding:50px; border-radius:10px;">
-            <h3>Informacion del Ticket</h3>
-            <hr>
+            <div style="text-align:center">
+                <h4>Información del Ticket</h4>
+            </div>
+            <hr class="hr">
             {% if info %}
                 <div>
-                    <p>Fecha de reservacion: {{info.ticket_reservation}}</p>
-                    <hr>
-                    <p>Horario: {{info.routes.schedule}}</p>
-                    <hr>
-                    <p>Empleado: {{info.employee}}</p>
-                    <hr>
-                    <p>Consumidor Final: {{info.client}}</p>
-                    <hr>
-                    <p>Cuidad Origen: {{info.routes.origin}}</p>
-                    <hr>
-                    <p>Cuidad Destino: {{info.routes.destiny}}</p>
-                    <hr>
-                    <p>Precio: L.{{info.routes.precio}}</p>
-                    <hr>
-                    <p>Cantidad de ticket: {{info.ticket_quantity}}</p>
-                    <hr>
-                    <p>Precio Total: L.{{info.total_price}}</p>
-                    <hr>
+                    <p><b>Fecha de reservación:</b> {{info.ticket_reservation}}</p>
+                    <hr class="hr">
+                    <p><b>Horario:</b> {{info.routes.schedule}}</p>
+                    <hr class="hr">
+                    <p><b>Empleado:</b> {{info.employee}}</p>
+                    <hr class="hr">
+                    <p><b>Consumidor Final:</b> {{info.client}}</p>
+                    <hr class="hr">
+                    <p><b>Cuidad Origen:</b> {{info.routes.origin}}</p>
+                    <hr class="hr">
+                    <p><b>Cuidad Destino:</b> {{info.routes.destiny}}</p>
+                    <hr class="hr">
+                    <p><b>Precio: </b>L.{{info.routes.precio}}</p>
+                    <hr class="hr">
+                    <p><b>Cantidad de Tickets:</b> {{info.ticket_quantity}}</p>
+                    <hr class="hr">
+                    <p><b>Precio Total: </b>L.{{info.total_price}}</p>
+                    <hr class="hr">
                     <p>
-                        Acompañantes
+                        <b>Acompañantes:</b>
                         <ol>
                             {% for a in info.companion.all  %}
                                 <li>{{a}}</li>
                             {% endfor %}
                         </ol>
                     </p>
-                    <hr>
+                    <hr class="hr">
 
                     <p>
-                        Asientos
+                        <b>Asientos:</b>
                         <ol>
                             {% for s in info.seating.all  %}
                                 <li>{{s}}</li>
                             {% endfor %}
                         </ol>
                     </p>
-                    <hr>
-                    <p>Bus: {{info.bus}}</p>
+                    <hr class="hr">
+                    <p><b>Bus:</b> {{info.bus}}</p>
                 </div>
             
             {% else %}
-                <p>Noy informacion que mostrar</p>
+                <b><p style="color:#ff0000;">No hay información que mostrar</p></b>
             {% endif %}
             
         </div>
         <div class="col-8" >
-        <table class="rwd-table">
+        <table class="rwd-table" id="id_tabla">
             <thead>
                 <tr>
-                    <th>Fecha de reservacion</th>
+                    <th>Fecha de Reservación</th>
                     <th>Cliente</th>
                     <th>Cantidad</th>
                     <th>Ruta</th>
-                    <th>Mostrar Informacion</th>
-                    
-                  
+                    <th>Mostrar Información</th>
                 </tr>
             </thead>
             <tbody>
@@ -105,12 +106,14 @@
                             <td>{{t.client}}</td>
                             <td>{{t.ticket_quantity}}</td>
                             <td data-th="ruta">{{t.routes.origin | capfirst}} - {{t.routes.destiny | capfirst}}</td>
-                            <td><a href="{% url 'transportAgency:info_ticket' t.pk %}">Mostrar datos</a></td>
+                            <td>    
+                                <a href="{% url 'transportAgency:info_ticket' t.pk %}" class="text-white"><span class="fa fa-info-circle fa-2x"></span></a>
+                            </td>
                         </tr>
                     {% endif %}
                 {% empty %}
                 <tr>
-                    <td colspan=7>No hay</td>
+                    <td colspan="7">Ningún dato disponible en esta tabla</td>
                 </tr>
                 {% endfor %}
             </tbody>

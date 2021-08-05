@@ -5,8 +5,9 @@
 {% block title %}Buses{% endblock title %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
-<link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/bustable.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/tittle.css' %}">
+    <link rel="stylesheet" href="{% static 'transportAgency/css/i.css' %}">
 {% endblock %}
 
 {% block container %}
@@ -22,23 +23,26 @@
             <form method="post" >
             {% csrf_token %}
                 <div class="mb-3">
-                    <label for="name-bus" class="form-label">Nombre del bus</label>
-                    <input type="text" class="form-control" name="name-bus" id="name-bus" value="{{data.name_bus}}">
+                    <label for="name-bus" class="form-label">Nombre del bus:</label>
+                    <div class="form-group has-feedback">
+                        <i class="fa fa-bus form-control-feedback" style="color:#357376;"></i>
+                        <input type="text" class="form-control" name="name-bus" id="name-bus" value="{{data.name_bus}}" placeholder="B#_Origen-Destino">
+                    </div>
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-lg btn-primary" id="button-save">Guardar</button>
+                    <button class="btn btn-lg btn-primary" id="button-save" style="color:#fff; background-color: #357376;">Guardar</button>
                 </div>
             
             </form>
-            <p>{{msg}}</p>
+            <b><p style="color:#ff0000;">{{msg}}</p></b>
         
         </div>
         <div class="col-6">
             <table class="rwd-table">
                 <thead>
                     <tr>
-                        <th>Bus name</th>
-                        <th>Actions</th>
+                        <th>Nombre del bus</th>
+                        <th>Editar</th>
                     </tr>
                 </thead>
                 <tbody>	
@@ -47,7 +51,7 @@
 
                         <td>{{b.name_bus}}</td>
                         <td>
-                            <a href="{% url 'transportAgency:editar_bus' b.id %}" class="text-success"><span class="fas fa-edit"></span></a>
+                            <a href="{% url 'transportAgency:editar_bus' b.id %}" class="text-white"><span class="fas fa-edit fa-2x"></span></a>
                         </td>
 
                     </tr>
